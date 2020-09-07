@@ -1,10 +1,10 @@
 
 const tokens = {
   admin: {
-    token: 'admin-token'
+    access_token: 'admin-token'
   },
   editor: {
-    token: 'editor-token'
+    access_token: 'editor-token'
   }
 }
 
@@ -30,10 +30,10 @@ module.exports = [
     type: 'post',
     response: config => {
       const { username } = config.body
-      const token = tokens[username]
+      const access_token = tokens[username]
 
       // mock error
-      if (!token) {
+      if (!access_token) {
         return {
           code: 60204,
           message: 'Account and password are incorrect.'
@@ -42,7 +42,7 @@ module.exports = [
 
       return {
         code: 20000,
-        data: token
+        data: access_token
       }
     }
   },
