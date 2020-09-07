@@ -21,7 +21,7 @@ pull_code_test:
      - cd ${GIT_DIR}/${PROJECT}
      - git pull origin master
 
-  pull_code_production:
+pull_code_production:
   stage: pull_code_production
   only:
     - master
