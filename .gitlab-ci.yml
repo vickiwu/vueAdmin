@@ -1,5 +1,7 @@
 # 定义 stages（阶段，会依次执行）
 stages:
+  - pull_code_test
+  - pull_code_production
   - install_deps
   - build_prod
   - deploy_prod
@@ -9,6 +11,23 @@ cache:
   paths:
     - node_modules/
     - dist
+
+# 拉取代码
+pull_code_test:
+  stage: pull_code_test
+  only:
+    - master
+  script:
+     - cd ${GIT_DIR}/${PROJECT}
+     - git pull origin master
+
+  pull_code_production:
+  stage: pull_code_production
+  only:
+    - master
+  script:
+    - cd ${GIT_DIR}/${PROJECT}
+    - git pull origin master
 
 # 安装构建依赖
 install_deps_job:
