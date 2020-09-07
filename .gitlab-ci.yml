@@ -15,22 +15,22 @@ cache:
     - node_modules/
     - dist
 
-# 拉取代码
-pull_code_test:
-  stage: pull_code_test
-  only:
-    - master
-  script:
-     - cd ${GIT_DIR}/${PROJECT}
-     - git pull origin master
+# # 拉取代码
+# pull_code_test:
+#   stage: pull_code_test
+#   only:
+#     - master
+#   script:
+#      - cd ${GIT_DIR}/${PROJECT}
+#      - git pull origin master
 
-pull_code_production:
-  stage: pull_code_production
-  only:
-    - master
-  script:
-    - cd ${GIT_DIR}/${PROJECT}
-    - git pull origin master
+# pull_code_production:
+#   stage: pull_code_production
+#   only:
+#     - master
+#   script:
+#     - cd ${GIT_DIR}/${PROJECT}
+#     - git pull origin master
 
 # 安装构建依赖
 install_deps_job:
