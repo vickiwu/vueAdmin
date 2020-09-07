@@ -1,0 +1,17 @@
+# 定义阶段 stages
+stages:
+  - build
+  - deploy
+
+# 定义 job - build 项目
+job1 - build 阶段:
+  # 开始之前需要安装依赖
+  stage: build
+  script:
+    - echo "finish build stage"
+
+# 定义 job
+job2 - 发布到线上环境:
+  stage: deploy
+  script:
+    - echo "finish deploy stage"
