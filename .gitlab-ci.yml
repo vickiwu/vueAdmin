@@ -1,17 +1,45 @@
-# 定义阶段 stages
+# 定义 stages（阶段，会依次执行）
 stages:
-  - build
-  - deploy
+  - install_deps
+  - build_prod
+  - deploy_prod
 
-# 定义 job - build 项目
-job1 - build 阶段:
-  # 开始之前需要安装依赖
-  stage: build
-  script:
-    - echo "finish build stage"
+cache:
+  key: ${CI_BUILD_REF_NAME}
+  paths:
+    - node_modules/
+    - dist
 
-# 定义 job
-job2 - 发布到线上环境:
-  stage: deploy
+# 安装构建依赖
+install_deps_job:
+  stage: install_deps
+  # 在哪个分支才会执行脚本
+  only:
+    # - dev
+    # - release
+    - master
   script:
-    - echo "finish deploy stage"
+    - echo '模拟安装构建依赖阶段'
+  tags:
+    - my-tag
+
+# 构建预prod环境src目录下应用
+build_prod_job:
+  stage: build_prod
+  only:
+    - master
+  script:
+    - echo '构建预prod环境src目录下应用阶段'
+  tags:
+    - my-tag
+
+# 部署生产环境
+deploy_prod_job:
+  stage: deploy_prod
+  only:
+    - master
+  script:
+    - echo '部署生产环境阶段'
+  tags:
+    - my-tag
+
