@@ -12,7 +12,7 @@
         :collapse-transition="false"
         mode="vertical"
       >
-        <sidebar-item v-for="route in routes" :key="route.path" :item="route" :base-path="route.path" />
+        <sidebar-item v-for="route in current_routes.children" :key="route.path" :item="route" :base-path="route.path" />
       </el-menu>
     </el-scrollbar>
   </div>
@@ -28,15 +28,15 @@ export default {
   components: { SidebarItem, Logo },
   computed: {
     ...mapGetters([
-      'sidebar'
+      'sidebar',
+      'permission_routes',
+      'current_routes',
+      'left_routes'
     ]),
-    routes() {
-      return this.$router.options.routes
-    },
     activeMenu() {
       const route = this.$route
       const { meta, path } = route
-      // if set path, the sidebar will highlight the path you set
+      // 如果设置了路径，则侧边栏将突出显示
       if (meta.activeMenu) {
         return meta.activeMenu
       }
@@ -51,6 +51,8 @@ export default {
     isCollapse() {
       return !this.sidebar.opened
     }
+  },
+  created() {
   }
 }
 </script>

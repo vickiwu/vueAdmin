@@ -1,12 +1,17 @@
 import { login, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
-import { resetRouter } from '@/router'
+import { constantRoutes, resetRouter } from '@/router'
+import router from '@/router'
 
 const getDefaultState = () => {
   return {
     token: getToken(),
     name: '',
-    avatar: ''
+    avatar: '',
+    routes: [],
+    path: '',
+    leftMenu: [],
+    permission: []
   }
 }
 
@@ -24,11 +29,35 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
+  },
+  SET_PATH: (state, path) => {
+    state.path = path
+  },
+  SET_ROUTES: (state, routes) => {
+    if (routes === '-1') {
+      state.routes = []
+    } else {
+      state.addRoutes = routes
+      let newRoutes = []
+      newRoutes = constantRoutes.concat(routes)
+      // 添加到router当中
+      newRoutes.push(
+        { path: '*', redirect: '/404', hidden: true }
+      )
+      state.routes = newRoutes
+      resetRouter() // 重置路由
+      router.addRoutes(state.routes)
+    }
+  },
+  SET_LEFT_MENU: (state, menu) => {
+    state.leftMenu = menu
+  },
+  SET_PERMISSION: (state, permission) => {
+    state.permission = permission
   }
 }
 
 const actions = {
-  // user login
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
@@ -50,7 +79,7 @@ const actions = {
         const { data } = response
 
         if (!data) {
-          return reject('Verification failed, please Login again.')
+          return reject('验证失败，请重新登录。')
         }
 
         const { name, avatar } = data
@@ -68,7 +97,7 @@ const actions = {
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
       logout(state.token).then(() => {
-        removeToken() // must remove  token  first
+        removeToken() // 必须先删除token
         resetRouter()
         commit('RESET_STATE')
         resolve()
@@ -81,10 +110,37 @@ const actions = {
   // remove token
   resetToken({ commit }) {
     return new Promise(resolve => {
-      removeToken() // must remove  token  first
+      removeToken() // 必须先删除token
       commit('RESET_STATE')
       resolve()
     })
+  },
+  changePath({ commit }, path) {
+    commit('SET_PATH', path)
+  },
+  setRoutes({ commit }, routes) {
+    commit('SET_ROUTES', routes)
+  },
+  setLeftRoutes({ commit, dispatch }, path) {
+    var res = state.routes.find(function de(item) {
+      if (item.path === path) return true
+      if (item.children) {
+        return item.children.filter(de).length
+      }
+      return false
+    })
+    if (!res) res = []
+
+    if (!res.hasLeft) {
+      dispatch('app/toggleSideBarHide', true, { root: true })
+    } else {
+      dispatch('app/toggleSideBarHide', false, { root: true })
+    }
+
+    commit('SET_LEFT_MENU', res)
+  },
+  setPermission({ commit, dispatch }, permission) {
+    commit('SET_PERMISSION', permission)
   }
 }
 

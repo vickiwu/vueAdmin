@@ -1,6 +1,8 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">name: {{ name }}</div>
+    首页，无子菜单
+    <div class="dashboard-text">获取当前登录用户名: {{ name }}</div>
+    <div v-permission="['admin']">dsaf</div>
   </div>
 </template>
 
@@ -11,8 +13,11 @@ export default {
   name: 'Dashboard',
   computed: {
     ...mapGetters([
-      'name'
+      'name',
+      'permission'
     ])
+  },
+  created() {
   }
 }
 </script>

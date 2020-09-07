@@ -15,7 +15,13 @@ export function getInfo(token) {
     params: { token }
   })
 }
-
+export function getRoutesApi(token) {
+  return request({
+    url: '/vue-admin-template/user/routes',
+    method: 'get',
+    params: { token }
+  })
+}
 export function logout() {
   return request({
     url: '/vue-admin-template/user/logout',
