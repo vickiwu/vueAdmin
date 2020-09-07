@@ -21,7 +21,7 @@ install_deps_job:
   script:
     - echo '模拟安装构建依赖阶段'
   tags:
-    - my-tag
+    - vue
 
 # 构建预prod环境src目录下应用
 build_prod_job:
@@ -31,7 +31,7 @@ build_prod_job:
   script:
     - echo '构建预prod环境src目录下应用阶段'
   tags:
-    - my-tag
+    - vue
 
 # 部署生产环境
 deploy_prod_job:
@@ -41,5 +41,5 @@ deploy_prod_job:
   script:
     - echo '部署生产环境阶段'
   tags:
-    - my-tag
+    - vue
 
