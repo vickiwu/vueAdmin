@@ -65,7 +65,10 @@ module.exports = [
 
       return {
         code: 20000,
-        data: info
+        data: {
+          ...info,
+          permission: ['user:del', 'table:edit', 'user:look']
+        }
       }
     }
   },
@@ -327,8 +330,8 @@ module.exports = [
                 icon: 'el-icon-info'
               }
             }
-          ],
-          permission: ['user:del', 'table:edit', 'user:look']
+          ]
+
         }
       }
     }

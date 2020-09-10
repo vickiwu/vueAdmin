@@ -33,8 +33,9 @@ router.beforeEach(async(to, from, next) => {
         next()
       } else {
         try {
+          // 重新获取用户信息和路由
           await store.dispatch('user/getInfo')
-          await initMenu(router, store, to.path) // 接口中放用户信息，路由，权限
+          await initMenu(router, store, to.path)
 
           next({ ...to, replace: true })
         } catch (error) {
