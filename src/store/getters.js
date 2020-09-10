@@ -7,8 +7,14 @@ const getters = {
   visitedViews: state => state.tagsView.visitedViews,
   cachedViews: state => state.tagsView.cachedViews,
   permission_routes: state => state.user.routes,
-  current_routes: (state, getters) => {
+  menu_type: (state, getters) => {
+    return state.user.menuType
+  },
+  left_menus: (state, getters) => {
     return state.user.leftMenu
+  },
+  top_menus: (state, getters) => {
+    return state.user.topMenu
   },
   permission: state => state.user.permission
 }

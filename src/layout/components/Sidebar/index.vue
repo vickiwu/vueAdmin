@@ -12,7 +12,7 @@
         :collapse-transition="false"
         mode="vertical"
       >
-        <sidebar-item v-for="route in current_routes.children" :key="route.path" :item="route" :base-path="route.path" />
+        <sidebar-item v-for="route in left_menus" :key="route.path" :item="route" :base-path="route.path" />
       </el-menu>
     </el-scrollbar>
   </div>
@@ -30,8 +30,7 @@ export default {
     ...mapGetters([
       'sidebar',
       'permission_routes',
-      'current_routes',
-      'left_routes'
+      'left_menus'
     ]),
     activeMenu() {
       const route = this.$route

@@ -19,7 +19,7 @@
 
 <script>
 // Fuse是轻量级的模糊搜索模块
-// make search results more in line with expectations
+// 使搜索结果更符合期望
 import Fuse from 'fuse.js'
 import path from 'path'
 
@@ -94,15 +94,12 @@ export default {
         }]
       })
     },
-    // Filter out the routes that can be displayed in the sidebar
+    // 过滤掉可在侧栏中显示的路线
     // And generate the internationalized title
     generateRoutes(routes, basePath = '/', prefixTitle = []) {
       let res = []
 
       for (const router of routes) {
-        // skip hidden router
-        if (router.hidden) { continue }
-
         const data = {
           path: path.resolve(basePath, router.path),
           title: [...prefixTitle]
@@ -112,13 +109,13 @@ export default {
           data.title = [...data.title, router.meta.title]
 
           if (router.redirect !== 'noRedirect') {
-            // only push the routes with title
-            // special case: need to exclude parent router without redirect
+            // 仅推送带有标题的路线
+            // 特殊情况：需要排除父路由器而不进行重定向
             res.push(data)
           }
         }
 
-        // recursive child routes
+        // 递归子路径
         if (router.children) {
           const tempRoutes = this.generateRoutes(router.children, data.path, data.title)
           if (tempRoutes.length >= 1) {

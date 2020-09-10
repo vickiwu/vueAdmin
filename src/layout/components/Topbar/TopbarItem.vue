@@ -1,5 +1,5 @@
 <template>
-  <div v-if="item.top">
+  <div>
     <!-- 单菜单 1.子菜单等于1-->
     <template v-if="!hasSubMenu(item.children,item)">
       <app-link v-if="showingTopMenu.meta" :to="resolvePath(showingTopMenu.path)">
@@ -70,7 +70,6 @@ export default {
         this.showingTopMenu = parent
         return false
       }
-      // return true
     },
 
     resolvePath(routePath) {

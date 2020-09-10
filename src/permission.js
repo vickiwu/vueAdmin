@@ -7,9 +7,9 @@ import { getToken } from '@/utils/auth'
 import { initMenu } from '@/utils/routesInit'
 import getPageTitle from '@/utils/get-page-title'
 
-NProgress.configure({ showSpinner: false }) // NProgress Configuration
+NProgress.configure({ showSpinner: false }) // NProgress配置
 
-const whiteList = ['/login'] // no redirect whitelist
+const whiteList = ['/login'] // 没有重定向白名单
 
 router.beforeEach(async(to, from, next) => {
   NProgress.start()
@@ -17,7 +17,6 @@ router.beforeEach(async(to, from, next) => {
   document.title = getPageTitle(to.meta.title)
 
   const hasToken = getToken()
-  console.log(hasToken, hasToken)
 
   if (hasToken) {
     if (to.path === '/login') {

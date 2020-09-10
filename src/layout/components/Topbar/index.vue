@@ -15,7 +15,7 @@
           @select="handleSelect"
         >
           <topbar-item
-            v-for="route in permission_routes"
+            v-for="route in top_menus"
             :key="route.path"
             class="nav-item"
             :item="route"
@@ -84,8 +84,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'permission_routes',
-      'current_routes',
+      'top_menus',
       'sidebar',
       'avatar',
       'device'
@@ -94,7 +93,7 @@ export default {
     activeMenu() {
       const route = this.$route
       const { meta, path } = route
-      // if set path, the sidebar will highlight the path you set
+      // 如果设置了路径，则侧边栏将突出显示设置的路径
       if (meta.activeMenu) {
         return meta.activeMenu
       }

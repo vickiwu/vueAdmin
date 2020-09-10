@@ -85,23 +85,30 @@ module.exports = [
         }
       }
 
+      // 路由和组件后台获取放在routes，
+      // 菜单后台获取放在menuList中，
+      // 菜单类型menuType，top和left两种，
+      // 其中top类型包含有下拉无侧菜单，及无下拉有侧边栏两种情况
       return {
         code: 20000,
         data: {
           'routes': [
             {
-              path: '/',
-              component: 'Layout',
-              top: true, // 是否是头部菜单
-              showSubMenu: false, // 是否有头部下拉菜单
-              redirect: '/dashboard',
-              meta: { title: '首页', icon: 'dashboard' },
+              path: '/', // 路径（唯一）
+              component: 'Layout', // 组件名称，框架名称固定为Layout
+              redirect: '/dashboard', // 由于此路由没有页面，重定向到其他路由，默认取第一个子元素
+              name: '/', // 路由名称（唯一）
+              meta: {
+                title: '首页' // 菜单名称
+              },
               children: [{
-                path: '/dashboard',
-                top: true, //
-                name: 'Dashboard',
-                component: 'views/dashboard/index',
-                meta: { title: '首页', icon: 'dashboard', permission: ['editor', 'del'] }
+                path: '/dashboard', // 路径（唯一）
+                name: 'index', // 路由名称（唯一）
+                meta: {
+                  title: '首页', // 菜单名称
+                  affix: true // true表示该页面在tagView中固定展示，不可删除
+                },
+                component: 'views/dashboard/index'// 组件名称
               }]
             },
 
@@ -109,25 +116,22 @@ module.exports = [
               path: '/example',
               component: 'Layout',
               redirect: '/example/table',
-              name: 'Example',
-              top: true, // 是否是头部菜单
-              showSubMenu: true, // 是否有头部下拉菜单
-              hasLeft: false,
-              meta: { title: 'Example', icon: 'el-icon-s-help' },
               children: [
                 {
                   path: '/example/table',
-                  name: 'Table',
-                  top: true, // 是否是头部菜单
-                  component: 'views/table/index',
-                  meta: { title: 'Table', icon: 'table' }
+                  name: 'table',
+                  meta: {
+                    title: 'table' // 菜单名称
+                  },
+                  component: 'views/table/index'
                 },
                 {
                   path: '/example/tree',
-                  top: true, // 是否是头部菜单
-                  name: 'Tree',
-                  component: 'views/tree/index',
-                  meta: { title: 'Treqqqe', icon: 'tree' }
+                  name: 'tree',
+                  meta: {
+                    title: 'tree' // 菜单名称
+                  },
+                  component: 'views/tree/index'
                 }
               ]
             },
@@ -136,77 +140,76 @@ module.exports = [
               path: '/form',
               component: 'Layout',
               redirect: '/form/index',
-              top: true,
-              hasLeft: true,
-              meta: { title: 'Forwwm', icon: 'form' },
               children: [
                 {
-                  top: true,
                   path: '/form/index',
-                  name: 'Form',
-                  component: 'views/form/index',
-                  meta: { title: 'Form', icon: 'form' }
+                  name: 'form',
+                  meta: {
+                    title: 'form' // 菜单名称
+                  },
+                  component: 'views/form/index'
                 }
               ]
             },
 
             {
               path: '/nested',
-              top: true,
-              hasLeft: true,
               component: 'Layout',
               redirect: '/nested/menu1',
-              name: 'Nested',
-              meta: {
-                title: 'Nested',
-                icon: 'nested'
-              },
               children: [
                 {
                   path: '/nested/menu1',
                   component: 'views/nested/menu1/index', // Parent router-view
-                  name: 'Menu1',
-                  meta: { title: 'Menu1' },
+                  redirect: '/nested/menu1/menu1-1',
                   children: [
                     {
                       path: '/nested/menu1/menu1-1',
-                      component: 'views/nested/menu1/menu1-1/index',
-                      name: 'Menu1-1',
-                      meta: { title: 'Menu1-1' }
+                      name: 'menu1-1',
+                      meta: {
+                        title: 'menu1-1' // 菜单名称
+                      },
+                      component: 'views/nested/menu1/menu1-1/index'
                     },
                     {
                       path: '/nested/menu1/menu1-2',
                       component: 'views/nested/menu1/menu1-2/index',
-                      name: 'Menu1-2',
-                      meta: { title: 'Menu1-2' },
+                      redirect: '/nested/menu1/menu1-2/menu1-2-1',
                       children: [
                         {
                           path: '/nested/menu1/menu1-2/menu1-2-1',
-                          component: 'views/nested/menu1/menu1-2/menu1-2-1/index',
-                          name: 'Menu1-2-1',
-                          meta: { title: 'Menu1-2-1' }
+                          name: 'menu1-2-1',
+                          meta: {
+                            title: 'menu1-2-1' // 菜单名称
+                          },
+                          component: 'views/nested/menu1/menu1-2/menu1-2-1/index'
                         },
                         {
                           path: '/nested/menu1/menu1-2/menu1-2-2',
-                          component: 'views/nested/menu1/menu1-2/menu1-2-2/index',
-                          name: 'Menu1-2-2',
-                          meta: { title: 'Menu1-2-2' }
+                          name: 'menu1-2-2',
+                          meta: {
+                            title: 'menu1-2-2'
+                          },
+                          component: 'views/nested/menu1/menu1-2/menu1-2-2/index'
                         }
                       ]
                     },
                     {
                       path: '/nested/menu1/menu1-3',
-                      component: 'views/nested/menu1/menu1-3/index',
-                      name: 'Menu1-3',
-                      meta: { title: 'Menu1-3' }
+                      name: 'menu1-3',
+                      meta: {
+                        title: 'menu1-3'
+                      },
+                      component: 'views/nested/menu1/menu1-3/index'
                     }
                   ]
                 },
                 {
                   path: '/nested/menu2',
-                  component: 'views/nested/menu2/index',
-                  name: 'Menu2',
-                  meta: { title: 'menu2' }
+                  name: 'menu2',
+                  meta: {
+                    title: 'menu2'
+                  },
+                  component: 'views/nested/menu2/index'
                 }
               ]
             },
@@ -216,13 +219,115 @@ module.exports = [
               component: 'Layout',
               children: [
                 {
-                  path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-                  meta: { title: 'External Link', icon: 'link' }
+                  path: 'https://panjiachen.github.io/vue-element-admin-site/#/'
                 }
               ]
+            },
+            {
+              path: '/bigScreen',
+              name: 'bigScreen',
+              meta: {
+                title: 'bigScreen'
+              },
+              component: 'views/bigScreen/index'
             }
 
-          ]
+          ],
+          menuType: 'top', //  menuType: 'left', // top 表示头部菜单，left表示左侧菜单
+          menuList: [
+            {
+              path: '/dashboard', // 路径（唯一的，需要和routes中path对应）
+              showSubMenu: false, // menuType 为top时需要使用，表示是否有头部下拉菜单，没有头部菜单则其子菜单在左侧菜单展示
+              meta: {
+                title: '首页', // 菜单名称
+                icon: 'dashboard' // 菜单图标
+              }
+            },
+
+            {
+              path: '/example',
+              showSubMenu: true, // true有头部下拉菜单，则子菜单在头部父菜单下拉展示，左侧收起
+              meta: { title: 'Example', icon: 'el-icon-s-help' },
+              children: [
+                {
+                  path: '/example/table',
+                  meta: { title: 'Table', icon: 'table' }
+                },
+                {
+                  path: '/example/tree',
+                  meta: { title: 'Treqqqe', icon: 'tree' }
+                }
+              ]
+            },
+
+            {
+              path: '/form/index',
+              showSubMenu: false,
+              meta: { title: 'Form', icon: 'form' },
+              children: [
+                {
+                  path: '/form/index',
+                  meta: { title: 'Form', icon: 'form' }
+                }
+              ]
+            },
+            {
+              path: '/nested',
+              showSubMenu: false,
+              name: 'Nested',
+              meta: {
+                title: 'Nested',
+                icon: 'nested'
+              },
+              children: [
+                {
+                  path: '/nested/menu1',
+                  meta: { title: 'Menu1' },
+                  children: [
+                    {
+                      path: '/nested/menu1/menu1-1',
+                      meta: { title: 'Menu1-1' }
+                    },
+                    {
+                      path: '/nested/menu1/menu1-2',
+                      meta: { title: 'Menu1-2' },
+                      children: [
+                        {
+                          path: '/nested/menu1/menu1-2/menu1-2-1',
+                          meta: { title: 'Menu1-2-1' }
+                        },
+                        {
+                          path: '/nested/menu1/menu1-2/menu1-2-2',
+                          meta: { title: 'Menu1-2-2' }
+                        }
+                      ]
+                    },
+                    {
+                      path: '/nested/menu1/menu1-3',
+                      meta: { title: 'Menu1-3' }
+                    }
+                  ]
+                },
+                {
+                  path: '/nested/menu2',
+                  meta: { title: 'menu2' }
+                }
+              ]
+            },
+
+            {
+              path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
+              meta: { title: 'External Link', icon: 'link' }
+            },
+            {
+              path: '/bigScreen',
+              meta: {
+                title: '大屏',
+                icon: 'el-icon-info'
+              }
+            }
+          ],
+          permission: ['user:del', 'table:edit', 'user:look']
         }
       }
     }

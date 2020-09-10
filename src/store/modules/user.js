@@ -10,7 +10,9 @@ const getDefaultState = () => {
     avatar: '',
     routes: [],
     path: '',
+    menuType: '',
     leftMenu: [],
+    topMenu: [],
     permission: []
   }
 }
@@ -49,8 +51,14 @@ const mutations = {
       router.addRoutes(state.routes)
     }
   },
+  SET_MENU_TYPE: (state, type) => {
+    state.menuType = type
+  },
   SET_LEFT_MENU: (state, menu) => {
     state.leftMenu = menu
+  },
+  SET_TOP_MENU: (state, menu) => {
+    state.topMenu = menu
   },
   SET_PERMISSION: (state, permission) => {
     state.permission = permission
@@ -118,26 +126,35 @@ const actions = {
   changePath({ commit }, path) {
     commit('SET_PATH', path)
   },
-  setRoutes({ commit }, routes) {
+  setRoutes({ commit }, routes, type) {
     commit('SET_ROUTES', routes)
   },
+  setMenuType({ commit }, type) {
+    commit('SET_MENU_TYPE', type)
+  },
+  setTopMenu({ commit }, topMenu) {
+    commit('SET_TOP_MENU', topMenu)
+  },
+  setLeftMenu({ commit }, leftMenu) {
+    commit('SET_LEFT_MENU', leftMenu)
+  },
   setLeftRoutes({ commit, dispatch }, path) {
-    var res = state.routes.find(function de(item) {
+    // 点头部可以修改侧菜单
+    var res = state.topMenu.find(function de(item) {
       if (item.path === path) return true
       if (item.children) {
         return item.children.filter(de).length
       }
       return false
     })
-    if (!res) res = []
-
-    if (!res.hasLeft) {
+    if (!res) res = {}
+    if (res.showSubMenu || !res.children) {
+      // 隐藏
       dispatch('app/toggleSideBarHide', true, { root: true })
     } else {
       dispatch('app/toggleSideBarHide', false, { root: true })
     }
-
-    commit('SET_LEFT_MENU', res)
+    commit('SET_LEFT_MENU', res.children)
   },
   setPermission({ commit, dispatch }, permission) {
     commit('SET_PERMISSION', permission)

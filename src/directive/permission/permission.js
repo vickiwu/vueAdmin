@@ -2,7 +2,7 @@ import store from '@/store'
 
 function checkPermission(el, binding) {
   const { value } = binding
-  const roles = store.getters && store.getters.permission
+  const roles = store.getters && store.getters.permission // 该用户的所有权限
 
   if (value && value instanceof Array) {
     if (value.length > 0) {

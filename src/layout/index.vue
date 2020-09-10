@@ -37,7 +37,8 @@ export default {
       fixedHeader: state => state.settings.fixedHeader
     }),
     ...mapGetters([
-      'permission_routes'
+      'top_menus',
+      'menu_type'
     ]),
     classObj() {
       return {
@@ -58,10 +59,12 @@ export default {
   },
   methods: {
     handlerRouteChange(to) {
-      // console.log('path变化', to.path)
-      // this.$store.dispatch('user/changePath', to.path)
+      // 有头部菜单会联动触发侧边栏
+      // 1.永远展示侧边栏
       // 改变侧边栏
-      this.$store.dispatch('user/setLeftRoutes', to.path)
+      if (this.menu_type === 'top') {
+        this.$store.dispatch('user/setLeftRoutes', to.path)
+      }
     },
     handleClickOutside() {
       this.$store.dispatch('app/closeSideBar', { withoutAnimation: false })
