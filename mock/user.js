@@ -106,6 +106,7 @@ module.exports = [
                 name: 'index', // 路由名称（唯一）
                 meta: {
                   title: '首页', // 菜单名称
+                  permission: ['table:edit'],
                   affix: true // true表示该页面在tagView中固定展示，不可删除
                 },
                 component: 'views/dashboard/index'// 组件名称

@@ -13,7 +13,8 @@ const getDefaultState = () => {
     menuType: '',
     leftMenu: [],
     topMenu: [],
-    permission: []
+    permission: [],
+    currentPermission: []
   }
 }
 
@@ -62,6 +63,10 @@ const mutations = {
   },
   SET_PERMISSION: (state, permission) => {
     state.permission = permission
+  },
+  SET_CURRENT_PERMISSION: (state, permission) => {
+    !permission && (permission = [])
+    state.currentPermission = permission
   }
 }
 
@@ -158,6 +163,9 @@ const actions = {
   },
   setPermission({ commit, dispatch }, permission) {
     commit('SET_PERMISSION', permission)
+  },
+  setCurrentPermission({ commit, dispatch }, permission) {
+    commit('SET_CURRENT_PERMISSION', permission)
   }
 }
 

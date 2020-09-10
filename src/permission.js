@@ -23,11 +23,12 @@ router.beforeEach(async(to, from, next) => {
       next({ path: '/' })
       NProgress.done()
     } else {
+      // 是否有路由
       const permissionRoutes = store.getters.permission_routes
       if (permissionRoutes.length > 0) {
         const { permission } = to.meta
         // 获取页面中权限控制
-        store.dispatch('user/setPermission', permission)
+        store.dispatch('user/setCurrentPermission', permission)
 
         next()
       } else {

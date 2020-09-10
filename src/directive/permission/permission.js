@@ -3,7 +3,6 @@ import store from '@/store'
 function checkPermission(el, binding) {
   const { value } = binding
   const roles = store.getters && store.getters.permission // 该用户的所有权限
-
   if (value && value instanceof Array) {
     if (value.length > 0) {
       const permissionRoles = value
@@ -17,7 +16,7 @@ function checkPermission(el, binding) {
       }
     }
   } else {
-    throw new Error(`need roles! Like v-permission="['admin','editor']"`)
+    throw new Error(`需要权限 格式：v-permission="['admin','editor']"`)
   }
 }
 

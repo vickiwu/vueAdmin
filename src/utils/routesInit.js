@@ -18,12 +18,13 @@ export const initMenu = (router, store, path) => {
         reject('路由信息无，请联系后台')
       }
 
-      const { routes, menuList, menuType } = data
+      const { routes, menuList, menuType, permission } = data
 
       var getRouter = filterAsyncRouter(routes)
       // 将数据存到 store 中
       store.dispatch('user/setRoutes', getRouter)
       store.dispatch('user/setMenuType', menuType)
+      store.dispatch('user/setPermission', permission)
       if (menuType === 'top') {
         store.dispatch('user/setTopMenu', menuList)
       } else if (menuType === 'left') {

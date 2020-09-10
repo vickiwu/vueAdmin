@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <div v-permission="current_permission">有“user:del”权限的用户可以看到我</div>
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -45,6 +46,7 @@
 
 <script>
 import { getList } from '@/api/table'
+import { mapGetters } from 'vuex'
 
 export default {
   filters: {
@@ -63,7 +65,13 @@ export default {
       listLoading: true
     }
   },
+  computed: {
+    ...mapGetters([
+      'current_permission'
+    ])
+  },
   created() {
+    console.log(this.current_permission, 'current_permission')
     this.fetchData()
   },
   methods: {

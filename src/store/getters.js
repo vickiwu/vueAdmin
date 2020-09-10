@@ -16,6 +16,7 @@ const getters = {
   top_menus: (state, getters) => {
     return state.user.topMenu
   },
-  permission: state => state.user.permission
+  permission: state => state.user.permission,
+  current_permission: state => state.user.currentPermission
 }
 export default getters
