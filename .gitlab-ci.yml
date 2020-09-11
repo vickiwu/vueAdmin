@@ -48,9 +48,9 @@ deploy_prod_job:
     - pwd
     - whoami # gitlab-runner
      # 登录目标服务器
-    # - ssh root@39.98.177.19
+    - ssh adminxl@172.172.0.108
     # # 列出所有文件
-    # - ssh root@39.98.177.19 "ls -a"
+    - ssh adminxl@172.172.0.108 "ls -a"
     # # 删 www 文件夹下所有内容
     # - ssh root@39.98.177.19 "rm -rf ./www/*"
     # # 使用 scp 命令远程拷贝文件
