@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="">
     <div v-permission="current_permission">有“user:del”权限的用户可以看到我</div>
     <el-table
       v-loading="listLoading"
@@ -62,7 +62,7 @@ export default {
   data() {
     return {
       list: null,
-      listLoading: true
+      listLoading: false
     }
   },
   computed: {
@@ -71,8 +71,7 @@ export default {
     ])
   },
   created() {
-    console.log(this.current_permission, 'current_permission')
-    this.fetchData()
+    // this.fetchData()
   },
   methods: {
     fetchData() {

@@ -1,11 +1,14 @@
 <template>
   <section class="app-main">
-    <transition
-      name="fade-transform"
-      mode="out-in"
-    >
-      <router-view :key="key" />
-    </transition>
+    <div class="app-basic-container">
+      <transition
+        name="fade-transform"
+        mode="out-in"
+      >
+        <router-view :key="key" />
+      </transition>
+    </div>
+
   </section>
 </template>
 
@@ -28,6 +31,14 @@ export default {
   width: 100%;
   position: relative;
   overflow: hidden;
+  .app-basic-container{
+    margin: 20px;
+    padding: 20px;
+    border-radius: 5px;
+    background: #ffffff;
+    -webkit-box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+  }
 }
 .fixed-header + .app-main {
   padding-top: 50px;

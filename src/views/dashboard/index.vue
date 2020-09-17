@@ -1,8 +1,13 @@
 <template>
-  <div class="dashboard-container">
+  <div class="">
     首页，无子菜单
-    <div class="dashboard-text">获取当前登录用户名: {{ name }}</div>
-    <div v-permission="current_permission">dsaf</div>
+    <div class="">获取当前登录用户名: {{ name }}</div>
+    <div>按钮权限</div>
+    <div v-permission="['system:user:add']">system:user:update</div>
+    <div v-permission="['system:user:update']">system:user:update</div>
+    <div v-permission="['editor']">system:user:info</div>
+    <div v-permission="['editor']">dsaf4</div>
+
   </div>
 </template>
 
@@ -23,13 +28,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.dashboard {
-  &-container {
-    margin: 30px;
-  }
-  &-text {
-    font-size: 30px;
-    line-height: 46px;
-  }
-}
+
 </style>

@@ -5,10 +5,10 @@
       <el-menu
         :default-active="activeMenu"
         :collapse="isCollapse"
-        :background-color="variables.menuBg"
-        :text-color="variables.menuText"
+        :background-color="variables.sidebarBackground"
+        :text-color="variables.sidebarTextColor"
         :unique-opened="false"
-        :active-text-color="variables.menuActiveText"
+        :active-text-color="variables.textColor"
         :collapse-transition="false"
         mode="vertical"
       >

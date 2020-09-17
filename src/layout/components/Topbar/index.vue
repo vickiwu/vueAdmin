@@ -7,10 +7,10 @@
       <el-scrollbar class="scroll-container">
         <el-menu
           :default-active="activeMenu"
-          :background-color="variables.menuBg"
-          :text-color="variables.menuText"
+          :background-color="variables.topBarBackground"
+          :text-color="variables.textColor"
           :unique-opened="false"
-          :active-text-color="variables.menuActiveText"
+          :active-text-color="variables.textColor"
           mode="horizontal"
           @select="handleSelect"
         >
@@ -44,16 +44,13 @@
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
           <router-link to="/">
-            <el-dropdown-item>Home</el-dropdown-item>
+            <el-dropdown-item>首页</el-dropdown-item>
           </router-link>
-          <a href="https://github.com/PanJiaChen/vue-admin-template/" target="_blank">
-            <el-dropdown-item>Github</el-dropdown-item>
-          </a>
-          <a href="https://panjiachen.github.io/vue-element-admin-site/#/" target="_blank">
-            <el-dropdown-item>Docs</el-dropdown-item>
-          </a>
+          <router-link to="/system/user">
+            <el-dropdown-item>用户管理</el-dropdown-item>
+          </router-link>
           <el-dropdown-item divided @click.native="logout">
-            <span style="display:block;">Log Out</span>
+            <span style="display:block;">退出</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>

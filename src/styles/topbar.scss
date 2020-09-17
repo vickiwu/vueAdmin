@@ -3,7 +3,7 @@
   width: 100%;
   height: $topBarHeight;
   line-height: $topBarHeight;
-  background-color: #304156;
+  background-color: $topBarBackground;
   position: fixed;
   top: 0;
   left: 0;
@@ -28,7 +28,7 @@
     line-height: 56px;
     font-size: 24px;
     font-weight: bold;
-    color: rgb(191, 203, 217);
+    color: $textColor;
     float: left;
   }
 
@@ -36,28 +36,28 @@
     float: left;
     .el-menu {
       border: none !important;
-      background-color: #304156;
+      background-color: $topBarBackground;
 
       .nav-item {
         display: inline-block;
 
         .el-menu-item,
         .el-submenu__title {
-          color: rgb(191, 203, 217);
+          color: $textColor;
 
           &:hover {
             background-color: $menuHover !important;
           }
 
           &:focus {
-            background-color: $subMenuHover !important;
+            background-color: $menuHover !important;
             // color: $subMenuActiveText !important;
           }
         }
 
         .el-submenu__title {
           i {
-            color: $menuText;
+            color: $textColor;
             position: static;
             vertical-align: middle;
             margin-left: 8px;
@@ -83,7 +83,7 @@
       height: 100%;
       font-size: 18px;
       // color: #5a5e66;
-      color: rgb(191, 203, 217);
+      color: $textColor;
       vertical-align: text-bottom;
 
       &.hover-effect {

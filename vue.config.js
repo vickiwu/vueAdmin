@@ -6,24 +6,14 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const name = defaultSettings.title || 'vue Admin Template' // page title
+const name = defaultSettings.title || '后台管理框架' // page title
 
-// If your port is set to 80,
-// use administrator privileges to execute the command line.
-// For example, Mac: sudo npm run
-// You can change the port by the following methods:
-// port = 9528 npm run dev OR npm run dev --port = 9528
-const port = process.env.port || process.env.npm_config_port || 9528 // dev port
+// 端口设置
+const port = process.env.port || process.env.npm_config_port || 9528 // 开发端口
 
-// All configuration item explanations can be find in https://cli.vuejs.org/config/
+// 配置项文档https://cli.vuejs.org/config
 module.exports = {
-  /**
-   * You will need to set publicPath if you plan to deploy your site under a sub path,
-   * for example GitHub Pages. If you plan to deploy your site to https://foo.github.io/bar/,
-   * then publicPath should be set to "/bar/".
-   * In most cases please use '/' !!!
-   * Detail: https://cli.vuejs.org/config/#publicpath
-   */
+
   publicPath: '/',
   outputDir: 'dist',
   assetsDir: 'static',
@@ -36,11 +26,21 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    before: require('./mock/mock-server.js')
+    // before: require('./mock/mock-server.js')
+    proxy: {
+      [process.env.VUE_APP_BASE_API]: {
+        target: process.env.VUE_APP_BASE_API,
+        changeOrigin: true, // 配置跨域
+        pathRewrite: {
+          ['^' + process.env.VUE_APP_BASE_API]: ''
+        }
+      }
+    }
+
   },
   configureWebpack: {
-    // provide the app's title in webpack's name field, so that
-    // it can be accessed in index.html to inject the correct title.
+    // 在webpack的名称字段中提供应用程序的标题，以便
+    // 可以在index.html中对其进行访问以注入正确的标题。
     name: name,
     resolve: {
       alias: {
@@ -49,21 +49,19 @@ module.exports = {
     }
   },
   chainWebpack(config) {
-    // it can improve the speed of the first screen, it is recommended to turn on preload
+    // 它可以提高第一个屏幕的速度，建议打开预加载
     config.plugin('preload').tap(() => [
       {
         rel: 'preload',
-        // to ignore runtime.js
         // https://github.com/vuejs/vue-cli/blob/dev/packages/@vue/cli-service/lib/config/app.js#L171
         fileBlacklist: [/\.map$/, /hot-update\.js$/, /runtime\..*\.js$/],
         include: 'initial'
       }
     ])
 
-    // when there are many pages, it will cause too many meaningless requests
     config.plugins.delete('prefetch')
 
-    // set svg-sprite-loader
+    // 设置svg-sprite-loader
     config.module
       .rule('svg')
       .exclude.add(resolve('src/icons'))
@@ -87,7 +85,7 @@ module.exports = {
             .plugin('ScriptExtHtmlWebpackPlugin')
             .after('html')
             .use('script-ext-html-webpack-plugin', [{
-            // `runtime` must same as runtimeChunk name. default is `runtime`
+            // `runtime`必须和runtimeChunk名称相同。默认是“运行时”
               inline: /runtime\..*\.js$/
             }])
             .end()
@@ -99,17 +97,17 @@ module.exports = {
                   name: 'chunk-libs',
                   test: /[\\/]node_modules[\\/]/,
                   priority: 10,
-                  chunks: 'initial' // only package third parties that are initially dependent
+                  chunks: 'initial' // 仅打包最初依赖的第三方
                 },
                 elementUI: {
-                  name: 'chunk-elementUI', // split elementUI into a single package
-                  priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
-                  test: /[\\/]node_modules[\\/]_?element-ui(.*)/ // in order to adapt to cnpm
+                  name: 'chunk-elementUI', // 将elementUI拆分为一个包
+                  priority: 20, // 重量需要大于libs和app，否则将打包到libs或app中
+                  test: /[\\/]node_modules[\\/]_?element-ui(.*)/ // 为了适应cnpm
                 },
                 commons: {
                   name: 'chunk-commons',
-                  test: resolve('src/components'), // can customize your rules
-                  minChunks: 3, //  minimum common number
+                  test: resolve('src/components'), // 可以自定义规则
+                  minChunks: 3, //  最小共同数
                   priority: 5,
                   reuseExistingChunk: true
                 }
