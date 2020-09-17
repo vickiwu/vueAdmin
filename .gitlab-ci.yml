@@ -1,7 +1,7 @@
 stages:
-  # - install_deps
-  # - build_prod
-  # - deploy_prod
+  - install_deps
+  - build_prod
+  - deploy_prod
 
 cache:
   key: ${CI_BUILD_REF_NAME}
