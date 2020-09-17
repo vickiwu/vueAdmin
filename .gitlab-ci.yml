@@ -1,7 +1,7 @@
 stages:
-  - install_deps
-  - build_prod
-  - deploy_prod
+  # - install_deps
+  # - build_prod
+  # - deploy_prod
 
 cache:
   key: ${CI_BUILD_REF_NAME}
@@ -48,9 +48,9 @@ deploy_prod_job:
     - pwd
     - whoami # gitlab-runner
      # 登录目标服务器
-    - ssh -tt root@172.172.1.77 -v
+    # - ssh -tt root@172.172.1.77 -v
     # # 列出所有文件
-    - ssh adminxl@172.172.0.108 "ls -a"
+    # - ssh adminxl@172.172.0.108 "ls -a"
     # # 删 www 文件夹下所有内容
     # - ssh root@39.98.177.19 "rm -rf ./www/*"
     # # 使用 scp 命令远程拷贝文件
