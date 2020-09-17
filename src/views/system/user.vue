@@ -1,7 +1,7 @@
 <template>
   <div class="">
     系统用户页面
-    <div v-permission="current_permission">dsaf</div>
+    <div v-permission="['look']">dsaf</div>
   </div>
 </template>
 

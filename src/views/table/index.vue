@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <div v-permission="current_permission">有“user:del”权限的用户可以看到我</div>
+    <div v-permission="['user:del']">有“user:del”权限的用户可以看到我</div>
     <el-table
       v-loading="listLoading"
       :data="list"
