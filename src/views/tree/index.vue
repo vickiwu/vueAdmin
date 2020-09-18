@@ -1,7 +1,6 @@
 <template>
   <div class="">
     <el-input v-model="filterText" placeholder="Filter keyword" style="margin-bottom:30px;" />
-tfui
     <el-tree
       ref="tree2"
       :data="data2"

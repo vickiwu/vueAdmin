@@ -25,8 +25,8 @@ export default {
 </script>
  <style lang="scss">
 .iframe-main{
-    height: calc(100vh - 140px);
-    width: calc(100% + 80px);
-    margin: -40px;
+    height: calc(100vh - 150px);
+    width: calc(100% + 25px);
+    margin: -10px;
 }
  </style>

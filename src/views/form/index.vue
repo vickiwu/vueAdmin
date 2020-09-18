@@ -65,11 +65,11 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.$message('submit!')
+      this.$message('提交!')
     },
     onCancel() {
       this.$message({
-        message: 'cancel!',
+        message: '取消!',
         type: 'warning'
       })
     }
