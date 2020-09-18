@@ -1,6 +1,6 @@
 <template>
   <div class="app-main">
-    <my-html :url.asyc="url1" />
+    <my-html :url.sync="url1" />
   </div>
 </template>
 
