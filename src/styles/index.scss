@@ -60,7 +60,14 @@ div:focus {
   }
 }
 
-// main-container global css
+// main-container 全局CSS
 .app-container {
-  padding: 20px;
+  padding: 10px;
+}
+// 格式化表格
+.el-table th{
+  padding: 8px 0;
+}
+.el-table td{
+  padding: 6px 0;
 }
