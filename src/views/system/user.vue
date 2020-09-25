@@ -1,28 +1,32 @@
+
 <template>
-  <div class="">
-    系统用户页面
-    <div v-permission="['look']">dsaf</div>
+  <div class="iframe-main">
+    <my-html :url.sync="url1" />
   </div>
 </template>
 
 <script>
-
-import { mapGetters } from 'vuex'
-
+import myHtml from './html'
 export default {
+  components: { myHtml },
   data() {
-    return {}
+    return {
+      url1: '',
+      url2: ''
+    }
   },
-  created() {
+  mounted() { // http://172.172.0.208:8066/old/login.html
+    this.url1 = 'https://cn.vuejs.org/index.html'
+    this.url2 = 'http://116.198.205.37:8088/BS-Web//archive/companyCount.jsp?token=6554615015174144'
   },
-  computed: {
-    ...mapGetters([
-      'current_permission'
-    ])
-  },
-  methods: {}
+  methods: {
+  }
 }
 </script>
  <style lang="scss">
-
+.iframe-main{
+    height: calc(100vh - 150px);
+    width: calc(100% + 25px);
+    margin: -10px;
+}
  </style>

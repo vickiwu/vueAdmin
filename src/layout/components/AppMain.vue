@@ -32,12 +32,13 @@ export default {
   position: relative;
   overflow: hidden;
   .app-basic-container{
-    margin: 20px;
-    padding: 20px;
+    margin: 5px;
+    padding: 10px;
     border-radius: 5px;
     background: #ffffff;
     -webkit-box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
     box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+    height: calc(100vh - 150px);
   }
 }
 .fixed-header + .app-main {
