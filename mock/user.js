@@ -26,7 +26,7 @@ const users = {
 module.exports = [
   // user login
   {
-    url: '/vue-admin-template/user/login',
+    url: '/api-auth/oauth/user/token',
     type: 'post',
     response: config => {
       const { username } = config.body
@@ -41,7 +41,7 @@ module.exports = [
       }
 
       return {
-        code: 20000,
+        code: 200,
         data: access_token
       }
     }
@@ -49,11 +49,11 @@ module.exports = [
 
   // get user info
   {
-    url: '/vue-admin-template/user/info\.*',
+    url: '/api-user/users/users/current\.*',
     type: 'get',
     response: config => {
-      const { token } = config.query
-      const info = users[token]
+      const { access_token } = config.query
+      const info = users[access_token]
 
       // mock error
       if (!info) {
@@ -64,7 +64,7 @@ module.exports = [
       }
 
       return {
-        code: 20000,
+        code: 200,
         data: {
           ...info,
           permission: ['user:del', 'table:edit', 'user:look']
@@ -74,7 +74,7 @@ module.exports = [
   },
   // 加载路由
   {
-    url: '/vue-admin-template/user/routes\.*',
+    url: '/api-user/menus/getSysMenuByUserId\.*',
     type: 'get',
     response: config => {
       const { token } = config.query
@@ -93,256 +93,595 @@ module.exports = [
       // 菜单类型menuType，top和left两种，
       // 其中top类型包含有下拉无侧菜单，及无下拉有侧边栏两种情况
       return {
-        code: 20000,
-        data: {
+        code: 200,
+        'data': {
           'routes': [
             {
-              path: '/', // 路径（唯一）
-              component: 'Layout', // 组件名称，框架名称固定为Layout
-              redirect: '/dashboard', // 由于此路由没有页面，重定向到其他路由，默认取第一个子元素
-              name: '/', // 路由名称（唯一）
-              meta: {
-                title: '首页' // 菜单名称
+              'redirect': '/dashboard/index',
+              'path': '/',
+              'component': 'Layout',
+              'children': [
+                {
+                  'path': '/dashboard/index',
+                  'component': '/dashboard/index',
+                  'meta': {
+                    'affix': true,
+                    'title': '首页'
+                  },
+                  'name': '0'
+                }
+              ],
+              'meta': {
+                'title': '首页'
               },
-              children: [{
-                path: '/dashboard', // 路径（唯一）
-                name: 'index', // 路由名称（唯一）
-                meta: {
-                  title: '首页', // 菜单名称
-                  permission: ['table:edit'],
-                  affix: true // true表示该页面在tagView中固定展示，不可删除
-                },
-                component: 'views/dashboard/index'// 组件名称
-              }]
+              'name': '/',
+              'id': 0
             },
-
             {
-              path: '/example',
-              component: 'Layout',
-              redirect: '/example/table',
-              children: [
+              'redirect': '/auth/client',
+              'path': ' /auth',
+              'component': 'Layout',
+              'children': [
                 {
-                  path: '/example/table',
-                  name: 'table',
-                  meta: {
-                    title: 'table' // 菜单名称
+                  'path': '/auth/client',
+                  'component': '/auth/client',
+                  'meta': {
+                    'affix': false,
+                    'permission': [
+                      'auth:client:add',
+                      'auth:client:update',
+                      'auth:client:del',
+                      'auth:client:set'
+                    ],
+                    'title': '应用管理'
                   },
-                  component: 'views/table/index'
-                },
-                {
-                  path: '/example/tree',
-                  name: 'tree',
-                  meta: {
-                    title: 'tree' // 菜单名称
-                  },
-                  component: 'views/tree/index'
-                }
-              ]
-            },
-
-            {
-              path: '/form',
-              component: 'Layout',
-              redirect: '/form/index',
-              children: [
-                {
-                  path: '/form/index',
-                  name: 'form',
-                  meta: {
-                    title: 'form' // 菜单名称
-                  },
-                  component: 'views/form/index'
-                }
-              ]
-            },
-
-            {
-              path: '/nested',
-              component: 'Layout',
-              redirect: '/nested/menu1',
-              children: [
-                {
-                  path: '/nested/menu1',
-                  component: 'views/nested/menu1/index', // Parent router-view
-                  redirect: '/nested/menu1/menu1-1',
-                  children: [
-                    {
-                      path: '/nested/menu1/menu1-1',
-                      name: 'menu1-1',
-                      meta: {
-                        title: 'menu1-1' // 菜单名称
-                      },
-                      component: 'views/nested/menu1/menu1-1/index'
-                    },
-                    {
-                      path: '/nested/menu1/menu1-2',
-                      component: 'views/nested/menu1/menu1-2/index',
-                      redirect: '/nested/menu1/menu1-2/menu1-2-1',
-                      children: [
-                        {
-                          path: '/nested/menu1/menu1-2/menu1-2-1',
-                          name: 'menu1-2-1',
-                          meta: {
-                            title: 'menu1-2-1' // 菜单名称
-                          },
-                          component: 'views/nested/menu1/menu1-2/menu1-2-1/index'
-                        },
-                        {
-                          path: '/nested/menu1/menu1-2/menu1-2-2',
-                          name: 'menu1-2-2',
-                          meta: {
-                            title: 'menu1-2-2'
-                          },
-                          component: 'views/nested/menu1/menu1-2/menu1-2-2/index'
-                        }
-                      ]
-                    },
-                    {
-                      path: '/nested/menu1/menu1-3',
-                      name: 'menu1-3',
-                      meta: {
-                        title: 'menu1-3'
-                      },
-                      component: 'views/nested/menu1/menu1-3/index'
-                    }
-                  ]
+                  'name': '2',
+                  'id': 2
                 },
                 {
-                  path: '/nested/menu2',
-                  name: 'menu2',
-                  meta: {
-                    title: 'menu2'
+                  'path': '/auth/service',
+                  'component': '/auth/service',
+                  'meta': {
+                    'affix': false,
+                    'permission': [
+                      'auth:service:add',
+                      'auth:service:update',
+                      'auth:service:del'
+                    ],
+                    'title': '服务管理'
                   },
-                  component: 'views/nested/menu2/index'
-                }
-              ]
-            },
-
-            {
-              path: 'external-link',
-              component: 'Layout',
-              children: [
+                  'name': '3',
+                  'id': 3
+                },
                 {
-                  path: 'https://panjiachen.github.io/vue-element-admin-site/#/'
+                  'path': '/auth/token',
+                  'component': '/auth/token',
+                  'meta': {
+                    'affix': false,
+                    'permission': [
+                      'auth:token:info',
+                      'auth:token:del'
+                    ],
+                    'title': '令牌管理'
+                  },
+                  'name': '4',
+                  'id': 4
+                },
+                {
+                  'path': '/auth/secret',
+                  'component': '/auth/secret',
+                  'meta': {
+                    'affix': false,
+                    'permission': [
+                      'auth:secret:del',
+                      'auth:secret:show',
+                      'auth:secret:add',
+                      'auth:secret:update'
+                    ],
+                    'title': '秘钥管理'
+                  },
+                  'name': '5',
+                  'id': 5
                 }
-              ]
-            },
-            {
-              path: '/bigScreen',
-              name: 'bigScreen',
-              meta: {
-                title: 'bigScreen'
+              ],
+              'meta': {
+                'affix': false,
+                'title': '认证中心'
               },
-              component: 'views/bigScreen/index'
+              'name': '1',
+              'id': 1
+            },
+            {
+              'redirect': '/right/user',
+              'path': '/right',
+              'component': 'Layout',
+              'children': [
+                {
+                  'path': '/right/user',
+                  'component': '/right/user',
+                  'meta': {
+                    'affix': false,
+                    'permission': [
+                      'right:user:list',
+                      'right:user:add',
+                      'right:user:info',
+                      'right:user:update',
+                      'right:user:del'
+                    ],
+                    'title': '用户管理'
+                  },
+                  'name': '32',
+                  'id': 32
+                },
+                {
+                  'path': '/right/role',
+                  'component': '/right/role',
+                  'meta': {
+                    'affix': false,
+                    'permission': [
+                      'right:role:add',
+                      'right:role:update',
+                      'right:role:del',
+                      'right:role:set'
+                    ],
+                    'title': '角色管理'
+                  },
+                  'name': '33',
+                  'id': 33
+                },
+                {
+                  'path': '/right/menu',
+                  'component': '/right/menu',
+                  'meta': {
+                    'affix': false,
+                    'permission': [
+                      'right:menu:update',
+                      'right:menu:del',
+                      'right:menu:add',
+                      'right:menu:insert'
+                    ],
+                    'title': '菜单管理'
+                  },
+                  'name': '34',
+                  'id': 34
+                },
+                {
+                  'path': '/right/permission',
+                  'component': '/right/permission',
+                  'meta': {
+                    'affix': false,
+                    'permission': [
+                      'right:permission:add',
+                      'right:permission:update',
+                      'right:permission:del'
+                    ],
+                    'title': '权限管理'
+                  },
+                  'name': '35',
+                  'id': 35
+                }
+              ],
+              'meta': {
+                'affix': false,
+                'title': '权限中心'
+              },
+              'name': '31',
+              'id': 31
+            },
+            {
+              'redirect': '/organize/oper',
+              'path': '/organize',
+              'component': 'Layout',
+              'children': [
+                {
+                  'path': '/organize/oper',
+                  'component': '/organize/oper',
+                  'meta': {
+                    'affix': false,
+                    'permission': [
+                      'organize:oper:update',
+                      'organize:oper:del',
+                      'organize:oper:add',
+                      'organize:oper:insert'
+                    ],
+                    'title': '运营管理'
+                  },
+                  'name': '62',
+                  'id': 62
+                },
+                {
+                  'path': '/organize/org',
+                  'component': '/organize/org',
+                  'meta': {
+                    'affix': false,
+                    'permission': [
+                      'organize:org:dept',
+                      'organize:org:user',
+                      'organize:org:add',
+                      'organize:org:insert',
+                      'organize:org:update',
+                      'organize:org:del'
+                    ],
+                    'title': '机构管理'
+                  },
+                  'name': '63',
+                  'id': 63
+                }
+              ],
+              'meta': {
+                'affix': false,
+                'title': '组织管理'
+              },
+              'name': '61',
+              'id': 61
+            },
+            {
+              'redirect': '/system/dic',
+              'path': '/system',
+              'component': 'Layout',
+              'children': [
+                {
+                  'path': '/system/dic',
+                  'component': '/system/dic',
+                  'meta': {
+                    'affix': false,
+                    'permission': [
+                      'system:dic:add',
+                      'system:dic:update',
+                      'system:dic:del',
+                      'system:dic:item'
+                    ],
+                    'title': '字典管理'
+                  },
+                  'name': '92',
+                  'id': 92
+                },
+                {
+                  'path': '/system/file',
+                  'component': '/system/file',
+                  'meta': {
+                    'affix': false,
+                    'permission': [
+                      'system:file:del',
+                      'system:file:info'
+                    ],
+                    'title': '文件管理'
+                  },
+                  'name': '93',
+                  'id': 93
+                },
+                {
+                  'path': '/system/log',
+                  'component': '/system/log',
+                  'meta': {
+                    'affix': false,
+                    'permission': [
+                      'system:log:info'
+                    ],
+                    'title': '日志管理'
+                  },
+                  'name': '94',
+                  'id': 94
+                },
+                {
+                  'path': '/system/matter',
+                  'component': '/system/matter',
+                  'meta': {
+                    'affix': false,
+                    'permission': [
+                      'system:matter:add',
+                      'system:matter:update'
+                    ],
+                    'title': '因子管理'
+                  },
+                  'name': '95',
+                  'id': 95
+                }
+              ],
+              'meta': {
+                'affix': false,
+                'title': '系统管理'
+              },
+              'name': '91',
+              'id': 91
+            },
+            {
+              'redirect': '/monitor/server',
+              'path': '/monitor',
+              'component': 'Layout',
+              'children': [
+                {
+                  'path': '/monitor/server',
+                  'component': '/monitor/server',
+                  'meta': {
+                    'affix': false,
+                    'title': '服务治理'
+                  },
+                  'name': '122',
+                  'id': 122
+                }
+              ],
+              'meta': {
+                'affix': false,
+                'title': '系统监控'
+              },
+              'name': '121',
+              'id': 121
             }
-
           ],
-          menuType: 'top', //  menuType: 'left', // top 表示头部菜单，left表示左侧菜单
-          menuList: [
+          'menuList': [
             {
-              path: '/dashboard', // 路径（唯一的，需要和routes中path对应）
-              showSubMenu: false, // menuType 为top时需要使用，表示是否有头部下拉菜单，没有头部菜单则其子菜单在左侧菜单展示
-              meta: {
-                title: '首页', // 菜单名称
-                icon: 'dashboard' // 菜单图标
-              }
-            },
-
-            {
-              path: '/example',
-              showSubMenu: true, // true有头部下拉菜单，则子菜单在头部父菜单下拉展示，左侧收起
-              meta: { title: 'Example', icon: 'el-icon-s-help' },
-              children: [
-                {
-                  path: '/example/table',
-                  meta: { title: 'Table', icon: 'table' }
-                },
-                {
-                  path: '/example/tree',
-                  meta: { title: 'Treqqqe', icon: 'tree' }
-                }
-              ]
-            },
-
-            {
-              path: '/form/index',
-              showSubMenu: false,
-              meta: { title: 'Form', icon: 'form' },
-              children: [
-                {
-                  path: '/form/index',
-                  meta: { title: 'Form', icon: 'form' }
-                }
-              ]
-            },
-            {
-              path: '/nested',
-              showSubMenu: false,
-              name: 'Nested',
-              meta: {
-                title: 'Nested',
-                icon: 'nested'
+              'path': '/dashboard/index',
+              'meta': {
+                'icon': null,
+                'title': '首页'
               },
-              children: [
+              'id': 0
+            },
+            {
+              'path': ' /auth',
+              'children': [
                 {
-                  path: '/nested/menu1',
-                  meta: { title: 'Menu1' },
-                  children: [
-                    {
-                      path: '/nested/menu1/menu1-1',
-                      meta: { title: 'Menu1-1' }
-                    },
-                    {
-                      path: '/nested/menu1/menu1-2',
-                      meta: { title: 'Menu1-2' },
-                      children: [
-                        {
-                          path: '/nested/menu1/menu1-2/menu1-2-1',
-                          meta: { title: 'Menu1-2-1' }
-                        },
-                        {
-                          path: '/nested/menu1/menu1-2/menu1-2-2',
-                          meta: { title: 'Menu1-2-2' }
-                        }
-                      ]
-                    },
-                    {
-                      path: '/nested/menu1/menu1-3',
-                      meta: { title: 'Menu1-3' }
-                    }
-                  ]
+                  'path': '/auth/client',
+                  'meta': {
+                    'icon': null,
+                    'permission': [
+                      'auth:client:add',
+                      'auth:client:update',
+                      'auth:client:del',
+                      'auth:client:set'
+                    ],
+                    'title': '应用管理'
+                  },
+                  'id': 2
                 },
                 {
-                  path: '/nested/menu2',
-                  meta: { title: 'menu2' }
+                  'path': '/auth/service',
+                  'meta': {
+                    'icon': null,
+                    'permission': [
+                      'auth:service:add',
+                      'auth:service:update',
+                      'auth:service:del'
+                    ],
+                    'title': '服务管理'
+                  },
+                  'id': 3
+                },
+                {
+                  'path': '/auth/token',
+                  'meta': {
+                    'icon': null,
+                    'permission': [
+                      'auth:token:info',
+                      'auth:token:del'
+                    ],
+                    'title': '令牌管理'
+                  },
+                  'id': 4
+                },
+                {
+                  'path': '/auth/secret',
+                  'meta': {
+                    'icon': null,
+                    'permission': [
+                      'auth:secret:del',
+                      'auth:secret:show',
+                      'auth:secret:add',
+                      'auth:secret:update'
+                    ],
+                    'title': '秘钥管理'
+                  },
+                  'id': 5
                 }
-              ]
+              ],
+              'meta': {
+                'icon': null,
+                'title': '认证中心'
+              },
+              'id': 1,
+              'showSubMenu': false
             },
-
             {
-              path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-              meta: { title: 'External Link', icon: 'link' }
+              'path': '/right',
+              'children': [
+                {
+                  'path': '/right/user',
+                  'meta': {
+                    'icon': null,
+                    'permission': [
+                      'right:user:list',
+                      'right:user:add',
+                      'right:user:info',
+                      'right:user:update',
+                      'right:user:del'
+                    ],
+                    'title': '用户管理'
+                  },
+                  'id': 32
+                },
+                {
+                  'path': '/right/role',
+                  'meta': {
+                    'icon': null,
+                    'permission': [
+                      'right:role:add',
+                      'right:role:update',
+                      'right:role:del',
+                      'right:role:set'
+                    ],
+                    'title': '角色管理'
+                  },
+                  'id': 33
+                },
+                {
+                  'path': '/right/menu',
+                  'meta': {
+                    'icon': null,
+                    'permission': [
+                      'right:menu:update',
+                      'right:menu:del',
+                      'right:menu:add',
+                      'right:menu:insert'
+                    ],
+                    'title': '菜单管理'
+                  },
+                  'id': 34
+                },
+                {
+                  'path': '/right/permission',
+                  'meta': {
+                    'icon': null,
+                    'permission': [
+                      'right:permission:add',
+                      'right:permission:update',
+                      'right:permission:del'
+                    ],
+                    'title': '权限管理'
+                  },
+                  'id': 35
+                }
+              ],
+              'meta': {
+                'icon': null,
+                'title': '权限中心'
+              },
+              'id': 31,
+              'showSubMenu': false
             },
             {
-              path: '/bigScreen',
-              meta: {
-                title: '大屏',
-                icon: 'el-icon-info'
-              }
+              'path': '/organize',
+              'children': [
+                {
+                  'path': '/organize/oper',
+                  'meta': {
+                    'icon': null,
+                    'permission': [
+                      'organize:oper:update',
+                      'organize:oper:del',
+                      'organize:oper:add',
+                      'organize:oper:insert'
+                    ],
+                    'title': '运营管理'
+                  },
+                  'id': 62
+                },
+                {
+                  'path': '/organize/org',
+                  'meta': {
+                    'icon': null,
+                    'permission': [
+                      'organize:org:dept',
+                      'organize:org:user',
+                      'organize:org:add',
+                      'organize:org:insert',
+                      'organize:org:update',
+                      'organize:org:del'
+                    ],
+                    'title': '机构管理'
+                  },
+                  'id': 63
+                }
+              ],
+              'meta': {
+                'icon': null,
+                'title': '组织管理'
+              },
+              'id': 61,
+              'showSubMenu': false
+            },
+            {
+              'path': '/system',
+              'children': [
+                {
+                  'path': '/system/dic',
+                  'meta': {
+                    'icon': null,
+                    'permission': [
+                      'system:dic:add',
+                      'system:dic:update',
+                      'system:dic:del',
+                      'system:dic:item'
+                    ],
+                    'title': '字典管理'
+                  },
+                  'id': 92
+                },
+                {
+                  'path': '/system/file',
+                  'meta': {
+                    'icon': null,
+                    'permission': [
+                      'system:file:del',
+                      'system:file:info'
+                    ],
+                    'title': '文件管理'
+                  },
+                  'id': 93
+                },
+                {
+                  'path': '/system/log',
+                  'meta': {
+                    'icon': null,
+                    'permission': [
+                      'system:log:info'
+                    ],
+                    'title': '日志管理'
+                  },
+                  'id': 94
+                },
+                {
+                  'path': '/system/matter',
+                  'meta': {
+                    'icon': null,
+                    'permission': [
+                      'system:matter:add',
+                      'system:matter:update'
+                    ],
+                    'title': '因子管理'
+                  },
+                  'id': 95
+                }
+              ],
+              'meta': {
+                'icon': null,
+                'title': '系统管理'
+              },
+              'id': 91,
+              'showSubMenu': false
+            },
+            {
+              'path': '/monitor',
+              'children': [
+                {
+                  'path': '/monitor/server',
+                  'meta': {
+                    'icon': null,
+                    'title': '服务治理'
+                  },
+                  'id': 122
+                }
+              ],
+              'meta': {
+                'icon': null,
+                'title': '系统监控'
+              },
+              'id': 121,
+              'showSubMenu': false
             }
-          ]
-
+          ],
+          'menuType': 'left'
         }
       }
     }
   },
   // user logout
   {
-    url: '/vue-admin-template/user/logout',
+    url: '/api-auth/oauth/remove/token',
     type: 'post',
     response: _ => {
       return {
-        code: 20000,
+        code: 200,
         data: 'success'
       }
     }

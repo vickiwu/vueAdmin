@@ -1,6 +1,6 @@
 <template>
   <div>
-    应用管理
+    服务管理管理
   </div>
 </template>
 

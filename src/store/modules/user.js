@@ -95,10 +95,10 @@ const actions = {
           return reject('验证失败，请重新登录。')
         }
 
-        const { name, avatar, permission } = data
+        const { username, headImgUrl, permission } = data
 
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
+        commit('SET_NAME', username)
+        commit('SET_AVATAR', headImgUrl)
         commit('SET_PERMISSION', permission)
         resolve(data)
       }).catch(error => {
