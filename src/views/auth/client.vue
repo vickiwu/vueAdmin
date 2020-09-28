@@ -9,9 +9,9 @@
         class="filter-item"
       />
       <el-button
-        class="filter-item"
+        class=""
         size="small"
-        type="primary"
+        type="success"
         icon="el-icon-search"
       >
         搜索
@@ -22,7 +22,7 @@
         style="margin-left: 10px;"
         type="primary"
         icon="el-icon-edit"
-        @click="dialogFormVisible=true"
+        @click="openNew"
       >
         新增
       </el-button>
@@ -99,14 +99,18 @@
       </el-table-column>
       <el-table-column
         label="状态"
+        width="100"
         sortable="custom"
-        align="left"
+        align="center"
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span>
-            {{ row.status }}
-          </span>
+          <el-switch
+            v-model="row.status"
+            disabled
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+          />
         </template>
       </el-table-column>
       <el-table-column
@@ -115,9 +119,7 @@
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <el-tag v-for="n in row.edit" :key="n" style="margin-right:5px">
-            {{ n }}
-          </el-tag>
+          <el-button v-for="n in row.edit" :key="n" size="mini">{{ n }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -240,10 +242,18 @@ export default {
       return this.list.length
     }
   },
-  created() {},
-  methods: {}
+  created() {
+    console.log(1)
+  },
+  methods: {
+    openNew() {
+      this.$router.push({ path: '/auth/client/add' })
+    }
+  }
 }
 </script>
  <style lang="scss">
-
+  .search-btn{
+    background-color: rgba(0, 204, 102, 1);
+  }
  </style>
