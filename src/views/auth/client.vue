@@ -29,6 +29,7 @@
     </div>
     <el-table
       v-loading="listLoading"
+      class="auth-table"
       :data="list"
       border
       fit
@@ -115,11 +116,15 @@
       </el-table-column>
       <el-table-column
         label="操作"
+        width="300"
         align="right"
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <el-button v-for="n in row.edit" :key="n" size="mini">{{ n }}</el-button>
+          <div style="display: flex;justify-content: flex-end;">
+            <el-button v-for="n in row.edit" :key="n.txt" size="mini" :icon="n.icon" :type="n.class" @click="handelClick(n,row)">{{ n.txt }}</el-button>
+
+          </div>
         </template>
       </el-table-column>
     </el-table>
@@ -133,45 +138,86 @@
       :visible.sync="dialogFormVisible"
     >
       <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="应用标识" prop="name">
-          <el-input v-model="ruleForm.name" placeholder="请输入应用标识" />
-        </el-form-item>
-        <el-form-item label="应用名称" prop="region">
-          <el-input v-model="ruleForm.name" placeholder="请输入应用名称" />
-        </el-form-item>
-        <el-form-item label="活动时间" required>
+        <el-row :gutter="20">
           <el-col :span="11">
-            <el-form-item prop="date1">
-              <el-date-picker v-model="ruleForm.date1" type="date" placeholder="选择日期" style="width: 100%;" />
+            <el-form-item label="应用标识" prop="appId">
+              <el-input v-model="ruleForm.appId" placeholder="请输入应用标识" />
             </el-form-item>
           </el-col>
-          <el-col class="line" :span="2">-</el-col>
           <el-col :span="11">
-            <el-form-item prop="date2">
-              <el-time-picker v-model="ruleForm.date2" type="fixed-time" placeholder="选择时间" style="width: 100%;" />
+            <el-form-item label="应用名称" prop="appName">
+              <el-input v-model="ruleForm.appName" placeholder="请输入应用名称" />
             </el-form-item>
           </el-col>
-        </el-form-item>
-        <el-form-item label="即时配送" prop="delivery">
-          <el-switch v-model="ruleForm.delivery" />
-        </el-form-item>
-        <el-form-item label="活动性质" prop="type">
-          <el-checkbox-group v-model="ruleForm.type">
-            <el-checkbox label="美食/餐厅线上活动" name="type" />
-            <el-checkbox label="地推活动" name="type" />
-            <el-checkbox label="线下主题活动" name="type" />
-            <el-checkbox label="单纯品牌曝光" name="type" />
-          </el-checkbox-group>
-        </el-form-item>
-        <el-form-item label="特殊资源" prop="resource">
-          <el-radio-group v-model="ruleForm.resource">
-            <el-radio label="线上品牌商赞助" />
-            <el-radio label="线下场地免费" />
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="活动形式" prop="desc">
-          <el-input v-model="ruleForm.desc" type="textarea" />
-        </el-form-item>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="11">
+            <el-form-item label="应用密钥" prop="appKey">
+              <el-input v-model="ruleForm.appKey" placeholder="请输入应用秘钥" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="11">
+            <el-form-item label="范围" prop="appScope">
+              <el-select v-model="ruleForm.appScope" placeholder="请选择">
+                <el-option
+                  v-for="item in ruleForm.appScopeList"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="11">
+            <el-form-item label="授权方式" prop="method">
+              <el-select v-model="ruleForm.method" placeholder="请选择授权方式">
+                <el-option
+                  v-for="item in ruleForm.methodList"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="11">
+            <el-form-item label="回调地址" prop="appAddress">
+              <el-input v-model="ruleForm.appAddress" placeholder="请输入回调地址" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="11">
+            <el-form-item label="自动授权" prop="auto">
+              <el-radio-group v-model="ruleForm.auto">
+                <el-radio label="是" />
+                <el-radio label="否" />
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+          <el-col :span="11">
+            <el-form-item label="状态" prop="status">
+              <el-radio-group v-model="ruleForm.status">
+                <el-radio label="正常" />
+                <el-radio label="锁定" />
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="11">
+            <el-form-item label="有效期1" prop="validity1">
+              <el-input v-model="ruleForm.validity1" placeholder="请输入access token有效期" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="11">
+            <el-form-item label="有效期2" prop="validity2">
+              <el-input v-model="ruleForm.validity2" placeholder="请输入refresh token有效期" />
+            </el-form-item>
+          </el-col>
+        </el-row>
 
       </el-form>
       <div
@@ -179,6 +225,23 @@
         class="dialog-footer"
       >
         <el-button @click="dialogFormVisible = false">
+          取消
+        </el-button>
+        <el-button type="primary">
+          确认
+        </el-button>
+      </div>
+    </el-dialog>
+    <el-dialog
+      title="应用设置"
+      :visible.sync="dialogApply"
+    >
+      应用设置
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button @click="dialogApply = false">
           取消
         </el-button>
         <el-button type="primary">
@@ -197,43 +260,71 @@ export default {
       searchWords: '',
       listLoading: false,
       dialogFormVisible: false,
+      dialogApply: false,
       list: [
-        { id: 1, appId: 'webApp', appName: '管理后台', appKey: '加密内容', url: 'http://www....', authMethod: '密码模式，客户端授权模式', status: 0, edit: ['edit', 'del', 'apply'] },
-        { id: 2, appId: 'webApp', appName: '管理后台', appKey: '加密内容', url: 'http://www....', authMethod: '密码模式，客户端授权模式', status: 0, edit: ['edit', 'del', 'apply'] }
+        { id: 1, appId: 'webApp', appName: '管理后台', appKey: '加密内容', url: 'http://www....', authMethod: '密码模式，客户端授权模式', status: 0, edit: [{ txt: '修改', class: '', icon: 'el-icon-edit' }, { txt: '删除', class: 'warning', icon: 'el-icon-delete' }, { txt: '应用设置', class: 'primary', icon: 'el-icon-share' }] },
+        { id: 2, appId: 'webApp', appName: '管理后台', appKey: '加密内容', url: 'http://www....', authMethod: '密码模式，客户端授权模式', status: 0, edit: [{ txt: '修改', class: '', icon: 'el-icon-edit' }, { txt: '删除', class: 'warning', icon: 'el-icon-delete' }, { txt: '应用设置', class: 'primary', icon: 'el-icon-share' }] }
       ],
       ruleForm: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
+        appId: '',
+        appName: '',
+        appKey: '',
+        appScope: '',
+        appScopeList: [{
+          value: '选项1',
+          label: '黄金糕'
+        }, {
+          value: '选项2',
+          label: '双皮奶'
+        }, {
+          value: '选项3',
+          label: '蚵仔煎'
+        }, {
+          value: '选项4',
+          label: '龙须面'
+        }, {
+          value: '选项5',
+          label: '北京烤鸭'
+        }],
+        method: '',
+        methodList: [{
+          value: '选项1',
+          label: '黄金糕'
+        }, {
+          value: '选项2',
+          label: '双皮奶'
+        }, {
+          value: '选项3',
+          label: '蚵仔煎'
+        }, {
+          value: '选项4',
+          label: '龙须面'
+        }, {
+          value: '选项5',
+          label: '北京烤鸭'
+        }],
+        appAddress: '',
+        auto: '',
+        status: '',
+        validity1: '',
+        validity2: ''
+
       },
       rules: {
-        name: [
-          { required: true, message: '请输入活动名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+        appId: [
+          { required: true, message: '请输入应用标识', trigger: 'blur' }
         ],
-        region: [
-          { required: true, message: '请选择活动区域', trigger: 'change' }
+        appName: [
+          { required: true, message: '请输入应用名称', trigger: 'blur' }
         ],
-        date1: [
-          { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+        method: [{ required: true, message: '请选择至少一种授权方式', trigger: 'change' }],
+        validity1: [
+          { required: true, message: '请输入access token有效期', trigger: 'blur' }
         ],
-        date2: [
-          { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
-        ],
-        type: [
-          { type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }
-        ],
-        resource: [
-          { required: true, message: '请选择活动资源', trigger: 'change' }
-        ],
-        desc: [
-          { required: true, message: '请填写活动形式', trigger: 'blur' }
+        validity2: [
+          { required: true, message: '请输入refresh token有效期', trigger: 'blur' }
         ]
+
       }
     }
   },
@@ -247,12 +338,35 @@ export default {
   },
   methods: {
     openNew() {
-      this.$router.push({ path: '/auth/client/add' })
+      this.dialogFormVisible = true
+      // this.$router.push({ path: '/auth/client/add' })
+    },
+    handelClick(item, row) {
+      if (item.txt === '修改') {
+        this.dialogFormVisible = true
+      } else if (item.txt === '删除') {
+        this.$confirm('确认关闭？')
+          .then(_ => {
+            console.log(_, '删除了')
+          })
+          .catch(_ => {
+            console.log(_, '取消删除了')
+          })
+      } else if (item.txt === '应用设置') {
+        // this.dialogApply = true
+        this.$router.push({ path: '/auth/client/add' })
+      }
     }
   }
 }
 </script>
  <style lang="scss">
+ .auth-table{
+ .el-button--mini, .el-button--mini.is-round {
+    padding: 5px 10px;
+}
+ }
+
   .search-btn{
     background-color: rgba(0, 204, 102, 1);
   }

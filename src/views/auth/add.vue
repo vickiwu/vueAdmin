@@ -18,27 +18,14 @@ export default {
     return {}
   },
   methods: {
-    isActive(route) {
-      return route.path === this.$route.path
-    },
-    toLastView(visitedViews, view) {
-      const latestView = visitedViews.slice(-1)[0]
-      if (latestView) {
-        this.$router.push(latestView.fullPath)
-      } else {
-        // now the default is to redirect to the home page if there is no tags-view,
-        // you can adjust it according to your needs.
-        if (view.name === 'Dashboard') {
-          // to reload home page
-          this.$router.replace({ path: '/redirect' + view.fullPath })
-        } else {
-          this.$router.push('/')
-        }
-      }
-    },
     cancelClick() {
+      // 首先获取当前路由
       const view = this.$router.currentRoute
+
+      // 跳转页面
       this.$router.push({ path: '/auth/client' })
+
+      // 从标签栏中关闭当前标签
       this.$store.dispatch('tagsView/delView', view)
     }
   }

@@ -208,6 +208,12 @@ export default {
   border-bottom: 1px solid #d8dce5;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
   .tags-view-wrapper {
+    .is-horizontal {
+      display: none;
+    }
+    .is-horizontal>div {
+      display: none;
+    }
     .tags-view-item {
       display: inline-block;
       position: relative;
