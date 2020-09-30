@@ -20,7 +20,7 @@ service.interceptors.request.use(
       // 让每个请求都携带令牌
       // ['X-Token']是自定义标头键
       // 请根据实际情况进行修改
-      config.headers['Authorization'] = `Bearer${getToken()}`
+      config.headers['Authorization'] = `Bearer ${getToken()}`
     }
     return config
   },

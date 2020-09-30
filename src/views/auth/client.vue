@@ -236,7 +236,40 @@
       title="应用设置"
       :visible.sync="dialogApply"
     >
-      应用设置
+      <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+        <el-tab-pane label="菜单" name="first">
+          <div>
+            <el-tree
+              :data="data"
+              show-checkbox
+              node-key="id"
+              :default-expanded-keys="[2, 3]"
+              :default-checked-keys="[5]"
+              :props="defaultProps"
+            />
+
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="配置管理" name="second">
+          <el-tree
+            :data="data"
+            show-checkbox
+            node-key="id"
+            :default-expanded-keys="[1,2, 3]"
+            :default-checked-keys="[5]"
+            :props="defaultProps"
+          />
+        </el-tab-pane>
+        <el-tab-pane label="角色管理" name="third">
+          <el-tree
+            :data="data"
+            show-checkbox
+            node-key="id"
+            :default-expanded-keys="[3]"
+            :props="defaultProps"
+          />
+        </el-tab-pane>
+      </el-tabs>
       <div
         slot="footer"
         class="dialog-footer"
@@ -325,6 +358,46 @@ export default {
           { required: true, message: '请输入refresh token有效期', trigger: 'blur' }
         ]
 
+      },
+      activeName: 'first',
+      data: [{
+        id: 1,
+        label: '一级 1',
+        children: [{
+          id: 4,
+          label: '二级 1-1',
+          children: [{
+            id: 9,
+            label: '三级 1-1-1'
+          }, {
+            id: 10,
+            label: '三级 1-1-2'
+          }]
+        }]
+      }, {
+        id: 2,
+        label: '一级 2',
+        children: [{
+          id: 5,
+          label: '二级 2-1'
+        }, {
+          id: 6,
+          label: '二级 2-2'
+        }]
+      }, {
+        id: 3,
+        label: '一级 3',
+        children: [{
+          id: 7,
+          label: '二级 3-1'
+        }, {
+          id: 8,
+          label: '二级 3-2'
+        }]
+      }],
+      defaultProps: {
+        children: 'children',
+        label: 'label'
       }
     }
   },
@@ -337,6 +410,9 @@ export default {
     // console.log(1)
   },
   methods: {
+    handleClick(tab, event) {
+      console.log(tab, event)
+    },
     openNew() {
       this.dialogFormVisible = true
       for (const k of Object.keys(this.ruleForm)) {

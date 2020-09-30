@@ -31,6 +31,9 @@
       v-loading="listLoading"
       class="auth-table"
       :data="list"
+      row-key="id"
+
+      :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
       border
       fit
       highlight-current-row
@@ -203,8 +206,13 @@ export default {
       dialogFormVisible: false,
       dialogApply: false,
       list: [
-        { id: 1, serviceName: '认证中心', servicePath: '/api-auth', serviceType: '服务', time: '2020-08-11 10:10:10', order: '1', edit: [{ txt: '修改', class: '', icon: 'el-icon-edit' }, { txt: '删除', class: 'danger', icon: 'el-icon-delete' }] },
-        { id: 2, serviceName: '认证中心', servicePath: '/api-auth', serviceType: '服务', time: '2020-08-11 10:10:10', order: '1', edit: [{ txt: '修改', class: '', icon: 'el-icon-edit' }, { txt: '删除', class: 'danger', icon: 'el-icon-delete' }] }
+        { id: 1, serviceName: '认证中心', servicePath: '/api-auth',
+          children: [
+            { id: 2, serviceName: '认证中心', servicePath: '/api-auth', serviceType: '服务', time: '2020-08-11 10:10:10', order: '1', edit: [{ txt: '修改', class: '', icon: 'el-icon-edit' }, { txt: '删除', class: 'danger', icon: 'el-icon-delete' }] },
+            { id: 3, serviceName: '认证中心', servicePath: '/api-auth', serviceType: '服务', time: '2020-08-11 10:10:10', order: '1', edit: [{ txt: '修改', class: '', icon: 'el-icon-edit' }, { txt: '删除', class: 'danger', icon: 'el-icon-delete' }] }
+          ],
+          serviceType: '服务', time: '2020-08-11 10:10:10', order: '1', edit: [{ txt: '修改', class: '', icon: 'el-icon-edit' }, { txt: '删除', class: 'danger', icon: 'el-icon-delete' }] },
+        { id: 4, serviceName: '认证中心', servicePath: '/api-auth', serviceType: '服务', time: '2020-08-11 10:10:10', order: '1', edit: [{ txt: '修改', class: '', icon: 'el-icon-edit' }, { txt: '删除', class: 'danger', icon: 'el-icon-delete' }] }
       ],
       ruleForm: {
         serviceName: '',

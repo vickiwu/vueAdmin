@@ -1,11 +1,11 @@
 import request from '@/utils/request'
-import qs from 'qs'
+// import qs from 'qs'
 
 export function login(data) {
   return request({
     url: '/api-auth/oauth/user/token',
     method: 'post',
-    data: qs.stringify(data)
+    data
   })
 }
 
@@ -28,7 +28,7 @@ export function logout(token) {
   return request({
     url: '/api-auth/oauth/remove/token',
     method: 'post',
-    data: qs.stringify(data)
+    data
   })
 }
 export function getHtml(token) {
