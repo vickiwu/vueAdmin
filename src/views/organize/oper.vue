@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { getList } from '@/api/table'
+import Api from '@/api/table'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -76,7 +76,7 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      getList().then(response => {
+      Api.getList().then(response => {
         this.list = response.data.items
         this.listLoading = false
       })

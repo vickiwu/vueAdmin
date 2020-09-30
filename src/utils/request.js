@@ -50,11 +50,16 @@ service.interceptors.response.use(
       Message({
         message: res.msg || '错误',
         type: 'error',
-        duration: 2 * 1000
+        duration: 5 * 1000
       })
 
       return Promise.reject(new Error(res.msg || '错误'))
     } else {
+      // Message({
+      //   message: res.msg || '成功',
+      //   type: 'success',
+      //   duration: 2 * 1000
+      // })
       return res
     }
   },

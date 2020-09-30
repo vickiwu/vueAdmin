@@ -137,7 +137,7 @@
       title="新增应用"
       :visible.sync="dialogFormVisible"
     >
-      <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="100px" class="demo-ruleForm">
+      <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="100px" class="client-ruleForm">
         <el-row :gutter="20">
           <el-col :span="11">
             <el-form-item label="应用标识" prop="appId">
@@ -160,7 +160,7 @@
             <el-form-item label="范围" prop="appScope">
               <el-select v-model="ruleForm.appScope" placeholder="请选择">
                 <el-option
-                  v-for="item in ruleForm.appScopeList"
+                  v-for="item in appScopeList"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -174,7 +174,7 @@
             <el-form-item label="授权方式" prop="method">
               <el-select v-model="ruleForm.method" placeholder="请选择授权方式">
                 <el-option
-                  v-for="item in ruleForm.methodList"
+                  v-for="item in methodList"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -262,47 +262,15 @@ export default {
       dialogFormVisible: false,
       dialogApply: false,
       list: [
-        { id: 1, appId: 'webApp', appName: '管理后台', appKey: '加密内容', url: 'http://www....', authMethod: '密码模式，客户端授权模式', status: 0, edit: [{ txt: '修改', class: '', icon: 'el-icon-edit' }, { txt: '删除', class: 'warning', icon: 'el-icon-delete' }, { txt: '应用设置', class: 'primary', icon: 'el-icon-share' }] },
-        { id: 2, appId: 'webApp', appName: '管理后台', appKey: '加密内容', url: 'http://www....', authMethod: '密码模式，客户端授权模式', status: 0, edit: [{ txt: '修改', class: '', icon: 'el-icon-edit' }, { txt: '删除', class: 'warning', icon: 'el-icon-delete' }, { txt: '应用设置', class: 'primary', icon: 'el-icon-share' }] }
+        { id: 1, appId: 'webApp', appName: '管理后台', appKey: '加密内容', url: 'http://www....', authMethod: '密码模式，客户端授权模式', status: 0, edit: [{ txt: '修改', class: '', icon: 'el-icon-edit' }, { txt: '删除', class: 'danger', icon: 'el-icon-delete' }, { txt: '应用设置', class: 'primary', icon: 'el-icon-share' }] },
+        { id: 2, appId: 'webApp', appName: '管理后台', appKey: '加密内容', url: 'http://www....', authMethod: '密码模式，客户端授权模式', status: 0, edit: [{ txt: '修改', class: '', icon: 'el-icon-edit' }, { txt: '删除', class: 'danger', icon: 'el-icon-delete' }, { txt: '应用设置', class: 'primary', icon: 'el-icon-share' }] }
       ],
       ruleForm: {
         appId: '',
         appName: '',
         appKey: '',
         appScope: '',
-        appScopeList: [{
-          value: '选项1',
-          label: '黄金糕'
-        }, {
-          value: '选项2',
-          label: '双皮奶'
-        }, {
-          value: '选项3',
-          label: '蚵仔煎'
-        }, {
-          value: '选项4',
-          label: '龙须面'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
-        }],
         method: '',
-        methodList: [{
-          value: '选项1',
-          label: '黄金糕'
-        }, {
-          value: '选项2',
-          label: '双皮奶'
-        }, {
-          value: '选项3',
-          label: '蚵仔煎'
-        }, {
-          value: '选项4',
-          label: '龙须面'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
-        }],
         appAddress: '',
         auto: '',
         status: '',
@@ -310,6 +278,38 @@ export default {
         validity2: ''
 
       },
+      appScopeList: [{
+        value: '选项1',
+        label: '黄金糕'
+      }, {
+        value: '选项2',
+        label: '双皮奶'
+      }, {
+        value: '选项3',
+        label: '蚵仔煎'
+      }, {
+        value: '选项4',
+        label: '龙须面'
+      }, {
+        value: '选项5',
+        label: '北京烤鸭'
+      }],
+      methodList: [{
+        value: '选项1',
+        label: '黄金糕'
+      }, {
+        value: '选项2',
+        label: '双皮奶'
+      }, {
+        value: '选项3',
+        label: '蚵仔煎'
+      }, {
+        value: '选项4',
+        label: '龙须面'
+      }, {
+        value: '选项5',
+        label: '北京烤鸭'
+      }],
       rules: {
         appId: [
           { required: true, message: '请输入应用标识', trigger: 'blur' }
@@ -334,18 +334,21 @@ export default {
     }
   },
   created() {
-    console.log(1)
+    // console.log(1)
   },
   methods: {
     openNew() {
       this.dialogFormVisible = true
-      // this.$router.push({ path: '/auth/client/add' })
+      for (const k of Object.keys(this.ruleForm)) {
+        this.ruleForm[k] = ''
+      }
     },
     handelClick(item, row) {
       if (item.txt === '修改') {
         this.dialogFormVisible = true
+        this.ruleForm = { ...row }
       } else if (item.txt === '删除') {
-        this.$confirm('确认关闭？')
+        this.$confirm('确认删除吗？')
           .then(_ => {
             console.log(_, '删除了')
           })
@@ -353,8 +356,8 @@ export default {
             console.log(_, '取消删除了')
           })
       } else if (item.txt === '应用设置') {
-        // this.dialogApply = true
-        this.$router.push({ path: '/auth/client/add' })
+        this.dialogApply = true
+        // this.$router.push({ path: '/auth/client/add' })
       }
     }
   }
@@ -369,5 +372,10 @@ export default {
 
   .search-btn{
     background-color: rgba(0, 204, 102, 1);
+  }
+  .client-ruleForm{
+    .el-select{
+      width: 85%;
+    }
   }
  </style>
