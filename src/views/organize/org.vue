@@ -6,14 +6,12 @@
           v-model="inputText"
           style="height: 30px"
           placeholder="请输入关键字"
-        />
+        ></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button
-          type="primary"
-          icon="el-icon-search"
-          @click="onSubmit"
-        >搜索</el-button>
+        <el-button type="primary" icon="el-icon-search" @click="onSubmit"
+          >搜索</el-button
+        >
       </el-form-item>
       <!-- v-permission="['organize:oper:add']" -->
       <el-form-item>
@@ -21,7 +19,8 @@
           type="primary"
           icon="el-icon-plus"
           @click="modalShow('new', '')"
-        >新增</el-button>
+          >新增</el-button
+        >
       </el-form-item>
     </el-form>
     <el-table
@@ -38,9 +37,12 @@
           {{ scope.$index + 1 }}
         </template>
       </el-table-column>
-      <el-table-column prop="orgName" label="机构名称" min-width="15%" />
-      <el-table-column prop="orgCode" label="机构编码" min-width="5%" />
-      <el-table-column prop="orgType" min-width="5%" label="类型" />
+      <el-table-column prop="orgName" label="机构名称" min-width="15%">
+      </el-table-column>
+      <el-table-column prop="orgCode" label="机构编码" min-width="5%">
+      </el-table-column>
+      <el-table-column prop="orgType" min-width="5%" label="类型">
+      </el-table-column>
       <el-table-column prop="orgLevel" min-width="5%" label="级别">
         <template slot-scope="scope">
           <span v-if="scope.row.orgLevel == 'province'">省</span>
@@ -60,42 +62,47 @@
             size="mini"
             style="padding: 7px"
             @click="modalShow('add', scope.row)"
-          >添加</el-button>
+            >添加</el-button
+          >
           <el-button
             icon="el-icon-edit"
             size="mini"
             style="padding: 7px"
             @click="modalShow('edit', scope.row)"
-          >修改</el-button>
+            >修改</el-button
+          >
           <el-button
             type="danger"
             icon="el-icon-delete"
             size="mini"
             style="padding: 7px"
             @click="onDel(scope.row)"
-          >删除</el-button>
+            >删除</el-button
+          >
           <el-button
             type="primary"
             icon="el-icon-search"
             size="mini"
             style="padding: 7px"
             @click="onBM(scope.row)"
-          >部门</el-button>
+            >部门</el-button
+          >
           <el-button
             type="primary"
             icon="el-icon-user"
             size="mini"
             style="padding: 7px"
             @click="onUser(scope.row)"
-          >人员</el-button>
+            >人员</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
     <!-- 模态框 -->
     <el-dialog :title="modalText" :visible.sync="dialogVisible" width="674px">
       <el-form
-        ref="ruleForm"
         :model="ruleForm"
+        ref="ruleForm"
         label-width="90px"
         class="demo-ruleForm"
         :rules="rules"
@@ -106,7 +113,7 @@
               <el-input
                 v-model="ruleForm.orgName"
                 placeholder="请输入机构名称"
-              />
+              ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -114,7 +121,7 @@
               <el-input
                 v-model="ruleForm.orgCode"
                 placeholder="请输入机构编码"
-              />
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -139,17 +146,17 @@
               <el-select
                 v-model="TopOrgLable"
                 placeholder="请选择"
-
+                
                 collapse-tags
               >
-                <el-option :value="TopOrgLable" style="height: auto">
+                <el-option  :value="TopOrgLable" style="height: auto">
                   <el-tree
-                    ref="tree"
                     :data="orgTopArryTemp"
                     node-key="id"
+                    ref="tree"
                     :props="defaultProps"
                     @node-click="handleClcik"
-                  />
+                  ></el-tree>
                 </el-option>
               </el-select>
             </el-form-item>
@@ -164,7 +171,7 @@
                   :key="index"
                   :label="item.enumName"
                   :value="item.enumCode"
-                />
+                ></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -176,7 +183,7 @@
                   <el-input
                     v-model="ruleForm.longitude"
                     placeholder="请输入经度"
-                  />
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="11" style="margin-left: 15px">
@@ -184,7 +191,7 @@
                   <el-input
                     v-model="ruleForm.latitude"
                     placeholder="请输入纬度"
-                  />
+                  ></el-input>
                 </el-form-item>
               </el-col>
             </el-form-item>
@@ -196,14 +203,14 @@
               <el-input
                 v-model="ruleForm.sort"
                 placeholder="请输入显示顺序"
-              />
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
             <el-form-item label="备注信息" prop="remarks">
-              <el-input v-model="ruleForm.remarks" type="textarea" />
+              <el-input type="textarea" v-model="ruleForm.remarks"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -215,189 +222,194 @@
     </el-dialog>
   </div>
 </template>
+    
 
 <script>
-import organize from '@/api/organize'
-// import { mapGetters } from 'vuex'
+import organize from "@/api/organize";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
     return {
-      inputText: '',
+      inputText: "",
       dialogVisible: false,
       tableData: [],
-      modalText: '',
-      TopOrgLable: '', // 上级机构的中文
-      orgTypeArry: [],
-      orgTypeArryTemp: [],
-      orgTopArry: [],
-      orgTopArryTemp: [],
-      orgLevelArry: [],
-      orgLevelArryTemp: [],
-      defaultProps: {
-        children: 'childOrgs',
-        label: 'orgName',
-        id: 'orgId'
-      },
+      modalText: "",
+      TopOrgLable:"",//上级机构的中文
+      orgTypeArry:[],
+      orgTypeArryTemp:[],
+      orgTopArry:[],
+      orgTopArryTemp:[],
+      orgLevelArry:[],
+      orgLevelArryTemp:[],
+       defaultProps: {
+          children: 'childOrgs',
+          label: 'orgName',
+          id:'orgId'
+        },
       ruleForm: {
         orgId: null,
         pOrgId: null,
-        orgName: '',
-        orgCode: '',
-        orgType: '',
-        orgLevel: '',
-        longitude: '',
-        latitude: '',
-        sort: '',
-        remarks: ''
+        orgName: "",
+        orgCode: "",
+        orgType: "",
+        orgLevel: "",
+        longitude: "",
+        latitude: "",
+        sort: "",
+        remarks: "",
       },
       rules: {
         orgName: [
-          { required: true, message: '请输入机构名称', trigger: 'blur' }
+          { required: true, message: "请输入机构名称", trigger: "blur" },
         ],
         orgType: [
-          { required: true, message: '请输入机构类型', trigger: 'blur' }
-        ]
-      }
-    }
+          { required: true, message: "请输入机构类型", trigger: "blur" },
+        ],
+      },
+    };
   },
   mounted() {
-    this.getData('', '')
-    this.getOrgTypeList()
-    this.getOrgTopList()
-    this.getOrgLevelList()
+    this.getData("", "");
+    this.getOrgTypeList();
+    this.getOrgTopList();
+    this.getOrgLevelList();
   },
   methods: {
     getData(name, orgId) {
-      // var that = this
+      var that = this;
       organize.getTableList({ orgName: name, orgId: orgId }).then((response) => {
-        this.tableData = response.data
-      })
+        this.tableData = response.data;
+      });
     },
     onSubmit() {
-      this.getData(this.inputText, '')
+      this.getData(this.inputText,"");
     },
-    //  懒加载表格树
-    load(tree, treeNode, resolve) {
-      organize.getTableList({ orgName: '', orgId: tree.orgId }).then((response) => {
-        resolve(response.data)
-      })
+  //  懒加载表格树
+   load(tree, treeNode, resolve) {
+      organize.getTableList({ orgName: "", orgId: tree.orgId }).then((response) => {
+        resolve(response.data);
+      });
     },
     modalShow(type, data) {
-      this.dialogVisible = true
-      this.TopOrgLable = ''
-      this.ruleForm.pOrgId = ''// 清空下拉树
-      this.orgTypeArryTemp = this.orgTypeArry
-      this.orgTopArryTemp = this.orgTopArry
-      this.orgLevelArryTemp = this.orgLevelArry
+      this.dialogVisible = true;
+      this.TopOrgLable = "";
+      this.ruleForm.pOrgId = "";//清空下拉树
+      this.orgTypeArryTemp = this.orgTypeArry;
+      this.orgTopArryTemp = this.orgTopArry;
+      this.orgLevelArryTemp = this.orgLevelArry;
       this.$nextTick(() => {
-        this.resetForm('ruleForm')
-      })
-      if (type === 'new') {
-        this.modalText = '新增'
-        this.ruleForm.orgId = null
+        this.resetForm("ruleForm");
+       
+      });
+      if (type == "new") {
+        this.modalText = "新增";
+        this.ruleForm.orgId = null;
         //  console.log(this.ruleForm)
-      } else if (type === 'add') {
-        this.modalText = '添加'
-        this.ruleForm.orgId = null
+      } else if (type == "add") {
+        this.modalText = "添加";
+        this.ruleForm.orgId = null;
         console.log(data.porgId)
-        this.TopOrgLable = data.orgName
-        this.ruleForm.pOrgId = data.orgId
-        console.log(data)
-      } else if (type === 'edit') {
-        this.modalText = '编辑'
-        this.getEditData(data)
+        this.TopOrgLable = data.orgName;
+        this.ruleForm.pOrgId = data.orgId;
+       console.log(data)
+      } else if (type == "edit") {
+        this.modalText = "修改";
+        this.getEditData(data);
       }
     },
 
     onDel(data) {
-      var that = this
-      this.$confirm('是否确认提交?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        organize.del({ 'orgId': data.orgId }).then((response) => {
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
+      var that = this;
+       this.$confirm("是否确认删除?", "提示", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning",
+          }).then(() => {
+             organize.del({"orgId":data.orgId}).then((response) => {
+               this.$message({
+                  type: "success",
+                  message: "删除成功!",
+                });
+               this.getData(that.inputText, "");
+             });
           })
-          this.getData(that.inputText, '')
-        })
-      })
     },
-    onBM(data) {},
+    onBM(data) {
+       this.$router.push({ path:'/organize/departmentDetail'})
+    },
     onUser(data) {},
     // 机构类型列表
-    getOrgTypeList() {
-      // var that = this
+    getOrgTypeList(){
+      var that = this;
       organize.getOrgTypeList().then((response) => {
-        this.orgTypeArry = response.data
-      })
+           this.orgTypeArry =  response.data;
+      });
     },
-    // 机构类型列表
-    getOrgTopList() {
-      // var that = this
+     // 机构类型列表
+    getOrgTopList(){
+      var that = this;
       organize.getOrgTopList().then((response) => {
-        this.orgTopArry.push(response.data)
-      })
+           this.orgTopArry.push(response.data);
+         });
     },
-    // 机构级别列表
-    getOrgLevelList() {
-      // var that = this
+    //机构级别列表
+    getOrgLevelList(){
+      var that = this;
       organize.getOrgLevelList().then((response) => {
-        this.orgLevelArry = response.data
-      })
+            this.orgLevelArry =  response.data;
+         });
     },
     // 下拉树方法
     handleClcik(data) {
       console.log(data)
-      // var that = this
-      // let res = this.$refs.tree.getCheckedNodes(false, true); //true，1. 是否只是叶子节点 2.选择的时候不包含父节点）
-      this.ruleForm.TopOrg = data.orgId
-      this.TopOrgLable = data.orgName
+      var that = this;
+      //let res = this.$refs.tree.getCheckedNodes(false, true); //true，1. 是否只是叶子节点 2.选择的时候不包含父节点）
+       this.ruleForm.TopOrg = data.orgId;
+       this.TopOrgLable = data.orgName;
     },
-    // 编辑获取数据
-    getEditData(data) {
-      organize.getEditData({ 'orgId': data.orgId }).then((response) => {
-        var tempData = response.data
-        this.TopOrgLable = tempData.pOrgName
-        this.ruleForm = { ...response.data }
-      })
+    //编辑获取数据
+    getEditData(data){
+       organize.getEditData({"orgId":data.orgId}).then((response) => {
+        var tempData = response.data;
+        this.TopOrgLable = tempData.pOrgName;
+        this.ruleForm = {...response.data};
+      
+       })
     },
     // 保存表单
     save() {
-      this.$refs['ruleForm'].validate((valid) => {
+      this.$refs["ruleForm"].validate((valid) => {
         if (valid) {
-          this.$confirm('是否确认提交?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
+          this.$confirm("是否确认提交?", "提示", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning",
           }).then(() => {
             organize.save(this.ruleForm).then((response) => {
               this.$message({
-                type: 'success',
-                message: '保存成功!'
-              })
-              this.dialogVisible = false
-              this.getData(this.inputText, '')
-            })
-          })
+                type: "success",
+                message: "保存成功!",
+              });
+              this.dialogVisible = false;
+              this.getData(this.inputText, "");
+            });
+          });
         } else {
-          return false
+          return false;
         }
-      })
+      });
     },
-    // 取消保存
+    //取消保存
     cancel() {
-      // this.resetForm("ruleForm");
-      this.dialogVisible = false
+      //this.resetForm("ruleForm");
+      this.dialogVisible = false;
     },
     // 清空表单数据
     resetForm(formName) {
-      this.$refs[formName].resetFields()
-    }
-  }
-}
+      this.$refs[formName].resetFields();
+    },
+  },
+};
 </script>
 

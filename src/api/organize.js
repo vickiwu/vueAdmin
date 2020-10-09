@@ -37,9 +37,9 @@ getOrgLevelList() {
 // 列表删除
 del(params) {
   return request({
-    url: 'api-user/orgManages/delOrg',
+    url: 'api-user/orgManages/delOrg/'+params.orgId,
     method: 'post',
-    data:params
+    //data:params
   })
 },
 // 编辑获取数据
