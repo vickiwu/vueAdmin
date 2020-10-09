@@ -58,5 +58,46 @@ save(params) {
     data: params
   })
 },
+/////////////////////////////// 部门管理接口//////////////////////////////////////////
+// 获取树
+getBMTree(params) {
+  return request({
+    url: 'api-user/depts/getDeptListByOrgId2',
+    method: 'get',
+    params
+  })
+},
+//部门职责下拉
+getResponsibilities() {
+  return request({
+    url: 'api-user/orgManages/getDeptDutys',
+    method: 'get',
+  })
+},
+//根据部门id获取部门信息
+getEditData(params) {
+  return request({
+    url: 'api-user/orgManages/getDeptInfoById',
+    method: 'get',
+    params
+  })
+},
+
+// 列表删除
+delBM(params) {
+  return request({
+    url: 'api-user/depts/deleteDepartment/'+params.deptId,
+    method: 'post',
+  })
+},
+saveDD(params) {
+  return request({
+    url: 'api-user/depts/saveDepartment',
+    method: 'post',
+    data: params
+  })
+},
+
+
 }
 export default organize

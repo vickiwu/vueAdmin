@@ -336,7 +336,8 @@ export default {
           })
     },
     onBM(data) {
-       this.$router.push({ path:'/organize/departmentDetail'})
+       this.$router.push({path:'/organize/departmentDetail',query:{orgId:data.orgId}})
+       
     },
     onUser(data) {},
     // 机构类型列表
@@ -412,4 +413,11 @@ export default {
   },
 };
 </script>
-
+<style lang="scss" scoped>
+	// ::v-deep .el-input__inner{
+  //       width: 205px !important;
+  //   }
+    // ::v-deep .el-select-dropdown__item,.selected,.hover{
+    //     padding:0 !important;
+    // }
+</style>
