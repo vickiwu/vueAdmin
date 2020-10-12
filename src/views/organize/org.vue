@@ -339,7 +339,10 @@ export default {
        this.$router.push({path:'/organize/departmentDetail',query:{orgId:data.orgId}})
        
     },
-    onUser(data) {},
+    onUser(data) {
+      // this.$router.push({path:'/organize/userDetail',query:{orgId:data.orgId}})
+       this.$router.push({path:'/organize/userDetail'})
+    },
     // 机构类型列表
     getOrgTypeList(){
       var that = this;
