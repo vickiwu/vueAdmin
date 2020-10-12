@@ -53,7 +53,7 @@ service.interceptors.response.use(
         duration: 5 * 1000
       })
 
-      return Promise.reject(new Error(res.msg || '错误'))
+      return Promise.reject(res.msg || '错误')
     } else {
       // Message({
       //   message: res.msg || '成功',
@@ -64,7 +64,7 @@ service.interceptors.response.use(
     }
   },
   error => {
-    console.log('err' + error) // for debug
+    console.log('err---' + error) // for debug
     Message({
       message: error.message,
       type: 'error',

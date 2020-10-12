@@ -1,7 +1,7 @@
 <template>
   <div style="height:100%;width:100%;">
     <!-- <p v-html="html" /> -->
-    <iframe :src="url" frameborder="0" height="100%" width="100%" />
+    <iframe :src="url" frameborder="0" height="100%" width="100%" name="www" />
 
   </div>
 </template>

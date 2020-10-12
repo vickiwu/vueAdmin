@@ -38,34 +38,32 @@
     >
       <el-table-column
         label="序号"
-        prop="id"
+        type="index"
         sortable="custom"
         align="center"
         header-align="center"
         width="80"
-      >
-        <template slot-scope="{ row }">
-          <span>{{ row.id }}</span>
-        </template>
-      </el-table-column>
+      />
       <el-table-column
         label="应用标识"
         sortable="custom"
         align="left"
+        width="120"
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span>{{ row.appId }}</span>
+          <span :title="row.clientId">{{ row.clientId }}</span>
         </template>
       </el-table-column>
       <el-table-column
         label="应用名称"
         sortable="custom"
         align="left"
+        width="120"
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span>{{ row.appName }}</span>
+          <span :title="row.clientName">{{ row.clientName }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -75,17 +73,21 @@
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span>{{ row.appKey }}</span>
+          <span :title="row.clientSecret">{{ row.clientSecret }}</span>
+          <!-- <el-tooltip effect="light" :visible-arrow="false" :content="row.clientSecret" placement="bottom-start">
+            <span>{{ row.clientSecret }}</span>
+          </el-tooltip> -->
         </template>
       </el-table-column>
       <el-table-column
         label="回调地址"
         sortable="custom"
         align="left"
+        width="180"
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span>{{ row.url }}</span>
+          <span :title="row.webServerRedirectUri">{{ row.webServerRedirectUri }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -95,25 +97,10 @@
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span>{{ row.authMethod }}</span>
+          <span :title="row.authorizedGrantTypes">{{ row.authorizedGrantTypes }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        label="状态"
-        width="100"
-        sortable="custom"
-        align="center"
-        header-align="center"
-      >
-        <template slot-scope="{ row }">
-          <el-switch
-            v-model="row.status"
-            disabled
-            active-color="#13ce66"
-            inactive-color="#ff4949"
-          />
-        </template>
-      </el-table-column>
+
       <el-table-column
         label="操作"
         width="300"
@@ -122,7 +109,26 @@
       >
         <template slot-scope="{ row }">
           <div style="display: flex;justify-content: flex-end;">
-            <el-button v-for="n in row.edit" :key="n.txt" size="mini" :icon="n.icon" :type="n.class" @click="handelClick(n,row)">{{ n.txt }}</el-button>
+            <el-button
+              key="修改"
+              size="mini"
+              icon="el-icon-edit"
+              @click="handelClick('修改',row)"
+            >修改</el-button>
+            <el-button
+              key="删除"
+              size="mini"
+              icon="el-icon-delete"
+              type="danger"
+              @click="handelClick('删除',row)"
+            >删除</el-button>
+            <el-button
+              key="应用设置"
+              size="mini"
+              type="primary"
+              icon="el-icon-share"
+              @click="handelClick('应用设置',row)"
+            >应用设置</el-button>
 
           </div>
         </template>
@@ -132,33 +138,65 @@
       background
       layout="total, prev, pager, next"
       :total="total"
+      :page-size="pageSize"
+      @current-change="handleCurrentChange"
     />
     <el-dialog
-      title="新增应用"
+      :title="dialogTitle"
       :visible.sync="dialogFormVisible"
     >
-      <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="100px" class="client-ruleForm">
+      <el-form
+        ref="ruleForm"
+        :model="ruleForm"
+        :rules="rules"
+        label-width="100px"
+        class="client-ruleForm"
+      >
         <el-row :gutter="20">
           <el-col :span="11">
-            <el-form-item label="应用标识" prop="appId">
-              <el-input v-model="ruleForm.appId" placeholder="请输入应用标识" />
+            <el-form-item
+              label="应用标识"
+              prop="clientId"
+            >
+              <el-input
+                v-model="ruleForm.clientId"
+                placeholder="请输入应用标识"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="11">
-            <el-form-item label="应用名称" prop="appName">
-              <el-input v-model="ruleForm.appName" placeholder="请输入应用名称" />
+            <el-form-item
+              label="应用名称"
+              prop="clientName"
+            >
+              <el-input
+                v-model="ruleForm.clientName"
+                placeholder="请输入应用名称"
+              />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="11">
-            <el-form-item label="应用密钥" prop="appKey">
-              <el-input v-model="ruleForm.appKey" placeholder="请输入应用秘钥" />
+            <el-form-item
+              label="应用密钥"
+              prop="clientSecret"
+            >
+              <el-input
+                v-model="ruleForm.clientSecret"
+                placeholder="请输入应用秘钥"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="11">
-            <el-form-item label="范围" prop="appScope">
-              <el-select v-model="ruleForm.appScope" placeholder="请选择">
+            <el-form-item
+              label="范围"
+              prop="scope"
+            >
+              <el-select
+                v-model="ruleForm.scope"
+                placeholder="请选择"
+              >
                 <el-option
                   v-for="item in appScopeList"
                   :key="item.value"
@@ -171,8 +209,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="11">
-            <el-form-item label="授权方式" prop="method">
-              <el-select v-model="ruleForm.method" placeholder="请选择授权方式">
+            <el-form-item
+              label="授权方式"
+              prop="authorizedGrantTypes"
+            >
+              <el-select
+                v-model="ruleForm.authorizedGrantTypes"
+                placeholder="请选择授权方式"
+              >
                 <el-option
                   v-for="item in methodList"
                   :key="item.value"
@@ -183,40 +227,54 @@
             </el-form-item>
           </el-col>
           <el-col :span="11">
-            <el-form-item label="回调地址" prop="appAddress">
-              <el-input v-model="ruleForm.appAddress" placeholder="请输入回调地址" />
+            <el-form-item
+              label="回调地址"
+              prop="webServerRedirectUri"
+            >
+              <el-input
+                v-model="ruleForm.webServerRedirectUri"
+                placeholder="请输入回调地址"
+              />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="11">
-            <el-form-item label="自动授权" prop="auto">
-              <el-radio-group v-model="ruleForm.auto">
-                <el-radio label="是" />
-                <el-radio label="否" />
-              </el-radio-group>
+            <el-form-item
+              label="有效期1"
+              prop="accessTokenValidity"
+            >
+              <el-input
+                v-model="ruleForm.accessTokenValidity"
+                placeholder="请输入access token有效期"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="11">
-            <el-form-item label="状态" prop="status">
-              <el-radio-group v-model="ruleForm.status">
-                <el-radio label="正常" />
-                <el-radio label="锁定" />
-              </el-radio-group>
+            <el-form-item
+              label="有效期2"
+              prop="refreshTokenValidity"
+            >
+              <el-input
+                v-model="ruleForm.refreshTokenValidity"
+                placeholder="请输入refresh token有效期"
+              />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="11">
-            <el-form-item label="有效期1" prop="validity1">
-              <el-input v-model="ruleForm.validity1" placeholder="请输入access token有效期" />
+            <el-form-item
+              label="自动授权"
+              prop="autoapprove"
+            >
+              <el-radio-group v-model="ruleForm.autoapprove">
+                <el-radio label="true">是</el-radio>
+                <el-radio label="false">否</el-radio>
+              </el-radio-group>
             </el-form-item>
           </el-col>
-          <el-col :span="11">
-            <el-form-item label="有效期2" prop="validity2">
-              <el-input v-model="ruleForm.validity2" placeholder="请输入refresh token有效期" />
-            </el-form-item>
-          </el-col>
+
         </el-row>
 
       </el-form>
@@ -227,7 +285,7 @@
         <el-button @click="dialogFormVisible = false">
           取消
         </el-button>
-        <el-button type="primary">
+        <el-button type="primary" @click="handleSave">
           确认
         </el-button>
       </div>
@@ -236,8 +294,15 @@
       title="应用设置"
       :visible.sync="dialogApply"
     >
-      <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
-        <el-tab-pane label="菜单" name="first">
+      <el-tabs
+        v-model="activeName"
+        type="card"
+        @tab-click="handleClick"
+      >
+        <el-tab-pane
+          label="菜单"
+          name="first"
+        >
           <div>
             <el-tree
               :data="data"
@@ -250,7 +315,10 @@
 
           </div>
         </el-tab-pane>
-        <el-tab-pane label="配置管理" name="second">
+        <el-tab-pane
+          label="配置管理"
+          name="second"
+        >
           <el-tree
             :data="data"
             show-checkbox
@@ -260,7 +328,10 @@
             :props="defaultProps"
           />
         </el-tab-pane>
-        <el-tab-pane label="角色管理" name="third">
+        <el-tab-pane
+          label="角色管理"
+          name="third"
+        >
           <el-tree
             :data="data"
             show-checkbox
@@ -286,30 +357,41 @@
 </template>
 
 <script>
-
+import authApi from '@/api/auth'
+import { Message } from 'element-ui'
 export default {
   data() {
     return {
+      dialogTitle: '新增应用',
       searchWords: '',
-      listLoading: false,
+      listLoading: true,
       dialogFormVisible: false,
       dialogApply: false,
-      list: [
-        { id: 1, appId: 'webApp', appName: '管理后台', appKey: '加密内容', url: 'http://www....', authMethod: '密码模式，客户端授权模式', status: 0, edit: [{ txt: '修改', class: '', icon: 'el-icon-edit' }, { txt: '删除', class: 'danger', icon: 'el-icon-delete' }, { txt: '应用设置', class: 'primary', icon: 'el-icon-share' }] },
-        { id: 2, appId: 'webApp', appName: '管理后台', appKey: '加密内容', url: 'http://www....', authMethod: '密码模式，客户端授权模式', status: 0, edit: [{ txt: '修改', class: '', icon: 'el-icon-edit' }, { txt: '删除', class: 'danger', icon: 'el-icon-delete' }, { txt: '应用设置', class: 'primary', icon: 'el-icon-share' }] }
-      ],
+      btnList: [{ txt: '修改', class: '', icon: 'el-icon-edit' }, { txt: '删除', class: 'danger', icon: 'el-icon-delete' }, { txt: '应用设置', class: 'primary', icon: 'el-icon-share' }],
+      list: [],
+      page: 1,
+      pageSize: 5,
+      total: 0,
       ruleForm: {
-        appId: '',
-        appName: '',
-        appKey: '',
-        appScope: '',
-        method: '',
-        appAddress: '',
-        auto: '',
-        status: '',
-        validity1: '',
-        validity2: ''
-
+        accessTokenValidity: null,
+        additionalInformation: null,
+        authorities: null,
+        authorizedGrantTypes: null,
+        autoapprove: null,
+        clientId: null,
+        clientName: null,
+        clientSecret: null,
+        clientSecretStr: null,
+        createTime: null,
+        delFlag: null,
+        id: null,
+        ifLimit: null,
+        limitCount: null,
+        refreshTokenValidity: null,
+        resourceIds: null,
+        scope: null,
+        updateTime: null,
+        webServerRedirectUri: null
       },
       appScopeList: [{
         value: '选项1',
@@ -344,17 +426,17 @@ export default {
         label: '北京烤鸭'
       }],
       rules: {
-        appId: [
+        clientId: [
           { required: true, message: '请输入应用标识', trigger: 'blur' }
         ],
-        appName: [
+        clientName: [
           { required: true, message: '请输入应用名称', trigger: 'blur' }
         ],
-        method: [{ required: true, message: '请选择至少一种授权方式', trigger: 'change' }],
-        validity1: [
+        authorizedGrantTypes: [{ required: true, message: '请选择至少一种授权方式', trigger: 'change' }],
+        accessTokenValidity: [
           { required: true, message: '请输入access token有效期', trigger: 'blur' }
         ],
-        validity2: [
+        refreshTokenValidity: [
           { required: true, message: '请输入refresh token有效期', trigger: 'blur' }
         ]
 
@@ -402,36 +484,85 @@ export default {
     }
   },
   computed: {
-    total() {
-      return this.list.length
-    }
   },
   created() {
-    // console.log(1)
+    this.loadTable()
   },
   methods: {
+    async loadTable(pageSize, page) {
+      await authApi.getPageResult({ limit: this.pageSize, page: this.page }).then((response) => {
+        const { data } = response
+        this.list = data.data
+        this.total = data.count
+        this.listLoading = false
+      }).catch(error => error)
+    },
+
     handleClick(tab, event) {
       console.log(tab, event)
+    },
+    handleCurrentChange(page) {
+      this.page = page
+      this.listLoading = true
+      authApi.getPageResult({ limit: this.pageSize, page }).then((response) => {
+        const { data } = response
+        this.list = data.data
+        this.total = data.count
+        this.listLoading = false
+      }).catch(error => error)
+    },
+    handleSave() {
+      this.$refs['ruleForm'].validate((valid) => {
+        if (valid) {
+          authApi.saveClient({ ...this.ruleForm }).then((response) => {
+            Message({
+              message: response.msg,
+              type: 'success',
+              duration: 2 * 1000
+            })
+            if (response.code === 200) {
+              this.listLoading = true
+              this.loadTable()
+              this.dialogFormVisible = false
+            }
+          }).catch(error => error)
+        } else {
+          console.log('验证出错')
+          return false
+        }
+      })
     },
     openNew() {
       this.dialogFormVisible = true
       for (const k of Object.keys(this.ruleForm)) {
-        this.ruleForm[k] = ''
+        this.ruleForm[k] = null
       }
     },
     handelClick(item, row) {
-      if (item.txt === '修改') {
+      if (item === '修改') {
+        this.dialogTitle = '修改应用'
         this.dialogFormVisible = true
         this.ruleForm = { ...row }
-      } else if (item.txt === '删除') {
+      } else if (item === '删除') {
         this.$confirm('确认删除吗？')
           .then(_ => {
-            console.log(_, '删除了')
+            authApi.deleteClient({ id: row.id }).then((response) => {
+              Message({
+                message: response.msg,
+                type: 'success',
+                duration: 2 * 1000
+              })
+              if (response.code === 200) {
+                this.loadTable()
+              }
+            }).catch(error => {
+              console.log(error, 'eee')
+            })
           })
           .catch(_ => {
             console.log(_, '取消删除了')
           })
-      } else if (item.txt === '应用设置') {
+      } else if (item === '应用设置') {
         this.dialogApply = true
         // this.$router.push({ path: '/auth/client/add' })
       }
@@ -440,18 +571,25 @@ export default {
 }
 </script>
  <style lang="scss">
- .auth-table{
- .el-button--mini, .el-button--mini.is-round {
+.auth-table {
+  .el-button--mini,
+  .el-button--mini.is-round {
     padding: 5px 10px;
-}
- }
-
-  .search-btn{
-    background-color: rgba(0, 204, 102, 1);
   }
-  .client-ruleForm{
-    .el-select{
-      width: 85%;
+  .cell {
+    span {
+      word-break: initial;
     }
+
   }
- </style>
+}
+
+.search-btn {
+  background-color: rgba(0, 204, 102, 1);
+}
+.client-ruleForm {
+  .el-select {
+    width: 85%;
+  }
+}
+</style>
