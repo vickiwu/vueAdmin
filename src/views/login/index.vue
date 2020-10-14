@@ -120,7 +120,7 @@
 
           <el-form-item prop="username">
             <span class="svg-container">
-              <svg-icon icon-class="yzm" />
+              <svg-icon icon-class="yzm" class-name="yzm-icon" />
             </span>
             <el-input
               ref="username"
@@ -427,5 +427,8 @@ $light_gray: #333333;
     opacity: 1;
     -moz-transform: translateX(0);
   }
+}
+.yzm-icon{
+  // color: red;
 }
 </style>

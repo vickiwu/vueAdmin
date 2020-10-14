@@ -20,7 +20,7 @@ service.interceptors.request.use(
       // 让每个请求都携带令牌
       // ['X-Token']是自定义标头键
       // 请根据实际情况进行修改
-      config.headers['Authorization'] = `Bearer${getToken()}`
+      config.headers['Authorization'] = `Bearer ${getToken()}`
     }
     return config
   },
@@ -50,16 +50,21 @@ service.interceptors.response.use(
       Message({
         message: res.msg || '错误',
         type: 'error',
-        duration: 2 * 1000
+        duration: 5 * 1000
       })
 
-      return Promise.reject(new Error(res.msg || '错误'))
+      return Promise.reject(res.msg || '错误')
     } else {
+      // Message({
+      //   message: res.msg || '成功',
+      //   type: 'success',
+      //   duration: 2 * 1000
+      // })
       return res
     }
   },
   error => {
-    console.log('err' + error) // for debug
+    console.log('err---' + error) // for debug
     Message({
       message: error.message,
       type: 'error',

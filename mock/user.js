@@ -119,7 +119,7 @@ module.exports = [
             },
             {
               'redirect': '/auth/client',
-              'path': ' /auth',
+              'path': '/auth',
               'component': 'Layout',
               'children': [
                 {
@@ -419,7 +419,7 @@ module.exports = [
               'id': 0
             },
             {
-              'path': ' /auth',
+              'path': '/auth',
               'children': [
                 {
                   'path': '/auth/client',
@@ -670,7 +670,7 @@ module.exports = [
               'showSubMenu': false
             }
           ],
-          'menuType': 'left'
+          'menuType': 'top'
         }
       }
     }
