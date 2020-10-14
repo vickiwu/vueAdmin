@@ -2,7 +2,7 @@ import request from '@/utils/request'
 import { getToken } from '@/utils/auth'
 import qs from 'qs'
 const Token = getToken()
-const organize={
+const org={
   // 表格列表
  getTableList(params) {
   return request({
@@ -98,6 +98,48 @@ saveDD(params) {
   })
 },
 
-
+/////////////////////////////// 人员管理接口//////////////////////////////////////////
+getDepartmentTree(params) {//tree接口
+    return request({
+      url: 'api-user/depts/getDeptAndUserListById',
+      method: 'get',
+      params
+    })
+  },
+  getUserList(params) {//人员列表
+    return request({
+      url: 'api-user/orgManages/getAllUserList',
+      method: 'get',
+      params
+    })
+  },
+  saveOrgUser(params) {//保存机构人员（type为1）
+    return request({
+      url: 'api-user/orgManages/saveOrgUser',
+      method: 'post',
+      data:params
+    })
+  },
+  saveDepartmentUser(params) {//保存部门人员（type为2）
+    return request({
+      url: 'api-user/depts/saveDepartmentUser',
+      method: 'post',
+      data:params
+    })
+  },
+  getLawEnforcementByUser(params) {//获取人员信息
+    return request({
+      url: 'api-user/orgManages/getLawEnforcementByUserId',
+      method: 'get',
+      params
+    })
+  },
+  saveLawEnforcement(params) {//保存人员信息
+    return request({
+      url: 'api-user/orgManages/saveLawEnforcement',
+      method: 'post',
+      data:params
+    })
+  },
 }
-export default organize
+export default org

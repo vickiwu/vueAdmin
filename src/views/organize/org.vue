@@ -13,9 +13,10 @@
           >搜索</el-button
         >
       </el-form-item>
-      <!-- v-permission="['organize:oper:add']" -->
+     
       <el-form-item>
         <el-button
+          v-permission="['organize:oper:add']"
           type="primary"
           icon="el-icon-plus"
           @click="modalShow('new', '')"
@@ -225,7 +226,7 @@
     
 
 <script>
-import organize from "@/api/organize";
+import org from "@/api/organize/org";
 import { mapGetters } from "vuex";
 
 export default {
@@ -278,7 +279,7 @@ export default {
   methods: {
     getData(name, orgId) {
       var that = this;
-      organize.getTableList({ orgName: name, orgId: orgId }).then((response) => {
+      org.getTableList({ orgName: name, orgId: orgId }).then((response) => {
         this.tableData = response.data;
       });
     },
@@ -287,7 +288,7 @@ export default {
     },
   //  懒加载表格树
    load(tree, treeNode, resolve) {
-      organize.getTableList({ orgName: "", orgId: tree.orgId }).then((response) => {
+      org.getTableList({ orgName: "", orgId: tree.orgId }).then((response) => {
         resolve(response.data);
       });
     },
@@ -326,7 +327,7 @@ export default {
             cancelButtonText: "取消",
             type: "warning",
           }).then(() => {
-             organize.del({"orgId":data.orgId}).then((response) => {
+             org.del({"orgId":data.orgId}).then((response) => {
                this.$message({
                   type: "success",
                   message: "删除成功!",
@@ -341,26 +342,26 @@ export default {
     },
     onUser(data) {
       // this.$router.push({path:'/organize/userDetail',query:{orgId:data.orgId}})
-       this.$router.push({path:'/organize/userDetail'})
+       this.$router.push({path:'/organize/userDetail',query:{orgId:data.orgId}})
     },
     // 机构类型列表
     getOrgTypeList(){
       var that = this;
-      organize.getOrgTypeList().then((response) => {
+      org.getOrgTypeList().then((response) => {
            this.orgTypeArry =  response.data;
       });
     },
      // 机构类型列表
     getOrgTopList(){
       var that = this;
-      organize.getOrgTopList().then((response) => {
+      org.getOrgTopList().then((response) => {
            this.orgTopArry.push(response.data);
          });
     },
     //机构级别列表
     getOrgLevelList(){
       var that = this;
-      organize.getOrgLevelList().then((response) => {
+      org.getOrgLevelList().then((response) => {
             this.orgLevelArry =  response.data;
          });
     },
@@ -374,7 +375,7 @@ export default {
     },
     //编辑获取数据
     getEditData(data){
-       organize.getEditData({"orgId":data.orgId}).then((response) => {
+       org.getEditData({"orgId":data.orgId}).then((response) => {
         var tempData = response.data;
         this.TopOrgLable = tempData.pOrgName;
         this.ruleForm = {...response.data};
@@ -390,7 +391,7 @@ export default {
             cancelButtonText: "取消",
             type: "warning",
           }).then(() => {
-            organize.save(this.ruleForm).then((response) => {
+            org.save(this.ruleForm).then((response) => {
               this.$message({
                 type: "success",
                 message: "保存成功!",

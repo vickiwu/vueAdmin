@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import organize from "@/api/organize";
+import org from "@/api/organize/org";
 export default {
   data() {
     return {
@@ -148,7 +148,7 @@ export default {
   methods: {
     getTreeData(id) {
       //获取树
-      organize.getBMTree({ orgId: id }).then((response) => {
+      org.getBMTree({ orgId: id }).then((response) => {
         console.log(response.data);
         this.treeData = response.data;
       });
@@ -156,7 +156,7 @@ export default {
     getResponsibilitiesData() {
       //获取部门职责数据
       var that = this;
-      organize.getResponsibilities().then((response) => {
+      org.getResponsibilities().then((response) => {
         console.log(response.data);
         that.responsibilitiesData = response.data;
       });
@@ -164,7 +164,7 @@ export default {
     getEditData(id) {
       //根据部门id获取部门信息(编辑)
       // var that = this;
-      organize.getEditData({ deptId: id }).then((response) => {
+      org.getEditData({ deptId: id }).then((response) => {
         var data = response.data;
         this.TopOrgLable = data.pdeptName; //上级部门文字
         this.ruleForm.deptName = data.deptName;
@@ -205,7 +205,7 @@ export default {
             cancelButtonText: "取消",
             type: "warning",
           }).then(() => {
-            organize.delBM({ deptId: id }).then((response) => {
+            org.delBM({ deptId: id }).then((response) => {
               this.$message({
                 type: "success",
                 message: "删除成功!",
@@ -225,7 +225,7 @@ export default {
             type: "warning",
           }).then(() => {
               this.ruleForm.deptDuty = this.ruleForm.deptDuty.join()
-            organize.saveDD(this.ruleForm).then((response) => {
+            org.saveDD(this.ruleForm).then((response) => {
               this.$message({
                 type: "success",
                 message: "保存成功!",
