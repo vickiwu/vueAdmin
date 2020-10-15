@@ -1,7 +1,11 @@
 <template>
   <section>
     <div class="condition">
-      <el-select v-model="value" placeholder="请选择对应列" style="margin-right: 10px;">
+      <el-select
+        v-model="value"
+        placeholder="请选择对应列"
+        style="margin-right: 10px;"
+      >
         <el-option
           v-for="item in options"
           :key="item.value"
@@ -9,35 +13,117 @@
           :value="item.value"
         />
       </el-select>
-      <el-input v-model="input" placeholder="请输入内容" class="setWidth" />
+      <el-input
+        v-model="input"
+        placeholder="请输入内容"
+        class="setWidth"
+      />
       <div class="right">
-        <el-button type="success" icon="el-icon-search">搜索</el-button>
-        <el-button v-permission="['right:user:add']" type="primary" icon="el-icon-plus" @click="dialogFormVisible = true">新增</el-button>
-        <el-button v-permission="['right:user:export']" type="warning" icon="el-icon-download">导出</el-button>
+        <el-button
+          type="success"
+          icon="el-icon-search"
+        >搜索</el-button>
+        <el-button
+          v-permission="['right:user:add']"
+          type="primary"
+          icon="el-icon-plus"
+          @click="dialogFormVisible = true"
+        >新增</el-button>
+        <el-button
+          v-permission="['right:user:export']"
+          type="warning"
+          icon="el-icon-download"
+        >导出</el-button>
       </div>
     </div>
-    <el-table class="table" :data="tableData" border :height="tableHeight" style="width: 100%">
-      <el-table-column type="index" sortable label="序号" width="50" />
-      <el-table-column prop="headImgUrl" sortable label="头像" />
-      <el-table-column prop="id" sortable label="用户ID" />
-      <el-table-column prop="username" sortable label="登录账号" />
-      <el-table-column prop="password" sortable label="登录密码" />
-      <el-table-column prop="personName" sortable label="用户名称" />
-      <el-table-column prop="phone" sortable label="手机号码" />
-      <el-table-column prop="type" sortable label="类型" />
-      <el-table-column prop="enabled" sortable label="状态">
+    <el-table
+      class="table"
+      :data="tableData"
+      border
+      :height="tableHeight"
+      style="width: 100%"
+    >
+      <el-table-column
+        type="index"
+        sortable
+        label="序号"
+        width="50"
+      />
+      <el-table-column
+        prop="headImgUrl"
+        sortable
+        label="头像"
+      />
+      <el-table-column
+        prop="id"
+        sortable
+        label="用户ID"
+      />
+      <el-table-column
+        prop="username"
+        sortable
+        label="登录账号"
+      />
+      <el-table-column
+        prop="password"
+        sortable
+        label="登录密码"
+      />
+      <el-table-column
+        prop="personName"
+        sortable
+        label="用户名称"
+      />
+      <el-table-column
+        prop="phone"
+        sortable
+        label="手机号码"
+      />
+      <el-table-column
+        prop="type"
+        sortable
+        label="类型"
+      />
+      <el-table-column
+        prop="enabled"
+        sortable
+        label="状态"
+      >
         <el-switch
           v-model="tableData.enabled"
           active-color="#13ce66"
           inactive-color="#ff4949"
         />
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="180">
+      <el-table-column
+        fixed="right"
+        label="操作"
+        width="180"
+      >
         <template slot-scope="scope">
-          <el-button v-permission="['right:user:info']" type="text" size="small" @click="handleClick(scope.$index,scope.row)">查看</el-button>
-          <el-button v-permission="['right:user:update']" type="text" size="small" @click="handleUpdate(scope.$index, scope.row)">修改</el-button>
-          <el-button v-permission="['right:user:del']" type="text" size="small" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-          <el-button v-permission="['right:user:list']" type="text" size="small">黑白名单</el-button>
+          <el-button
+            v-permission="['right:user:info']"
+            type="text"
+            size="small"
+            @click="handleClick(scope.$index,scope.row)"
+          >查看</el-button>
+          <el-button
+            v-permission="['right:user:update']"
+            type="text"
+            size="small"
+            @click="handleUpdate(scope.$index, scope.row)"
+          >修改</el-button>
+          <el-button
+            v-permission="['right:user:del']"
+            type="text"
+            size="small"
+            @click="handleDelete(scope.$index, scope.row)"
+          >删除</el-button>
+          <el-button
+            v-permission="['right:user:list']"
+            type="text"
+            size="small"
+          >黑白名单</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -49,7 +135,10 @@
       />
     </div>
     <!-- Form 新增修改-->
-    <el-dialog title="用户管理" :visible.sync="dialogFormVisible">
+    <el-dialog
+      title="用户管理"
+      :visible.sync="dialogFormVisible"
+    >
       <el-form
         ref="ruleForm"
         :model="ruleForm"
@@ -57,40 +146,81 @@
         label-width="100px"
         class="demo-ruleForm"
       >
-        <el-row :gutter="20" style="margin:0">
+        <el-row
+          :gutter="20"
+          style="margin:0"
+        >
           <el-col :span="12">
-            <el-form-item label="登录账号" prop="username">
-              <el-input v-model="ruleForm.username" placeholder="请输入登录账号" />
+            <el-form-item
+              label="登录账号"
+              prop="username"
+            >
+              <el-input
+                v-model="ruleForm.username"
+                placeholder="请输入登录账号"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="登录密码" prop="password" autocomplete="off">
-              <el-input v-model="ruleForm.password" type="password" placeholder="请输入登录密码" />
+            <el-form-item
+              label="登录密码"
+              prop="password"
+              autocomplete="off"
+            >
+              <el-input
+                v-model="ruleForm.password"
+                type="password"
+                placeholder="请输入登录密码"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="用户名称" prop="personName">
-              <el-input v-model="ruleForm.personName" placeholder="请输入用户名称" />
+            <el-form-item
+              label="用户名称"
+              prop="personName"
+            >
+              <el-input
+                v-model="ruleForm.personName"
+                placeholder="请输入用户名称"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="性别">
-              <el-radio-group v-model="ruleForm.sex" placeholder="请选择性别">
+              <el-radio-group
+                v-model="ruleForm.sex"
+                placeholder="请选择性别"
+              >
                 <el-radio label="男" />
                 <el-radio label="女" />
               </el-radio-group>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="用户类型" prop="type">
-              <el-select v-model="ruleForm.region" placeholder="请选择用户类型">
-                <el-option label="后台用户" value="shanghai" />
-                <el-option label="机构用户" value="beijing" />
+            <el-form-item
+              label="用户类型"
+              prop="type"
+            >
+              <el-select
+                v-model="ruleForm.region"
+                placeholder="请选择用户类型"
+              >
+                <el-option
+                  label="后台用户"
+                  value="shanghai"
+                />
+                <el-option
+                  label="机构用户"
+                  value="beijing"
+                />
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="是否多点" prop="isMorePoint">
+            <el-form-item
+              label="是否多点"
+              prop="isMorePoint"
+            >
               <el-radio-group v-model="ruleForm.isMorePoint">
                 <el-radio label="是" />
                 <el-radio label="否" />
@@ -98,37 +228,76 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="出生日期" prop="birthday">
-              <el-input v-model="ruleForm.birthday" placeholder="请输入出生日期" />
+            <el-form-item
+              label="出生日期"
+              prop="birthday"
+            >
+              <el-input
+                v-model="ruleForm.birthday"
+                placeholder="请输入出生日期"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="手机号码" prop="phone">
-              <el-input v-model="ruleForm.phone" placeholder="请输入手机号码" />
+            <el-form-item
+              label="手机号码"
+              prop="phone"
+            >
+              <el-input
+                v-model="ruleForm.phone"
+                placeholder="请输入手机号码"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="电子邮箱" prop="eMail">
-              <el-input v-model="ruleForm.eMail" placeholder="请输入电子邮箱" />
+            <el-form-item
+              label="电子邮箱"
+              prop="eMail"
+            >
+              <el-input
+                v-model="ruleForm.eMail"
+                placeholder="请输入电子邮箱"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="座机号码" prop="landLine">
-              <el-input v-model="ruleForm.landLine" placeholder="请输入座机号码" />
+            <el-form-item
+              label="座机号码"
+              prop="landLine"
+            >
+              <el-input
+                v-model="ruleForm.landLine"
+                placeholder="请输入座机号码"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="职务" prop="post">
-              <el-input v-model="ruleForm.post" placeholder="请输入职务" />
+            <el-form-item
+              label="职务"
+              prop="post"
+            >
+              <el-input
+                v-model="ruleForm.post"
+                placeholder="请输入职务"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="居住地址" prop="address">
-              <el-input v-model="ruleForm.address" placeholder="请输入居住地址" />
+            <el-form-item
+              label="居住地址"
+              prop="address"
+            >
+              <el-input
+                v-model="ruleForm.address"
+                placeholder="请输入居住地址"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="上传头像" prop="headImgUrl">
+            <el-form-item
+              label="上传头像"
+              prop="headImgUrl"
+            >
               <el-upload
                 class="avatar-uploader"
                 action="https://jsonplaceholder.typicode.com/posts/"
@@ -136,26 +305,45 @@
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload"
               >
-                <img v-if="imageUrl" :src="ruleForm.headImgUrl" class="avatar">
-                <i v-else class="el-icon-plus avatar-uploader-icon" />
+                <img
+                  v-if="imageUrl"
+                  :src="ruleForm.headImgUrl"
+                  class="avatar"
+                >
+                <i
+                  v-else
+                  class="el-icon-plus avatar-uploader-icon"
+                />
               </el-upload>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submitForm('ruleForm')">确 定</el-button>
+        <el-button
+          type="primary"
+          @click="submitForm('ruleForm')"
+        >确 定</el-button>
       </div>
     </el-dialog>
     <!-- Form 查看-->
-    <el-dialog title="用户管理" :visible.sync="dialogVisible">
+    <el-dialog
+      title="用户管理"
+      :visible.sync="dialogVisible"
+    >
       <el-form
         :model="row"
         label-width="100px"
         class="demo-ruleForm"
       >
-        <el-row :gutter="20" style="margin:0">
+        <el-row
+          :gutter="20"
+          style="margin:0"
+        >
           <el-col :span="6">
             <div>tu</div>
           </el-col>
@@ -227,7 +415,7 @@
 </template>
 
 <script>
-import { tableList } from '@/api/right/user'
+// import { tableList } from '@/api/right/user'
 export default {
   data() {
     return {
@@ -367,43 +555,43 @@ export default {
 }
 </script>
  <style lang='scss' scoped>
- section{
-   height:100vh;
- }
+section {
+  height: 100vh;
+}
 .setWidth {
   width: 180px;
 }
-.right{
+.right {
   float: right;
 }
-.condition{
-     clear: both;
-    margin-bottom: 15px;
-    width: 100%;
-    padding: 15px 20px;
-    border-bottom: 2px solid #409eff;
+.condition {
+  clear: both;
+  margin-bottom: 15px;
+  width: 100%;
+  padding: 15px 20px;
+  border-bottom: 2px solid #409eff;
 }
- .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
-    text-align: center;
-  }
-  .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
-  }
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
 </style>
