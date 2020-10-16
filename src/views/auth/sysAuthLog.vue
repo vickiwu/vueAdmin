@@ -34,6 +34,7 @@
         sortable="custom"
         align="center"
         header-align="center"
+        show-overflow-tooltip
         width="80"
       />
       <el-table-column
@@ -41,10 +42,11 @@
         sortable="custom"
         align="left"
         header-align="center"
-        width="300"
+        show-overflow-tooltip
+        width="150"
       >
         <template slot-scope="{ row }">
-          <span :title="row.ipAddress">{{ row.ipAddress }}</span>
+          <span>{{ row.ipAddress }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -52,9 +54,10 @@
         sortable="custom"
         align="left"
         header-align="center"
+        show-overflow-tooltip
       >
         <template slot-scope="{ row }">
-          <span :title="row.accessToken">{{ row.accessToken }}</span>
+          <span>{{ row.accessToken }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -62,9 +65,10 @@
         sortable="custom"
         align="left"
         header-align="center"
+        show-overflow-tooltip
       >
         <template slot-scope="{ row }">
-          <span :title="row.refreshToken">{{ row.refreshToken }}</span>
+          <span>{{ row.refreshToken }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -72,9 +76,10 @@
         sortable="custom"
         align="left"
         header-align="center"
+        show-overflow-tooltip
       >
         <template slot-scope="{ row }">
-          <span :title="row.clientName">{{ row.clientName }}</span>
+          <span>{{ row.clientName }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -82,9 +87,10 @@
         sortable="custom"
         align="left"
         header-align="center"
+        show-overflow-tooltip
       >
         <template slot-scope="{ row }">
-          <span :title="row.grantType">{{ row.grantType }}</span>
+          <span>{{ row.grantType }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -92,9 +98,10 @@
         sortable="custom"
         align="left"
         header-align="center"
+        show-overflow-tooltip
       >
         <template slot-scope="{ row }">
-          <span :title="row.userName">{{ row.userName }}</span>
+          <span>{{ row.userName }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -102,9 +109,10 @@
         sortable="custom"
         align="left"
         header-align="center"
+        show-overflow-tooltip
       >
         <template slot-scope="{ row }">
-          <span :title="row.authDateStr">{{ row.authDateStr }}</span>
+          <span>{{ row.authDateStr }}</span>
         </template>
       </el-table-column>
 
@@ -113,6 +121,7 @@
         width="300"
         align="right"
         header-align="center"
+        show-overflow-tooltip
       >
         <template slot-scope="{ row }">
           <div style="display: flex;justify-content: flex-end;">
