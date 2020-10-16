@@ -227,7 +227,7 @@
 </template>
 
 <script>
-import { tableList } from '@/api/right/user'
+// import { tableList } from '@/api/right/user'
 export default {
   data() {
     return {

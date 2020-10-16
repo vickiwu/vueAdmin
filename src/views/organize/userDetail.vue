@@ -191,7 +191,7 @@ export default {
     return {
       tableInputText: "",
       multipleSelection: [], //表格选中数组
-      isOrg: false,
+      isOrg: true,
       orgId: "",
       ruleForm: {
         cardNO: "",

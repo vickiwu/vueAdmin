@@ -30,7 +30,7 @@ getOrgTopList() {
 // 机构级别列表
 getOrgLevelList() {
   return request({
-    url: 'api-user/orgManages/getOrgLevel',
+    url: 'api-user/orgManages/getOrgLevelList',
     method: 'get'
   })
 },
