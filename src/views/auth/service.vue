@@ -43,7 +43,7 @@
         show-overflow-tooltip
         label="序号"
         type="index"
-        sortable="custom"
+        
         align="center"
         header-align="center"
         width="80"
@@ -51,7 +51,7 @@
       <el-table-column
         show-overflow-tooltip
         label="服务名称"
-        sortable="custom"
+        
         align="left"
         header-align="center"
       >
@@ -62,7 +62,7 @@
       <el-table-column
         show-overflow-tooltip
         label="服务路径"
-        sortable="custom"
+        
         align="left"
         header-align="center"
       >
@@ -73,7 +73,7 @@
       <el-table-column
         show-overflow-tooltip
         label="服务类型"
-        sortable="custom"
+        
         align="left"
         header-align="center"
       >
@@ -84,7 +84,7 @@
       <el-table-column
         show-overflow-tooltip
         label="创建时间"
-        sortable="custom"
+        
         align="left"
         header-align="center"
       >
@@ -95,7 +95,7 @@
       <el-table-column
         show-overflow-tooltip
         label="排序"
-        sortable="custom"
+        
         align="left"
         header-align="center"
       >

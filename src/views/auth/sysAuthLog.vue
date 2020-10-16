@@ -31,7 +31,7 @@
       <el-table-column
         label="序号"
         type="index"
-        sortable="custom"
+        
         align="center"
         header-align="center"
         show-overflow-tooltip
@@ -39,7 +39,7 @@
       />
       <el-table-column
         label="访问IP地址"
-        sortable="custom"
+        
         align="left"
         header-align="center"
         show-overflow-tooltip
@@ -51,7 +51,7 @@
       </el-table-column>
       <el-table-column
         label="AccessToken"
-        sortable="custom"
+        width="120"
         align="left"
         header-align="center"
         show-overflow-tooltip
@@ -62,7 +62,7 @@
       </el-table-column>
       <el-table-column
         label="RefreshToken"
-        sortable="custom"
+        width="120"
         align="left"
         header-align="center"
         show-overflow-tooltip
@@ -73,7 +73,7 @@
       </el-table-column>
       <el-table-column
         label="应用名称"
-        sortable="custom"
+        
         align="left"
         header-align="center"
         show-overflow-tooltip
@@ -84,7 +84,7 @@
       </el-table-column>
       <el-table-column
         label="授权方式"
-        sortable="custom"
+        
         align="left"
         header-align="center"
         show-overflow-tooltip
@@ -95,7 +95,7 @@
       </el-table-column>
       <el-table-column
         label="被授权账号"
-        sortable="custom"
+        
         align="left"
         header-align="center"
         show-overflow-tooltip
@@ -106,7 +106,7 @@
       </el-table-column>
       <el-table-column
         label="授权时间"
-        sortable="custom"
+        
         align="left"
         header-align="center"
         show-overflow-tooltip
