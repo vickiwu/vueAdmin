@@ -11,9 +11,9 @@
       </el-select>
       <el-input v-model="input" placeholder="请输入内容" class="setWidth" />
       <div class="right">
-        <el-button type="success" icon="el-icon-search">搜索</el-button>
-        <el-button v-permission="['right:user:add']" type="primary" icon="el-icon-plus" @click="dialogFormVisible = true">新增</el-button>
-        <el-button v-permission="['right:user:export']" type="warning" icon="el-icon-download">导出</el-button>
+        <el-button type="success" size="small" icon="el-icon-search">搜索</el-button>
+        <el-button v-permission="['right:user:add']" type="primary" size="small" icon="el-icon-plus" @click="dialogFormVisible = true">新增</el-button>
+        <el-button v-permission="['right:user:export']" type="warning" size="small" icon="el-icon-download">导出</el-button>
       </div>
     </div>
     <el-table class="table" :data="tableData" border :height="tableHeight" style="width: 100%">
@@ -32,22 +32,22 @@
           inactive-color="#ff4949"
         />
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="180">
+      <el-table-column fixed="right" label="操作" width="400">
         <template slot-scope="scope">
-          <el-button v-permission="['right:user:info']" type="text" size="small" @click="handleClick(scope.$index,scope.row)">查看</el-button>
-          <el-button v-permission="['right:user:update']" type="text" size="small" @click="handleUpdate(scope.$index, scope.row)">修改</el-button>
-          <el-button v-permission="['right:user:del']" type="text" size="small" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-          <el-button v-permission="['right:user:list']" type="text" size="small">黑白名单</el-button>
+          <el-button v-permission="['right:user:info']" type="primary" size="mini" icon="el-icon-share" @click="handleClick(scope.$index,scope.row)">查看</el-button>
+          <el-button v-permission="['right:user:update']" type="warning" size="mini" icon="el-icon-edit" @click="handleUpdate(scope.$index, scope.row)">修改</el-button>
+          <el-button v-permission="['right:user:del']" type="danger" size="mini" icon="el-icon-delete" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+          <el-button v-permission="['right:user:list']" type="primary" size="mini" icon="el-icon-s-custom">黑白名单</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <div class="block">
-      <span class="demonstration">页数较少时的效果</span>
-      <el-pagination
-        layout="prev, pager, next"
-        :total="50"
-      />
-    </div>
+    <el-pagination
+      background
+      layout="total, prev, pager, next"
+      :total="total"
+      :page-size="pageSize"
+      @current-change="handleCurrentChange"
+    />
     <!-- Form 新增修改-->
     <el-dialog title="用户管理" :visible.sync="dialogFormVisible">
       <el-form
@@ -160,63 +160,63 @@
             <div>tu</div>
           </el-col>
           <el-col :span="18">
-            <el-form-item label="用户标识">
+            <el-form-item label="用户标识：">
               {{ row.name }}
             </el-form-item>
-            <el-form-item label="登录账号">
+            <el-form-item label="登录账号：">
               {{ row.username }}
             </el-form-item>
-            <el-form-item label="手机号码">
+            <el-form-item label="手机号码：">
               {{ row.phone }}
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="性别">
+            <el-form-item label="性别：">
               {{ row.sex }}
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="出生日期">
+            <el-form-item label="出生日期：">
               {{ row.birthday }}
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="座机号码">
+            <el-form-item label="座机号码：">
               {{ row.landLine }}
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="是否多点">
+            <el-form-item label="是否多点：">
               {{ row.isMorePoint==1?'是':'否' }}
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="用户类型">
+            <el-form-item label="用户类型：">
               {{ row.region }}
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="电子邮箱">
+            <el-form-item label="电子邮箱：">
               {{ row.eMail }}
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="所属单位">
+            <el-form-item label="所属单位：">
               {{ row.post }}
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="居住地址">
+            <el-form-item label="居住地址：">
               {{ row.address }}
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="创建时间">
+            <el-form-item label="创建时间：">
               {{ row.createTime }}
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="更新时间">
+            <el-form-item label="更新时间：">
               {{ row.updateTime }}
             </el-form-item>
           </el-col>
@@ -341,9 +341,9 @@ export default {
     },
     // 获取表格数据
     fetchTableData() {
-      tableList().then(response => {
-        // 嘻嘻嘻
-      })
+      // tableList().then(response => {
+      //   // 嘻嘻嘻
+      // })
     },
     // 上传
     handleAvatarSuccess(res, file) {
@@ -361,6 +361,17 @@ export default {
         this.$message.error('上传头像图片大小不能超过 2MB!')
       }
       return isJPG && isLt2M
+    },
+    // 分页事件
+    handleCurrentChange(page) {
+      this.page = page
+      this.listLoading = true
+      // authApi.getPageResult({ limit: this.pageSize, page }).then((response) => {
+      //   const { data } = response
+      //   this.list = data.data
+      //   this.total = data.count
+      //   this.listLoading = false
+      // }).catch(error => error)
     }
 
   }

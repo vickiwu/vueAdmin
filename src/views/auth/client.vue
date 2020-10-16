@@ -3,7 +3,7 @@
     <!-- <small>认证中心-应用管理页面</small> -->
     <div class="filter-container">
       <el-input
-        v-model="searchWords"
+        v-model="clientName"
         placeholder="请输入关键字"
         style="width: 200px;margin-right: 10px;"
         class="filter-item"
@@ -13,6 +13,7 @@
         size="small"
         type="success"
         icon="el-icon-search"
+        @click="loadTable()"
       >
         搜索
       </el-button>
@@ -363,7 +364,7 @@ export default {
   data() {
     return {
       dialogTitle: '新增应用',
-      searchWords: '',
+      clientName: '',
       listLoading: true,
       dialogFormVisible: false,
       dialogApply: false,
@@ -490,14 +491,13 @@ export default {
   },
   methods: {
     async loadTable(pageSize, page) {
-      await authApi.getPageResult({ limit: this.pageSize, page: this.page }).then((response) => {
+      await authApi.getPageResult({ limit: this.pageSize, page: this.page, clientName: this.clientName }).then((response) => {
         const { data } = response
         this.list = data.data
         this.total = data.count
         this.listLoading = false
       }).catch(error => error)
     },
-
     handleClick(tab, event) {
       console.log(tab, event)
     },
