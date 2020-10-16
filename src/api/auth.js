@@ -74,9 +74,53 @@ const auth = {
       method: 'delete',
       data
     })
+  },
+
+  // 密钥管理
+  getSysSecretPageResult(params) {
+    return request({
+      url: '/api-auth/sysSecret/getPageResult',
+      method: 'get',
+      params
+    })
+  },
+  deleteSysSecret(data) {
+    return request({
+      url: '/api-auth/sysSecret/deleteSysSecret',
+      method: 'delete',
+      data
+    })
+  },
+  saveSysSecret(data) {
+    return request({
+      url: '/api-auth/sysSecret/saveSysSecret',
+      method: 'post',
+      data
+    })
+  },
+  findById(params) {
+    return request({
+      url: '/api-auth/sysSecret/findById',
+      method: 'get',
+      params
+    })
+  },
+  // 授权记录
+  getSysAuthPageResult(params) {
+    return request({
+      url: '/api-back/sysAuthLogBack/getPageResult',
+      method: 'get',
+      params
+    })
+  },
+  deleteSysAuthLog(data) {
+    return request({
+      url: '/api-auth/sysAuthLog/deleteSysAuthLog',
+      method: 'delete',
+      data
+    })
   }
 
-  //
 }
 // 引用使用.xxx方法调用
 export default auth

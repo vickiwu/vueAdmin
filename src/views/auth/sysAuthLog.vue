@@ -3,7 +3,7 @@
     <!-- <small>认证中心-应用管理页面</small> -->
     <div class="filter-container">
       <el-input
-        v-model="userName"
+        v-model="clientName"
         placeholder="请输入关键字"
         style="width: 200px;margin-right: 10px;"
         class="filter-item"
@@ -37,54 +37,44 @@
         width="80"
       />
       <el-table-column
-        label="令牌"
+        label="访问IP地址"
         sortable="custom"
         align="left"
         header-align="center"
         width="300"
       >
         <template slot-scope="{ row }">
-          <span :title="row.tokenValue">{{ row.tokenValue }}</span>
+          <span :title="row.ipAddress">{{ row.ipAddress }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        label="用户ID"
+        label="AccessToken"
         sortable="custom"
         align="left"
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span :title="row.id">{{ row.id }}</span>
+          <span :title="row.accessToken">{{ row.accessToken }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        label="登录账户"
+        label="RefreshToken"
         sortable="custom"
         align="left"
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span :title="row.userName">{{ row.userName }}</span>
+          <span :title="row.refreshToken">{{ row.refreshToken }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        label="应用标识"
+        label="应用名称"
         sortable="custom"
         align="left"
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span :title="row.clientId">{{ row.clientId }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="类型"
-        sortable="custom"
-        align="left"
-        header-align="center"
-      >
-        <template slot-scope="{ row }">
-          <span :title="row.tokenType">{{ row.tokenType }}</span>
+          <span :title="row.clientName">{{ row.clientName }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -98,13 +88,23 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="过期时间"
+        label="被授权账号"
         sortable="custom"
         align="left"
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span :title="row.expiresDate">{{ row.expiresDate }}</span>
+          <span :title="row.userName">{{ row.userName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="授权时间"
+        sortable="custom"
+        align="left"
+        header-align="center"
+      >
+        <template slot-scope="{ row }">
+          <span :title="row.authDateStr">{{ row.authDateStr }}</span>
         </template>
       </el-table-column>
 
@@ -141,20 +141,26 @@
       @current-change="handleCurrentChange"
     />
     <el-dialog
-      title="查看令牌"
+      title="查看授权记录"
       :visible.sync="dialogFormVisible"
     >
       <el-form
         ref="tokenForm"
         label-width="100px"
       >
-        <el-form-item label="验证令牌：">
-          {{ tokenForm.tokenValue }}
+        <el-form-item label="访问令牌：">
+          {{ tokenForm.accessToken }}
+        </el-form-item>
+        <el-form-item label="刷新令牌：">
+          {{ tokenForm.refreshToken }}
+        </el-form-item>
+        <el-form-item label="授权码：">
+          {{ tokenForm.authCode }}
         </el-form-item>
         <el-row>
           <el-col :span="12">
             <el-form-item label="用户ID：">
-              {{ tokenForm.id }}
+              {{ tokenForm.userId }}
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -170,18 +176,6 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="类型：">
-              {{ tokenForm.tokenType }}
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="应用标识：">
-              {{ tokenForm.clientId }}
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
             <el-form-item label="授权方式：">
               {{ tokenForm.grantType }}
             </el-form-item>
@@ -189,13 +183,25 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="创建时间：">
-              {{ tokenForm.createTimeStr }}
+            <el-form-item label="应用名称： ">
+              {{ tokenForm.clientName }}
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="有效期限：">
-              {{ tokenForm.expiresDate }}
+            <el-form-item label="访问IP：">
+              {{ tokenForm.ipAddress }}
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="授权时间：">
+              {{ tokenForm.authDateStr }}
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="失效时间： ">
+              {{ tokenForm.expireDateStr }}
             </el-form-item>
           </el-col>
         </el-row>
@@ -213,7 +219,7 @@ import { Message } from 'element-ui'
 export default {
   data() {
     return {
-      userName: '',
+      clientName: '',
       listLoading: true,
       dialogFormVisible: false,
       dialogApply: false,
@@ -222,15 +228,18 @@ export default {
       pageSize: 5,
       total: 0,
       tokenForm: {
-        tokenValue: '',
-        id: '',
+        accessToken: '',
+        refreshToken: '',
+        authCode: '',
+        userId: '',
         userName: '',
         personName: '',
-        tokenType: '',
         grantType: '',
-        clientId: '',
-        expiresDate: '',
-        createTimeStr: ''
+        clientName: '',
+        ipAddress: '',
+        authDateStr: '',
+        expireDateStr: ''
+
       }
 
     }
@@ -243,7 +252,7 @@ export default {
   },
   methods: {
     async loadTable(pageSize, page) {
-      await authApi.getTokenList({ limit: this.pageSize, page: this.page, userName: this.userName }).then((response) => {
+      await authApi.getSysAuthPageResult({ limit: this.pageSize, page: this.page, clientName: this.clientName }).then((response) => {
         const { data } = response
         this.list = data.data
         this.total = data.count
@@ -262,7 +271,7 @@ export default {
       } else if (item === '删除') {
         this.$confirm('确认删除吗？')
           .then(_ => {
-            authApi.removeToken({ id: row.id }).then((response) => {
+            authApi.deleteSysAuthLog({ id: row.logId }).then((response) => {
               Message({
                 message: response.msg,
                 type: 'success',
