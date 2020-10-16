@@ -10,7 +10,7 @@
       />
       <el-button
         class=""
-        size="small"
+        size="small-dd"
         type="success"
         icon="el-icon-search"
         @click="loadTable()"
