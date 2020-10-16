@@ -10,7 +10,7 @@
       />
       <el-button
         class=""
-        size="small"
+        size="small-dd"
         type="success"
         icon="el-icon-search"
         @click="loadTable()"
@@ -29,6 +29,7 @@
       style="width: 100%;margin: 10px 0;"
     >
       <el-table-column
+        show-overflow-tooltip
         label="序号"
         type="index"
         sortable="custom"
@@ -37,6 +38,7 @@
         width="80"
       />
       <el-table-column
+        show-overflow-tooltip
         label="令牌"
         sortable="custom"
         align="left"
@@ -44,71 +46,78 @@
         width="300"
       >
         <template slot-scope="{ row }">
-          <span :title="row.tokenValue">{{ row.tokenValue }}</span>
+          <span>{{ row.tokenValue }}</span>
         </template>
       </el-table-column>
       <el-table-column
+        show-overflow-tooltip
         label="用户ID"
         sortable="custom"
         align="left"
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span :title="row.id">{{ row.id }}</span>
+          <span>{{ row.id }}</span>
         </template>
       </el-table-column>
       <el-table-column
+        show-overflow-tooltip
         label="登录账户"
         sortable="custom"
         align="left"
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span :title="row.userName">{{ row.userName }}</span>
+          <span>{{ row.userName }}</span>
         </template>
       </el-table-column>
       <el-table-column
+        show-overflow-tooltip
         label="应用标识"
         sortable="custom"
         align="left"
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span :title="row.clientId">{{ row.clientId }}</span>
+          <span>{{ row.clientId }}</span>
         </template>
       </el-table-column>
       <el-table-column
+        show-overflow-tooltip
         label="类型"
         sortable="custom"
         align="left"
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span :title="row.tokenType">{{ row.tokenType }}</span>
+          <span>{{ row.tokenType }}</span>
         </template>
       </el-table-column>
       <el-table-column
+        show-overflow-tooltip
         label="授权方式"
         sortable="custom"
         align="left"
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span :title="row.grantType">{{ row.grantType }}</span>
+          <span>{{ row.grantType }}</span>
         </template>
       </el-table-column>
       <el-table-column
+        show-overflow-tooltip
         label="过期时间"
         sortable="custom"
         align="left"
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span :title="row.expiresDate">{{ row.expiresDate }}</span>
+          <span>{{ row.expiresDate }}</span>
         </template>
       </el-table-column>
 
       <el-table-column
+        show-overflow-tooltip
         label="操作"
         width="300"
         align="right"

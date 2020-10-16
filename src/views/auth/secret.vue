@@ -37,6 +37,7 @@
       style="width: 100%;margin: 10px 0;"
     >
       <el-table-column
+        show-overflow-tooltip
         label="序号"
         type="index"
         sortable="custom"
@@ -45,6 +46,7 @@
         width="80"
       />
       <el-table-column
+        show-overflow-tooltip
         label="appId"
         sortable="custom"
         align="left"
@@ -55,6 +57,7 @@
         </template>
       </el-table-column>
       <el-table-column
+        show-overflow-tooltip
         label="appSecret"
         sortable="custom"
         align="left"
@@ -65,6 +68,7 @@
         </template>
       </el-table-column>
       <el-table-column
+        show-overflow-tooltip
         label="类型"
         sortable="custom"
         align="left"
@@ -75,6 +79,7 @@
         </template>
       </el-table-column>
       <el-table-column
+        show-overflow-tooltip
         label="描述"
         sortable="custom"
         align="left"
@@ -85,6 +90,7 @@
         </template>
       </el-table-column>
       <el-table-column
+        show-overflow-tooltip
         label="生效日期"
         sortable="custom"
         align="left"
@@ -95,6 +101,7 @@
         </template>
       </el-table-column>
       <el-table-column
+        show-overflow-tooltip
         label="到期日期"
         sortable="custom"
         align="left"
@@ -106,6 +113,7 @@
       </el-table-column>
 
       <el-table-column
+        show-overflow-tooltip
         label="操作"
         width="300"
         align="right"

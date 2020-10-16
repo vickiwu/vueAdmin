@@ -40,6 +40,7 @@
       style="width: 100%;margin: 10px 0;"
     >
       <el-table-column
+        show-overflow-tooltip
         label="序号"
         type="index"
         sortable="custom"
@@ -48,6 +49,7 @@
         width="80"
       />
       <el-table-column
+        show-overflow-tooltip
         label="服务名称"
         sortable="custom"
         align="left"
@@ -58,6 +60,7 @@
         </template>
       </el-table-column>
       <el-table-column
+        show-overflow-tooltip
         label="服务路径"
         sortable="custom"
         align="left"
@@ -68,6 +71,7 @@
         </template>
       </el-table-column>
       <el-table-column
+        show-overflow-tooltip
         label="服务类型"
         sortable="custom"
         align="left"
@@ -78,6 +82,7 @@
         </template>
       </el-table-column>
       <el-table-column
+        show-overflow-tooltip
         label="创建时间"
         sortable="custom"
         align="left"
@@ -88,6 +93,7 @@
         </template>
       </el-table-column>
       <el-table-column
+        show-overflow-tooltip
         label="排序"
         sortable="custom"
         align="left"
@@ -99,6 +105,7 @@
       </el-table-column>
 
       <el-table-column
+        show-overflow-tooltip
         label="操作"
         width="300"
         align="right"
