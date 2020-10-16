@@ -9,7 +9,7 @@
         ></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" @click="onSubmit"
+        <el-button type="primary" icon="el-icon-search" size="small" @click="onSubmit"
           >搜索</el-button
         >
       </el-form-item>
@@ -18,6 +18,7 @@
         <el-button
           v-permission="['organize:oper:add']"
           type="primary"
+          size="small"
           icon="el-icon-plus"
           @click="modalShow('new', '')"
           >新增</el-button
@@ -25,6 +26,7 @@
       </el-form-item>
     </el-form>
     <el-table
+    class="auth-table"
       :data="tableData"
       style="width: 100%"
       row-key="orgId"
@@ -61,14 +63,12 @@
             type="success"
             icon="el-icon-plus"
             size="mini"
-            style="padding: 7px"
             @click="modalShow('add', scope.row)"
             >添加</el-button
           >
           <el-button
             icon="el-icon-edit"
             size="mini"
-            style="padding: 7px"
             @click="modalShow('edit', scope.row)"
             >修改</el-button
           >
@@ -76,7 +76,6 @@
             type="danger"
             icon="el-icon-delete"
             size="mini"
-            style="padding: 7px"
             @click="onDel(scope.row)"
             >删除</el-button
           >
@@ -84,7 +83,6 @@
             type="primary"
             icon="el-icon-search"
             size="mini"
-            style="padding: 7px"
             @click="onBM(scope.row)"
             >部门</el-button
           >
@@ -92,7 +90,6 @@
             type="primary"
             icon="el-icon-user"
             size="mini"
-            style="padding: 7px"
             @click="onUser(scope.row)"
             >人员</el-button
           >
@@ -367,7 +364,6 @@ export default {
     },
     // 下拉树方法
     handleClcik(data) {
-      console.log(data)
       var that = this;
       //let res = this.$refs.tree.getCheckedNodes(false, true); //true，1. 是否只是叶子节点 2.选择的时候不包含父节点）
        this.ruleForm.TopOrg = data.orgId;
@@ -418,10 +414,11 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-	// ::v-deep .el-input__inner{
-  //       width: 205px !important;
-  //   }
-    // ::v-deep .el-select-dropdown__item,.selected,.hover{
-    //     padding:0 !important;
-    // }
+	.auth-table {
+    .el-button--mini,
+    .el-button--mini.is-round {
+      padding: 5px 10px;
+    }
+
+  }
 </style>
