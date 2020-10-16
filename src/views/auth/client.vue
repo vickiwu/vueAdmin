@@ -43,9 +43,11 @@
         sortable="custom"
         align="center"
         header-align="center"
+        show-overflow-tooltip
         width="80"
       />
       <el-table-column
+        show-overflow-tooltip
         label="应用标识"
         sortable="custom"
         align="left"
@@ -53,10 +55,11 @@
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span :title="row.clientId">{{ row.clientId }}</span>
+          <span>{{ row.clientId }}</span>
         </template>
       </el-table-column>
       <el-table-column
+        show-overflow-tooltip
         label="应用名称"
         sortable="custom"
         align="left"
@@ -64,23 +67,25 @@
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span :title="row.clientName">{{ row.clientName }}</span>
+          <span>{{ row.clientName }}</span>
         </template>
       </el-table-column>
       <el-table-column
+        show-overflow-tooltip
         label="应用秘钥"
         sortable="custom"
         align="left"
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span :title="row.clientSecret">{{ row.clientSecret }}</span>
+          <span>{{ row.clientSecret }}</span>
           <!-- <el-tooltip effect="light" :visible-arrow="false" :content="row.clientSecret" placement="bottom-start">
             <span>{{ row.clientSecret }}</span>
           </el-tooltip> -->
         </template>
       </el-table-column>
       <el-table-column
+        show-overflow-tooltip
         label="回调地址"
         sortable="custom"
         align="left"
@@ -88,21 +93,23 @@
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span :title="row.webServerRedirectUri">{{ row.webServerRedirectUri }}</span>
+          <span>{{ row.webServerRedirectUri }}</span>
         </template>
       </el-table-column>
       <el-table-column
+        show-overflow-tooltip
         label="授权方式"
         sortable="custom"
         align="left"
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span :title="row.authorizedGrantTypes">{{ row.authorizedGrantTypes }}</span>
+          <span>{{ row.authorizedGrantTypes }}</span>
         </template>
       </el-table-column>
 
       <el-table-column
+        show-overflow-tooltip
         label="操作"
         width="300"
         align="right"
