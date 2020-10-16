@@ -17,3 +17,6 @@ tests/**/coverage/
 *.ntvs*
 *.njsproj
 *.sln
+# 开发配置
+.env.development
+.env.production
