@@ -1,5 +1,5 @@
 <template>
-  <div style="height:100%;width:100%;">
+  <div style="height:100%;width:100%; overflow: hidden;">
     <!-- <p v-html="html" /> -->
     <iframe :src="url" frameborder="0" height="100%" width="100%" name="www" />
 
