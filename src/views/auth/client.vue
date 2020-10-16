@@ -579,15 +579,8 @@ export default {
 </script>
  <style lang="scss">
 .auth-table {
-  .el-button--mini,
-  .el-button--mini.is-round {
+  .el-button--mini,.el-button--mini.is-round {
     padding: 5px 10px;
-  }
-  .cell {
-    span {
-      word-break: initial;
-    }
-
   }
 }
 
