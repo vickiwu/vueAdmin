@@ -10,10 +10,8 @@
         />
       </el-select>
       <el-input v-model="input" placeholder="请输入内容" class="setWidth" />
-      <div class="right">
-        <el-button type="success" size="small" icon="el-icon-search">搜索</el-button>
-        <el-button v-permission="['right:role:add']" type="primary" size="small" icon="el-icon-plus" @click="dialogFormVisible = true">新增</el-button>
-      </div>
+      <el-button type="success" size="small" icon="el-icon-search" style="margin-left: 10px;">搜索</el-button>
+      <el-button v-permission="['right:role:add']" type="primary" size="small" icon="el-icon-plus" @click="dialogFormVisible = true">新增</el-button>
       <el-table class="table" :data="tableData" border :height="tableHeight" style="width: 100%">
         <el-table-column type="index" sortable label="序号" width="50" />
         <el-table-column prop="code" sortable label="角色编码" />
@@ -22,7 +20,7 @@
         <el-table-column prop="description" sortable label="描述" />
         <el-table-column prop="clientId" sortable label="所属应用" />
         <el-table-column prop="createTime" sortable label="创建时间" />
-        <el-table-column fixed="right" label="操作" width="300">
+        <el-table-column fixed="right" label="操作" width="280">
           <template slot-scope="scope">
             <el-button v-permission="['right:role:update']" type="warning" size="mini" icon="el-icon-edit" @click="handleUpdate(scope.$index, scope.row)">修改</el-button>
             <el-button v-permission="['right:role:del']" type="danger" size="mini" icon="el-icon-delete" @click="handleDelete(scope.$index, scope.row)">删除</el-button>

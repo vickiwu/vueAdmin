@@ -10,11 +10,9 @@
         />
       </el-select>
       <el-input v-model="input" placeholder="请输入内容" class="setWidth" />
-      <div class="right">
-        <el-button type="success" size="small" icon="el-icon-search">搜索</el-button>
-        <el-button v-permission="['right:user:add']" type="primary" size="small" icon="el-icon-plus" @click="dialogFormVisible = true">新增</el-button>
-        <el-button v-permission="['right:user:export']" type="warning" size="small" icon="el-icon-download">导出</el-button>
-      </div>
+      <el-button type="success" size="small" icon="el-icon-search" style="margin-left: 10px;">搜索</el-button>
+      <el-button v-permission="['right:user:add']" type="primary" size="small" icon="el-icon-plus" @click="dialogFormVisible = true">新增</el-button>
+      <el-button v-permission="['right:user:export']" type="warning" size="small" icon="el-icon-download">导出</el-button>
     </div>
     <el-table class="table" :data="tableData" border :height="tableHeight" style="width: 100%">
       <el-table-column type="index" sortable label="序号" width="50" />
