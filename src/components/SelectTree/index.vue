@@ -345,7 +345,10 @@ export default {
 };
 </script>
  
-<style scoped>
+<style >
+.el-popover {
+  padding: 0px !important;
+}
 .mask {
   width: 100%;
   height: 100%;

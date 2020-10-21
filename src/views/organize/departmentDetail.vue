@@ -144,6 +144,7 @@ export default {
     this.ruleForm.orgId = id;
     this.getTreeData(this.ruleForm.orgId);
     this.getResponsibilitiesData();
+    this.getEditData(this.ruleForm.orgId)
   },
   methods: {
     getTreeData(id) {
@@ -164,16 +165,19 @@ export default {
     getEditData(id) {
       //根据部门id获取部门信息(编辑)
       // var that = this;
-      org.getEditData({ deptId: id }).then((response) => {
-        var data = response.data;
-        this.TopOrgLable = data.pdeptName; //上级部门文字
-        this.ruleForm.deptName = data.deptName;
-        this.ruleForm.deptCode = data.deptCode;
-        this.ruleForm.deptDuty = data.deptDuty.split(",");
-        this.ruleForm.deptId = data.deptId; //部门id
-        this.ruleForm.pdeptId = data.pdeptId; //上级部门id
-        this.ruleForm.sort = data.sort;
-        this.ruleForm.remark = data.remark;
+      org.getEditDataBM({ deptId: id }).then((response) => {
+        if(response.data.length<1){
+          var data = response.data;
+          this.TopOrgLable = data.pdeptName; //上级部门文字
+          this.ruleForm.deptName = data.deptName;
+          this.ruleForm.deptCode = data.deptCode;
+          this.ruleForm.deptDuty = data.deptDuty.split(",");
+          this.ruleForm.deptId = data.deptId; //部门id
+          this.ruleForm.pdeptId = data.pdeptId; //上级部门id
+          this.ruleForm.sort = data.sort;
+          this.ruleForm.remark = data.remark;
+        }
+       
       });
     },
 

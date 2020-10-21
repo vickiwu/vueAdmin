@@ -75,7 +75,7 @@ getResponsibilities() {
   })
 },
 //根据部门id获取部门信息
-getEditData(params) {
+getEditDataBM(params) {
   return request({
     url: 'api-user/orgManages/getDeptInfoById',
     method: 'get',
