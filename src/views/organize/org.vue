@@ -16,7 +16,7 @@
      
       <el-form-item>
         <el-button
-          v-permission="['organize:oper:add']"
+          v-permission="['organize:org:add']"
           type="primary"
           size="small"
           icon="el-icon-plus"
@@ -35,18 +35,18 @@
       :load="load"
       :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
     >
-      <el-table-column label="序号" min-width="4%">
+      <el-table-column label="序号" width="100">
         <template slot-scope="scope">
           {{ scope.$index + 1 }}
         </template>
       </el-table-column>
-      <el-table-column prop="orgName" label="机构名称" min-width="15%">
+      <el-table-column prop="orgName" label="机构名称" >
       </el-table-column>
-      <el-table-column prop="orgCode" label="机构编码" min-width="5%">
+      <el-table-column prop="orgCode" label="机构编码" width="100">
       </el-table-column>
-      <el-table-column prop="orgType" min-width="5%" label="类型">
+      <el-table-column prop="orgType" width="100" label="类型">
       </el-table-column>
-      <el-table-column prop="orgLevel" min-width="5%" label="级别">
+      <el-table-column prop="orgLevel" width="100" label="级别">
         <template slot-scope="scope">
           <span v-if="scope.row.orgLevel == 'province'">省</span>
           <span v-else-if="scope.row.orgLevel == 'city'">市</span>
@@ -57,9 +57,10 @@
           <span v-else-if="scope.row.orgLevel == 'other'">其他</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="25%" label="操作">
+      <el-table-column width="400" label="操作" header-align="left"  align="right">
         <template slot-scope="scope">
           <el-button
+            v-permission="['organize:org:insert']"
             type="success"
             icon="el-icon-plus"
             size="mini"
@@ -67,12 +68,14 @@
             >添加</el-button
           >
           <el-button
+          v-permission="['organize:org:update']"
             icon="el-icon-edit"
             size="mini"
             @click="modalShow('edit', scope.row)"
             >修改</el-button
           >
           <el-button
+          v-permission="['organize:org:del']"
             type="danger"
             icon="el-icon-delete"
             size="mini"
@@ -80,6 +83,7 @@
             >删除</el-button
           >
           <el-button
+          v-permission="['organize:org:dept']"
             type="primary"
             icon="el-icon-search"
             size="mini"
@@ -87,6 +91,7 @@
             >部门</el-button
           >
           <el-button
+          v-permission="['organize:org:user']"
             type="primary"
             icon="el-icon-user"
             size="mini"
