@@ -85,10 +85,9 @@
           <el-button
           v-permission="['organize:org:dept']"
             type="primary"
-            icon="el-icon-search"
             size="mini"
             @click="onBM(scope.row)"
-            >部门</el-button
+            ><svg-icon  icon-class="department" class-name="icon"/>部门</el-button
           >
           <el-button
           v-permission="['organize:org:user']"
@@ -425,5 +424,8 @@ export default {
       padding: 5px 10px;
     }
 
+  }
+   .icon{
+    margin-right:5px;
   }
 </style>
