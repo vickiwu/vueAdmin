@@ -1,6 +1,6 @@
 <template>
   <el-row
-    :gutter="60"
+    :gutter="32"
     class="panel-group"
   >
     <el-col

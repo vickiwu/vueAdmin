@@ -40,7 +40,7 @@
       <el-table-column
         label="序号"
         type="index"
-        sortable="custom"
+        
         align="center"
         header-align="center"
         show-overflow-tooltip
@@ -49,7 +49,7 @@
       <el-table-column
         show-overflow-tooltip
         label="应用标识"
-        sortable="custom"
+        
         align="left"
         width="120"
         header-align="center"
@@ -61,7 +61,7 @@
       <el-table-column
         show-overflow-tooltip
         label="应用名称"
-        sortable="custom"
+        
         align="left"
         width="120"
         header-align="center"
@@ -73,7 +73,7 @@
       <el-table-column
         show-overflow-tooltip
         label="应用秘钥"
-        sortable="custom"
+        
         align="left"
         header-align="center"
       >
@@ -87,7 +87,6 @@
       <el-table-column
         show-overflow-tooltip
         label="回调地址"
-        sortable="custom"
         align="left"
         width="180"
         header-align="center"
@@ -99,7 +98,7 @@
       <el-table-column
         show-overflow-tooltip
         label="授权方式"
-        sortable="custom"
+        
         align="left"
         header-align="center"
       >
@@ -579,15 +578,8 @@ export default {
 </script>
  <style lang="scss">
 .auth-table {
-  .el-button--mini,
-  .el-button--mini.is-round {
+  .el-button--mini,.el-button--mini.is-round {
     padding: 5px 10px;
-  }
-  .cell {
-    span {
-      word-break: initial;
-    }
-
   }
 }
 

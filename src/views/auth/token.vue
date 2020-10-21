@@ -10,7 +10,7 @@
       />
       <el-button
         class=""
-        size="small-dd"
+        size="small"
         type="success"
         icon="el-icon-search"
         @click="loadTable()"
@@ -32,7 +32,7 @@
         show-overflow-tooltip
         label="序号"
         type="index"
-        sortable="custom"
+        
         align="center"
         header-align="center"
         width="80"
@@ -40,7 +40,7 @@
       <el-table-column
         show-overflow-tooltip
         label="令牌"
-        sortable="custom"
+        
         align="left"
         header-align="center"
         width="300"
@@ -52,7 +52,7 @@
       <el-table-column
         show-overflow-tooltip
         label="用户ID"
-        sortable="custom"
+        
         align="left"
         header-align="center"
       >
@@ -63,7 +63,7 @@
       <el-table-column
         show-overflow-tooltip
         label="登录账户"
-        sortable="custom"
+        
         align="left"
         header-align="center"
       >
@@ -74,7 +74,7 @@
       <el-table-column
         show-overflow-tooltip
         label="应用标识"
-        sortable="custom"
+        
         align="left"
         header-align="center"
       >
@@ -85,7 +85,7 @@
       <el-table-column
         show-overflow-tooltip
         label="类型"
-        sortable="custom"
+        
         align="left"
         header-align="center"
       >
@@ -96,7 +96,7 @@
       <el-table-column
         show-overflow-tooltip
         label="授权方式"
-        sortable="custom"
+        
         align="left"
         header-align="center"
       >
@@ -107,7 +107,7 @@
       <el-table-column
         show-overflow-tooltip
         label="过期时间"
-        sortable="custom"
+        
         align="left"
         header-align="center"
       >
