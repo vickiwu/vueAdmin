@@ -1,5 +1,5 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}" />
+  <div :class="className" :style="{ height: height, width: width }" />
 </template>
 
 <script>
@@ -25,17 +25,17 @@ export default {
       default: '300px'
     }
   },
-  data() {
+  data () {
     return {
       chart: null
     }
   },
-  mounted() {
+  mounted () {
     this.$nextTick(() => {
       this.initChart()
     })
   },
-  beforeDestroy() {
+  beforeDestroy () {
     if (!this.chart) {
       return
     }
@@ -43,72 +43,95 @@ export default {
     this.chart = null
   },
   methods: {
-    initChart() {
+    initChart () {
       this.chart = echarts.init(this.$el, 'macarons')
 
       this.chart.setOption({
         tooltip: {
           trigger: 'axis',
-          axisPointer: { // 坐标轴指示器，坐标轴触发有效
-            type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+          axisPointer: {
+            type: 'shadow'
           }
         },
-        radar: {
-          radius: '66%',
-          center: ['50%', '42%'],
-          splitNumber: 8,
-          splitArea: {
-            areaStyle: {
-              color: 'rgba(127,95,132,.3)',
-              opacity: 1,
-              shadowBlur: 45,
-              shadowColor: 'rgba(0,0,0,.5)',
-              shadowOffsetX: 0,
-              shadowOffsetY: 15
-            }
-          },
-          indicator: [
-            { name: 'Sales', max: 10000 },
-            { name: 'Administration', max: 20000 },
-            { name: 'Information Techology', max: 20000 },
-            { name: 'Customer Support', max: 20000 },
-            { name: 'Development', max: 20000 },
-            { name: 'Marketing', max: 20000 }
-          ]
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '-10px',
+          top: "5px",
+          containLabel: true
         },
-        legend: {
-          left: 'center',
-          bottom: '10',
-          data: ['Allocated Budget', 'Expected Spending', 'Actual Spending']
-        },
-        series: [{
-          type: 'radar',
-          symbolSize: 0,
-          areaStyle: {
-            normal: {
-              shadowBlur: 13,
-              shadowColor: 'rgba(0,0,0,.2)',
-              shadowOffsetX: 0,
-              shadowOffsetY: 10,
-              opacity: 1
-            }
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow'
           },
-          data: [
-            {
-              value: [5000, 7000, 12000, 11000, 15000, 14000],
-              name: 'Allocated Budget'
+          formatter: function (params) {
+            return params[0].name + '<br/>' +
+              params[0].seriesName + ' : ' + Number((params[0].value.toFixed(4) / 10000).toFixed(2)).toLocaleString() + ' 万元<br/>'
+          }
+        },
+        xAxis: {
+          show: false,
+          type: 'value'
+        },
+        yAxis: [{
+          type: 'category',
+          inverse: true,
+          axisLabel: {
+            show: true,
+            textStyle: {
+              color: '#333'
             },
-            {
-              value: [4000, 9000, 15000, 15000, 13000, 11000],
-              name: 'Expected Spending'
+          },
+          splitLine: {
+            show: false
+          },
+          axisTick: {
+            show: false
+          },
+          axisLine: {
+            show: false
+          },
+          data: ['美国', '印度', '中国', '韩国', '巴西', '印尼', '美国', '印度', '中国', '世界']
+
+        }, {
+          type: 'category',
+          inverse: true,
+          axisTick: 'none',
+          axisLine: 'none',
+          show: true,
+          axisLabel: {
+            textStyle: {
+              color: '#333',
+              fontSize: '12'
             },
-            {
-              value: [5500, 11000, 12000, 15000, 12000, 12000],
-              name: 'Actual Spending'
-            }
-          ],
-          animationDuration: animationDuration
-        }]
+          },
+          data: [19325, 23438, 31000, 121594, 19325, 23438, 31000, 121594, 134141, 681807]
+        }],
+        series: [
+          {
+            name: '2012年',
+            type: 'bar',
+            zlevel: 1,
+            barWidth: '50%',
+            data: [19325, 23438, 31000, 121594, 19325, 23438, 31000, 121594, 134141, 68117],
+            color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+              offset: 1,
+              color: '#41d6f3'
+            }, {
+              offset: 0,
+              color: '#3da0ff'
+            }]),
+          }, //  #f3f3f3
+          {
+            name: '背景',
+            type: 'bar',
+            data: [134141, 134141, 134141, 134141, 134141, 134141, 134141, 134141, 134141, 134141],
+            barWidth: '50%',
+            barGap: '-100%',
+            color: "#f3f3f3"
+          },
+        ]
       })
     }
   }

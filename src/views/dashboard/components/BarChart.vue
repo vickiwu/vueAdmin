@@ -1,5 +1,5 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}" />
+  <div :class="className" :style="{ height: height, width: width }" />
 </template>
 
 <script>
@@ -25,17 +25,17 @@ export default {
       default: '300px'
     }
   },
-  data() {
+  data () {
     return {
       chart: null
     }
   },
-  mounted() {
+  mounted () {
     this.$nextTick(() => {
       this.initChart()
     })
   },
-  beforeDestroy() {
+  beforeDestroy () {
     if (!this.chart) {
       return
     }
@@ -43,7 +43,7 @@ export default {
     this.chart = null
   },
   methods: {
-    initChart() {
+    initChart () {
       this.chart = echarts.init(this.$el, 'macarons')
 
       this.chart.setOption({
@@ -62,7 +62,7 @@ export default {
         },
         xAxis: [{
           type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: ['机构用户', '企业用户', '运营用户', '管理员', '园区用户', '集团用户', '审计用户'],
           axisTick: {
             alignWithLabel: true
           }
@@ -79,21 +79,21 @@ export default {
           stack: 'vistors',
           barWidth: '60%',
           data: [79, 52, 200, 334, 390, 330, 220],
-          animationDuration
-        }, {
-          name: 'pageB',
-          type: 'bar',
-          stack: 'vistors',
-          barWidth: '60%',
-          data: [80, 52, 200, 334, 390, 330, 220],
-          animationDuration
-        }, {
-          name: 'pageC',
-          type: 'bar',
-          stack: 'vistors',
-          barWidth: '60%',
-          data: [30, 52, 200, 334, 390, 330, 220],
-          animationDuration
+          animationDuration,
+          itemStyle: {
+            normal: {
+              color: function (params) {//展示正值的柱子，负数设为透明
+                let colorArr = params.value > 0 ? ['#FF9A22', '#FFD56E'] : ['rgba(0,0,0,0)', 'rgba(0,0,0,0)']
+                return new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                  offset: 0,
+                  color: colorArr[0] // 0% 处的颜色
+                }, {
+                  offset: 1,
+                  color: colorArr[1]// 100% 处的颜色
+                }], false)
+              },
+            }
+          }
         }]
       })
     }

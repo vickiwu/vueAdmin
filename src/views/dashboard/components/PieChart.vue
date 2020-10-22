@@ -1,5 +1,5 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}" />
+  <div :class="className" :style="{ height: height, width: width }" />
 </template>
 
 <script>
@@ -24,18 +24,18 @@ export default {
       required: true
     }
   },
-  data() {
+  data () {
     return {
       chart: null
     }
   },
 
-  mounted() {
+  mounted () {
     this.$nextTick(() => {
       this.initChart()
     })
   },
-  beforeDestroy() {
+  beforeDestroy () {
     if (!this.chart) {
       return
     }
@@ -43,7 +43,7 @@ export default {
     this.chart = null
   },
   methods: {
-    initChart() {
+    initChart () {
       this.chart = echarts.init(this.$el, 'macarons')
 
       this.chart.setOption({
@@ -53,22 +53,24 @@ export default {
         },
         legend: {
           left: 'center',
-          bottom: '10',
-          data: ['Industries', 'Technology', 'Forex', 'Gold', 'Forecasts']
+          bottom: '5',
+          data: ['简单模式', '密码模式', '客户端模式', '授权码模式',]
         },
         series: [
           {
-            name: 'WEEKLY WRITE ARTICLES',
+            name: '授权次数统计',
             type: 'pie',
             roseType: 'radius',
-            radius: [15, 95],
-            center: ['50%', '38%'],
+            radius: ['10%', '75%'],
+            center: ['50%', '42%'],
+            label: {
+              formatter: '{c}'
+            },
             data: [
-              { value: 320, name: 'Industries' },
-              { value: 240, name: 'Technology' },
-              { value: 149, name: 'Forex' },
-              { value: 100, name: 'Gold' },
-              { value: 59, name: 'Forecasts' }
+              { value: 320, name: '简单模式' },
+              { value: 240, name: '密码模式' },
+              { value: 149, name: '客户端模式' },
+              { value: 100, name: '授权码模式' },
             ],
             animationEasing: 'cubicInOut',
             animationDuration: 2600

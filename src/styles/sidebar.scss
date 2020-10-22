@@ -95,7 +95,7 @@
     }
     .el-menu-item.is-active{
       color: $textColor !important;
-      background:$topBarBackground
+      background:$menuHover
     }
     & .nest-menu .el-submenu>.el-submenu__title,
     & .el-submenu .el-menu-item {
@@ -104,7 +104,7 @@
       // background-color: $sidebarBackground !important;
 
       &:hover {
-        // background-color: $topBarBackground !important;
+        // background-color: $menuHover !important;
         // color: $textColor;
       }
     }
