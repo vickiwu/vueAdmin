@@ -26,16 +26,16 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    // before: require('./mock/mock-server.js'),
-    proxy: {
-      [process.env.VUE_APP_BASE_API]: {
-        target: process.env.VUE_APP_BASE_API,
-        changeOrigin: true, // 配置跨域
-        pathRewrite: {
-          ['^' + process.env.VUE_APP_BASE_API]: ''
-        }
-      }
-    }
+    before: require('./mock/mock-server.js')
+    // proxy: {
+    //   [process.env.VUE_APP_BASE_API]: {
+    //     target: process.env.VUE_APP_BASE_API,
+    //     changeOrigin: true, // 配置跨域
+    //     pathRewrite: {
+    //       ['^' + process.env.VUE_APP_BASE_API]: ''
+    //     }
+    //   }
+    // }
 
   },
   configureWebpack: {

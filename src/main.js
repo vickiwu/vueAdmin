@@ -20,10 +20,10 @@ Vue.prototype.$http = axios
  *MockJs将用于生产环境，
  *请先删除它，然后再上线！ ！ ！
  */
-// if (process.env.NODE_ENV === 'production') {
-//   const { mockXHR } = require('../mock')
-//   mockXHR()
-// }
+if (process.env.NODE_ENV === 'production') {
+  const { mockXHR } = require('../mock')
+  mockXHR()
+}
 
 Vue.use(ElementUI)
 

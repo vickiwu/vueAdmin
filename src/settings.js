@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: '新联-环保信息化部门Vue框架',
+  title: '后台管理Vue框架',
 
   /**
    * @type {boolean} true | false
