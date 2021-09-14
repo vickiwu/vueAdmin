@@ -32,7 +32,7 @@
         show-overflow-tooltip
         label="序号"
         type="index"
-        
+
         align="center"
         header-align="center"
         width="80"
@@ -40,7 +40,7 @@
       <el-table-column
         show-overflow-tooltip
         label="令牌"
-        
+
         align="left"
         header-align="center"
         width="300"
@@ -52,7 +52,7 @@
       <el-table-column
         show-overflow-tooltip
         label="用户ID"
-        
+
         align="left"
         header-align="center"
       >
@@ -63,7 +63,7 @@
       <el-table-column
         show-overflow-tooltip
         label="登录账户"
-        
+
         align="left"
         header-align="center"
       >
@@ -74,7 +74,7 @@
       <el-table-column
         show-overflow-tooltip
         label="应用标识"
-        
+
         align="left"
         header-align="center"
       >
@@ -85,7 +85,7 @@
       <el-table-column
         show-overflow-tooltip
         label="类型"
-        
+
         align="left"
         header-align="center"
       >
@@ -96,7 +96,7 @@
       <el-table-column
         show-overflow-tooltip
         label="授权方式"
-        
+
         align="left"
         header-align="center"
       >
@@ -107,7 +107,7 @@
       <el-table-column
         show-overflow-tooltip
         label="过期时间"
-        
+
         align="left"
         header-align="center"
       >
@@ -223,7 +223,7 @@ export default {
   data() {
     return {
       userName: '',
-      listLoading: true,
+      listLoading: false,
       dialogFormVisible: false,
       dialogApply: false,
       list: [],
@@ -248,7 +248,7 @@ export default {
 
   },
   created() {
-    this.loadTable()
+    // this.loadTable()
   },
   methods: {
     async loadTable(pageSize, page) {

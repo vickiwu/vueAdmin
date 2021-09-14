@@ -17,6 +17,12 @@ const getters = {
     return state.user.topMenu
   },
   permission: state => state.user.permission,
-  current_permission: state => state.user.currentPermission
+  current_permission: state => state.user.currentPermission,
+  eventlist: (state) => {
+    return state.socket.eventlist
+  },
+  websock: (state) => {
+    return state.socket.websock
+  }
 }
 export default getters

@@ -31,7 +31,7 @@
       <el-table-column
         label="序号"
         type="index"
-        
+
         align="center"
         header-align="center"
         show-overflow-tooltip
@@ -39,7 +39,7 @@
       />
       <el-table-column
         label="访问IP地址"
-        
+
         align="left"
         header-align="center"
         show-overflow-tooltip
@@ -73,7 +73,7 @@
       </el-table-column>
       <el-table-column
         label="应用名称"
-        
+
         align="left"
         header-align="center"
         show-overflow-tooltip
@@ -84,7 +84,7 @@
       </el-table-column>
       <el-table-column
         label="授权方式"
-        
+
         align="left"
         header-align="center"
         show-overflow-tooltip
@@ -95,7 +95,7 @@
       </el-table-column>
       <el-table-column
         label="被授权账号"
-        
+
         align="left"
         header-align="center"
         show-overflow-tooltip
@@ -106,7 +106,7 @@
       </el-table-column>
       <el-table-column
         label="授权时间"
-        
+
         align="left"
         header-align="center"
         show-overflow-tooltip
@@ -229,7 +229,7 @@ export default {
   data() {
     return {
       clientName: '',
-      listLoading: true,
+      listLoading: false,
       dialogFormVisible: false,
       dialogApply: false,
       list: [],
@@ -257,7 +257,7 @@ export default {
 
   },
   created() {
-    this.loadTable()
+    // this.loadTable()
   },
   methods: {
     async loadTable(pageSize, page) {

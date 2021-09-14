@@ -40,7 +40,7 @@
       <el-table-column
         label="序号"
         type="index"
-        
+
         align="center"
         header-align="center"
         show-overflow-tooltip
@@ -49,7 +49,7 @@
       <el-table-column
         show-overflow-tooltip
         label="应用标识"
-        
+
         align="left"
         width="120"
         header-align="center"
@@ -61,7 +61,7 @@
       <el-table-column
         show-overflow-tooltip
         label="应用名称"
-        
+
         align="left"
         width="120"
         header-align="center"
@@ -73,7 +73,7 @@
       <el-table-column
         show-overflow-tooltip
         label="应用秘钥"
-        
+
         align="left"
         header-align="center"
       >
@@ -98,7 +98,7 @@
       <el-table-column
         show-overflow-tooltip
         label="授权方式"
-        
+
         align="left"
         header-align="center"
       >
@@ -371,7 +371,7 @@ export default {
     return {
       dialogTitle: '新增应用',
       clientName: '',
-      listLoading: true,
+      listLoading: false,
       dialogFormVisible: false,
       dialogApply: false,
       btnList: [{ txt: '修改', class: '', icon: 'el-icon-edit' }, { txt: '删除', class: 'danger', icon: 'el-icon-delete' }, { txt: '应用设置', class: 'primary', icon: 'el-icon-share' }],
@@ -493,7 +493,7 @@ export default {
   computed: {
   },
   created() {
-    this.loadTable()
+    // this.loadTable()
   },
   methods: {
     async loadTable(pageSize, page) {

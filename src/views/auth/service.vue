@@ -43,7 +43,7 @@
         show-overflow-tooltip
         label="序号"
         type="index"
-        
+
         align="center"
         header-align="center"
         width="80"
@@ -51,7 +51,7 @@
       <el-table-column
         show-overflow-tooltip
         label="服务名称"
-        
+
         align="left"
         header-align="center"
       >
@@ -62,7 +62,7 @@
       <el-table-column
         show-overflow-tooltip
         label="服务路径"
-        
+
         align="left"
         header-align="center"
       >
@@ -73,7 +73,7 @@
       <el-table-column
         show-overflow-tooltip
         label="服务类型"
-        
+
         align="left"
         header-align="center"
       >
@@ -84,7 +84,7 @@
       <el-table-column
         show-overflow-tooltip
         label="创建时间"
-        
+
         align="left"
         header-align="center"
       >
@@ -95,7 +95,7 @@
       <el-table-column
         show-overflow-tooltip
         label="排序"
-        
+
         align="left"
         header-align="center"
       >
@@ -247,7 +247,7 @@ export default {
   data() {
     return {
       name: '',
-      listLoading: true,
+      listLoading: false,
       dialogFormVisible: false,
       dialogApply: false,
       list: [
@@ -285,8 +285,8 @@ export default {
 
   },
   created() {
-    this.loadTable()
-    this.getHigherServiceList()
+    // this.loadTable()
+    // this.getHigherServiceList()
   },
   methods: {
     async getHigherServiceList() {

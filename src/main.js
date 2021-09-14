@@ -6,6 +6,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import '@/styles/index.scss' // global css
 import App from './App'
 import store from './store'
+import wsConnection from '@/utils/socket'
 import router from './router'
 import permission from '@/directive/permission/index.js' // 权限判断指令
 Vue.use(permission)
@@ -14,6 +15,9 @@ import '@/icons'
 import '@/permission'
 import axios from 'axios'
 Vue.prototype.$http = axios
+// 挂载vue原型链
+wsConnection.initWebSocket('ws://192.168.1.140:8080/ws')
+Vue.prototype.$setWs = wsConnection
 
 /**
  *MockJs用于模拟api

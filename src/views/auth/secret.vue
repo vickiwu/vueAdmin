@@ -40,7 +40,7 @@
         show-overflow-tooltip
         label="序号"
         type="index"
-        
+
         align="center"
         header-align="center"
         width="80"
@@ -48,7 +48,7 @@
       <el-table-column
         show-overflow-tooltip
         label="appId"
-        
+
         align="left"
         header-align="center"
       >
@@ -59,7 +59,7 @@
       <el-table-column
         show-overflow-tooltip
         label="appSecret"
-        
+
         align="left"
         header-align="center"
       >
@@ -70,7 +70,7 @@
       <el-table-column
         show-overflow-tooltip
         label="类型"
-        
+
         align="left"
         header-align="center"
       >
@@ -81,7 +81,7 @@
       <el-table-column
         show-overflow-tooltip
         label="描述"
-        
+
         align="left"
         header-align="center"
       >
@@ -92,7 +92,7 @@
       <el-table-column
         show-overflow-tooltip
         label="生效日期"
-        
+
         align="left"
         header-align="center"
       >
@@ -103,7 +103,7 @@
       <el-table-column
         show-overflow-tooltip
         label="到期日期"
-        
+
         align="left"
         header-align="center"
       >
@@ -222,7 +222,7 @@ export default {
   data() {
     return {
       appId: '',
-      listLoading: true,
+      listLoading: false,
       dialogFormVisible: false,
       dialogTitle: '新增应用',
       dialogApply: false,
@@ -258,7 +258,7 @@ export default {
 
   },
   created() {
-    this.loadTable()
+    // this.loadTable()
   },
   methods: {
     async loadTable(pageSize, page) {
