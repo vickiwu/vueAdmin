@@ -1,20 +1,21 @@
 
 <template>
   <div class="iframe-main">
-    <my-html :url.sync="url1" />
+    <!-- <my-html :url.sync="url1" /> -->
+    <iframe :src="url1" frameborder="0" height="100%" width="100%" name="www" />
   </div>
 </template>
 
 <script>
-import myHtml from './html'
+// import myHtml from './html'
 export default {
-  components: { myHtml },
+  // components: { myHtml },
   data() {
     return {
-      url1: 'https://cn.vuejs.org/index.html'
+      url1: 'http://www.cccaonline.org.cn/home'
     }
   },
-  mounted() { // http://172.172.0.208:8066/old/login.html
+  mounted() {
     if (this.$router.currentRoute.meta.url) {
       this.url1 = this.$router.currentRoute.meta.url
       console.log(this.$router.currentRoute.meta.url, 'ddd')

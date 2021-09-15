@@ -259,6 +259,21 @@ export default {
   },
   created() {
     // this.loadTable()
+
+    const carObj = {
+      a: ['苏BH1190', '苏BH1191', '苏BH1192']
+    }
+    const carData = {
+      data: carObj,
+      type: [0, 0x20, 0]
+    }
+
+    // 在使用地方调用
+
+    // 发送消息
+    // this.$setWs.emit(loginData)
+    // this.$setWs.emit(objData)
+    this.$setWs.emit(carData)
   },
   methods: {
     async loadTable(pageSize, page) {

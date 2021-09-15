@@ -202,6 +202,9 @@ export default {
       immediate: true
     }
   },
+  created() {
+    this.$setWs.initWebSocket('ws://192.168.1.140:8080/ws')
+  },
   methods: {
     showPwd() {
       if (this.passwordType === 'password') {
@@ -214,39 +217,44 @@ export default {
       })
     },
     handleLogin() {
-      // this.$store.dispatch('socket/WEBSOCKET_INIT', 'ws://192.168.1.140:8080/ws')
-      const loginData = {
-        data: 'sss',
-        type: [0, 1, 0]
-      }
-      const obj = {
-        a: '苏BH1190',
-        b: 1627729920674,
-        c: 1631069591000
-      }
-      const objData = {
-        data: obj,
-        type: [0, 0x0a, 0]
-      }
-      const carObj = {
-        a: ['苏BH1190', '苏BH1191', '苏BH1192']
-      }
-      const carData = {
-        data: carObj,
-        type: [0, 0x20, 0]
-      }
-
-      // 在使用地方调用
-
-      // 发送消息
-      this.$setWs.emit(loginData)
-      this.$setWs.emit(objData)
-      this.$setWs.emit(carData)
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$store.dispatch('user/login', this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || '/' })
+          this.$store.dispatch('user/login', this.loginForm).then(async(res) => {
+            console.log('%c 🍮 res: ', 'font-size:20px;background-color: #93C0A4;color:#fff;', res)
+            // 挂载vue原型链
+
+            const loginData = {
+              data: 'sss',
+              type: [0, 1, 0]
+            }
+            // const obj = {
+            //   a: '苏BH1190',
+            //   b: 1627729920674,
+            //   c: 1631069591000
+            // }
+            // const objData = {
+            //   data: obj,
+            //   type: [0, 0x0a, 0]
+            // }
+            // const carObj = {
+            //   a: ['苏BH1190', '苏BH1191', '苏BH1192']
+            // }
+            // const carData = {
+            //   data: carObj,
+            //   type: [0, 0x20, 0]
+            // }
+
+            //
+
+            this.$setWs.emit(loginData).then(res => {
+              this.$router.push({ path: this.redirect || '/' })
+            })
+            // 发送消息
+
+            // this.$setWs.emit(objData)
+            // this.$setWs.emit(carData)
+
             this.loading = false
           }).catch(() => {
             this.loading = false

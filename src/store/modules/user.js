@@ -78,8 +78,9 @@ const actions = {
         const { data } = response
         commit('SET_TOKEN', data.access_token)
         setToken(data.access_token)
-        resolve()
+        resolve(data)
       }).catch(error => {
+        console.log('%c 🍰 error: ', 'font-size:20px;background-color: #ED9EC7;color:#fff;', error)
         reject(error)
       })
     })
@@ -113,6 +114,9 @@ const actions = {
       logout(state.token).then(() => {
         removeToken() // 必须先删除token
         resetRouter()
+        console.log('%c 🍫 router: ', 'font-size:20px;background-color: #FCA650;color:#fff;', router.currentRoute)
+        router.push(`/login?redirect=${router.currentRoute.fullPath}`)
+
         commit('RESET_STATE')
         resolve()
       }).catch(error => {

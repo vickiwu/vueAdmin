@@ -107,15 +107,15 @@ module.exports = [
                   'meta': {
                     'affix': true,
                     'title': '首页'
-                  },
-                  'name': '0'
+                  }
+                  // 'name': '0'
                 }
               ],
               'meta': {
                 'title': '首页'
-              },
-              'name': '/',
-              'id': 0
+              }
+              // 'name': '/',
+              // 'id': 0
             },
             {
               'redirect': '/auth/client',
@@ -124,7 +124,7 @@ module.exports = [
               'children': [
                 {
                   'path': '/auth/client',
-                  'component': '/auth/client',
+                  'component': '/html/index',
                   'meta': {
                     'affix': false,
                     'permission': [
@@ -133,14 +133,15 @@ module.exports = [
                       'auth:client:del',
                       'auth:client:set'
                     ],
-                    'title': '应用管理'
+                    'title': '企业信息',
+                    'url': 'http://127.0.0.1:8080'
                   },
                   'name': '2',
                   'id': 2
                 },
                 {
                   'path': '/auth/service',
-                  'component': '/auth/service',
+                  'component': '/html/index',
                   'meta': {
                     'affix': false,
                     'permission': [
@@ -148,14 +149,15 @@ module.exports = [
                       'auth:service:update',
                       'auth:service:del'
                     ],
-                    'title': '服务管理'
+                    'title': '服务管理',
+                    'url': 'http://127.0.0.1:8080'
                   },
                   'name': '3',
                   'id': 3
                 },
                 {
                   'path': '/auth/token',
-                  'component': '/auth/token',
+                  'component': '/html/index',
                   'meta': {
                     'affix': false,
                     'permission': [
@@ -169,7 +171,7 @@ module.exports = [
                 },
                 {
                   'path': '/auth/secret',
-                  'component': '/auth/secret',
+                  'component': '/html/index',
                   'meta': {
                     'affix': false,
                     'permission': [
@@ -186,7 +188,8 @@ module.exports = [
               ],
               'meta': {
                 'affix': false,
-                'title': '认证中心'
+                'title': '基础信息管理',
+                'url': 'http://127.0.0.1:8080'
               },
               'name': '1',
               'id': 1
@@ -198,7 +201,7 @@ module.exports = [
               'children': [
                 {
                   'path': '/right/user',
-                  'component': '/right/user',
+                  'component': '/html/index',
                   'meta': {
                     'affix': false,
                     'permission': [
@@ -208,14 +211,14 @@ module.exports = [
                       'right:user:update',
                       'right:user:del'
                     ],
-                    'title': '用户管理'
+                    'title': '人员管理'
                   },
                   'name': '32',
                   'id': 32
                 },
                 {
                   'path': '/right/role',
-                  'component': '/right/role',
+                  'component': '/html/index',
                   'meta': {
                     'affix': false,
                     'permission': [
@@ -224,14 +227,14 @@ module.exports = [
                       'right:role:del',
                       'right:role:set'
                     ],
-                    'title': '角色管理'
+                    'title': '车辆管理'
                   },
                   'name': '33',
                   'id': 33
                 },
                 {
                   'path': '/right/menu',
-                  'component': '/right/menu',
+                  'component': '/html/index',
                   'meta': {
                     'affix': false,
                     'permission': [
@@ -240,14 +243,14 @@ module.exports = [
                       'right:menu:add',
                       'right:menu:insert'
                     ],
-                    'title': '菜单管理'
+                    'title': '运力管理'
                   },
                   'name': '34',
                   'id': 34
                 },
                 {
                   'path': '/right/permission',
-                  'component': '/right/permission',
+                  'component': '/html/index',
                   'meta': {
                     'affix': false,
                     'permission': [
@@ -263,7 +266,7 @@ module.exports = [
               ],
               'meta': {
                 'affix': false,
-                'title': '权限中心'
+                'title': '运力管理'
               },
               'name': '31',
               'id': 31
@@ -275,7 +278,7 @@ module.exports = [
               'children': [
                 {
                   'path': '/organize/oper',
-                  'component': '/organize/oper',
+                  'component': '/html/index',
                   'meta': {
                     'affix': false,
                     'permission': [
@@ -284,14 +287,14 @@ module.exports = [
                       'organize:oper:add',
                       'organize:oper:insert'
                     ],
-                    'title': '运营管理'
+                    'title': '平台订单'
                   },
                   'name': '62',
                   'id': 62
                 },
                 {
                   'path': '/organize/org',
-                  'component': '/organize/org',
+                  'component': '/html/index',
                   'meta': {
                     'affix': false,
                     'permission': [
@@ -302,7 +305,7 @@ module.exports = [
                       'organize:org:update',
                       'organize:org:del'
                     ],
-                    'title': '机构管理'
+                    'title': '自有订单'
                   },
                   'name': '63',
                   'id': 63
@@ -310,7 +313,7 @@ module.exports = [
               ],
               'meta': {
                 'affix': false,
-                'title': '组织管理'
+                'title': '订单管理'
               },
               'name': '61',
               'id': 61
@@ -322,7 +325,7 @@ module.exports = [
               'children': [
                 {
                   'path': '/system/dic',
-                  'component': '/system/dic',
+                  'component': '/html/index',
                   'meta': {
                     'affix': false,
                     'permission': [
@@ -338,7 +341,7 @@ module.exports = [
                 },
                 {
                   'path': '/system/file',
-                  'component': '/system/file',
+                  'component': '/html/index',
                   'meta': {
                     'affix': false,
                     'permission': [
@@ -352,7 +355,7 @@ module.exports = [
                 },
                 {
                   'path': '/system/log',
-                  'component': '/system/log',
+                  'component': '/html/index',
                   'meta': {
                     'affix': false,
                     'permission': [
@@ -365,7 +368,7 @@ module.exports = [
                 },
                 {
                   'path': '/system/matter',
-                  'component': '/system/matter',
+                  'component': '/html/index',
                   'meta': {
                     'affix': false,
                     'permission': [
@@ -385,17 +388,19 @@ module.exports = [
               'name': '91',
               'id': 91
             },
+
             {
-              'redirect': '/monitor/server',
-              'path': '/monitor',
+              'redirect': '/html/index',
+              'path': '/html',
               'component': 'Layout',
               'children': [
                 {
-                  'path': '/monitor/server',
-                  'component': '/monitor/server',
+                  'path': '/html/index',
+                  'component': '/html/index',
                   'meta': {
                     'affix': false,
-                    'title': '服务治理'
+                    'title': '服务治理',
+                    'url': 'http://127.0.0.1:8080/about'
                   },
                   'name': '122',
                   'id': 122
@@ -413,7 +418,7 @@ module.exports = [
             {
               'path': '/dashboard/index',
               'meta': {
-                'icon': null,
+                'icon': 'el-icon-menu',
                 'title': '首页'
               },
               'id': 0
@@ -424,34 +429,34 @@ module.exports = [
                 {
                   'path': '/auth/client',
                   'meta': {
-                    'icon': null,
+                    'icon': 'el-icon-menu',
                     'permission': [
                       'auth:client:add',
                       'auth:client:update',
                       'auth:client:del',
                       'auth:client:set'
                     ],
-                    'title': '应用管理'
+                    'title': '企业信息'
                   },
                   'id': 2
                 },
                 {
                   'path': '/auth/service',
                   'meta': {
-                    'icon': null,
+                    'icon': 'el-icon-menu',
                     'permission': [
                       'auth:service:add',
                       'auth:service:update',
                       'auth:service:del'
                     ],
-                    'title': '服务管理'
+                    'title': '人员管理'
                   },
                   'id': 3
                 },
                 {
                   'path': '/auth/token',
                   'meta': {
-                    'icon': null,
+                    'icon': 'el-icon-menu',
                     'permission': [
                       'auth:token:info',
                       'auth:token:del'
@@ -463,7 +468,7 @@ module.exports = [
                 {
                   'path': '/auth/secret',
                   'meta': {
-                    'icon': null,
+                    'icon': 'el-icon-menu',
                     'permission': [
                       'auth:secret:del',
                       'auth:secret:show',
@@ -476,8 +481,8 @@ module.exports = [
                 }
               ],
               'meta': {
-                'icon': null,
-                'title': '认证中心'
+                'icon': 'el-icon-menu',
+                'title': '基础信息管理'
               },
               'id': 1,
               'showSubMenu': false
@@ -488,7 +493,7 @@ module.exports = [
                 {
                   'path': '/right/user',
                   'meta': {
-                    'icon': null,
+                    'icon': 'el-icon-menu',
                     'permission': [
                       'right:user:list',
                       'right:user:add',
@@ -496,42 +501,42 @@ module.exports = [
                       'right:user:update',
                       'right:user:del'
                     ],
-                    'title': '用户管理'
+                    'title': '人员管理'
                   },
                   'id': 32
                 },
                 {
                   'path': '/right/role',
                   'meta': {
-                    'icon': null,
+                    'icon': 'el-icon-menu',
                     'permission': [
                       'right:role:add',
                       'right:role:update',
                       'right:role:del',
                       'right:role:set'
                     ],
-                    'title': '角色管理'
+                    'title': '车辆管理'
                   },
                   'id': 33
                 },
                 {
                   'path': '/right/menu',
                   'meta': {
-                    'icon': null,
+                    'icon': 'el-icon-menu',
                     'permission': [
                       'right:menu:update',
                       'right:menu:del',
                       'right:menu:add',
                       'right:menu:insert'
                     ],
-                    'title': '菜单管理'
+                    'title': '运力管理'
                   },
                   'id': 34
                 },
                 {
                   'path': '/right/permission',
                   'meta': {
-                    'icon': null,
+                    'icon': 'el-icon-menu',
                     'permission': [
                       'right:permission:add',
                       'right:permission:update',
@@ -543,8 +548,8 @@ module.exports = [
                 }
               ],
               'meta': {
-                'icon': null,
-                'title': '权限中心'
+                'icon': 'el-icon-menu',
+                'title': '运力管理'
               },
               'id': 31,
               'showSubMenu': false
@@ -555,21 +560,21 @@ module.exports = [
                 {
                   'path': '/organize/oper',
                   'meta': {
-                    'icon': null,
+                    'icon': 'el-icon-menu',
                     'permission': [
                       'organize:oper:update',
                       'organize:oper:del',
                       'organize:oper:add',
                       'organize:oper:insert'
                     ],
-                    'title': '运营管理'
+                    'title': '平台订单'
                   },
                   'id': 62
                 },
                 {
                   'path': '/organize/org',
                   'meta': {
-                    'icon': null,
+                    'icon': 'el-icon-menu',
                     'permission': [
                       'organize:org:dept',
                       'organize:org:user',
@@ -578,14 +583,14 @@ module.exports = [
                       'organize:org:update',
                       'organize:org:del'
                     ],
-                    'title': '机构管理'
+                    'title': '自有订单'
                   },
                   'id': 63
                 }
               ],
               'meta': {
-                'icon': null,
-                'title': '组织管理'
+                'icon': 'el-icon-menu',
+                'title': '订单管理'
               },
               'id': 61,
               'showSubMenu': false
@@ -596,7 +601,7 @@ module.exports = [
                 {
                   'path': '/system/dic',
                   'meta': {
-                    'icon': null,
+                    'icon': 'el-icon-menu',
                     'permission': [
                       'system:dic:add',
                       'system:dic:update',
@@ -610,7 +615,7 @@ module.exports = [
                 {
                   'path': '/system/file',
                   'meta': {
-                    'icon': null,
+                    'icon': 'el-icon-menu',
                     'permission': [
                       'system:file:del',
                       'system:file:info'
@@ -622,7 +627,7 @@ module.exports = [
                 {
                   'path': '/system/log',
                   'meta': {
-                    'icon': null,
+                    'icon': 'el-icon-menu',
                     'permission': [
                       'system:log:info'
                     ],
@@ -633,7 +638,7 @@ module.exports = [
                 {
                   'path': '/system/matter',
                   'meta': {
-                    'icon': null,
+                    'icon': 'el-icon-menu',
                     'permission': [
                       'system:matter:add',
                       'system:matter:update'
@@ -644,27 +649,28 @@ module.exports = [
                 }
               ],
               'meta': {
-                'icon': null,
+                'icon': 'el-icon-menu',
                 'title': '系统管理'
               },
               'id': 91,
               'showSubMenu': false
             },
+
             {
-              'path': '/monitor',
+              'path': '/html',
               'children': [
                 {
-                  'path': '/monitor/server',
+                  'path': '/html/index',
                   'meta': {
-                    'icon': null,
-                    'title': '服务治理'
+                    'icon': 'el-icon-menu',
+                    'title': '服务治理2'
                   },
                   'id': 122
                 }
               ],
               'meta': {
-                'icon': null,
-                'title': '系统监控'
+                'icon': 'el-icon-menu',
+                'title': '系统监控3'
               },
               'id': 121,
               'showSubMenu': false

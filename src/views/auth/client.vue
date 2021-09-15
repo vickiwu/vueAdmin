@@ -493,7 +493,33 @@ export default {
   computed: {
   },
   created() {
-    // this.loadTable()
+    const loginData = {
+      data: 'weeers',
+      type: [0, 5, 0]
+    }
+    // const obj = {
+    //   a: '苏BH1190',
+    //   b: 1627729920674,
+    //   c: 1631069591000
+    // }
+    // const objData = {
+    //   data: obj,
+    //   type: [0, 0x0a, 0]
+    // }
+    // const carObj = {
+    //   a: ['苏BH1190', '苏BH1191', '苏BH1192']
+    // }
+    // const carData = {
+    //   data: carObj,
+    //   type: [0, 0x20, 0]
+    // }
+
+    // 在使用地方调用
+
+    // 发送消息
+    this.$setWs.emit(loginData)
+    // this.$setWs.emit(objData)
+    // this.$setWs.emit(carData)
   },
   methods: {
     async loadTable(pageSize, page) {

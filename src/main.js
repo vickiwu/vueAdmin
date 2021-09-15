@@ -16,7 +16,6 @@ import '@/permission'
 import axios from 'axios'
 Vue.prototype.$http = axios
 // 挂载vue原型链
-wsConnection.initWebSocket('ws://192.168.1.140:8080/ws')
 Vue.prototype.$setWs = wsConnection
 
 /**
