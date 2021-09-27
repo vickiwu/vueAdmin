@@ -33,20 +33,17 @@
                 size="small"
                 :class="authChart === '本周' ? 'isActive' : ''"
                 @click="changeAuthChart('本周')"
-                >本周</el-button
-              >
+              >本周</el-button>
               <el-button
                 size="small"
                 :class="authChart === '本月' ? 'isActive' : ''"
                 @click="changeAuthChart('本月')"
-                >本月</el-button
-              >
+              >本月</el-button>
               <el-button
                 size="small"
                 :class="authChart === '本年' ? 'isActive' : ''"
                 @click="changeAuthChart('本年')"
-                >本年</el-button
-              >
+              >本年</el-button>
             </el-button-group>
           </div>
           <pie-chart :height="height" />
@@ -69,20 +66,17 @@
                 size="small"
                 :class="userChart === '本周' ? 'isActive' : ''"
                 @click="changeUserChart('本周')"
-                >本周</el-button
-              >
+              >本周</el-button>
               <el-button
                 size="small"
                 :class="userChart === '本月' ? 'isActive' : ''"
                 @click="changeUserChart('本月')"
-                >本月</el-button
-              >
+              >本月</el-button>
               <el-button
                 size="small"
                 :class="userChart === '本年' ? 'isActive' : ''"
                 @click="changeUserChart('本年')"
-                >本年</el-button
-              >
+              >本年</el-button>
             </el-button-group>
           </div>
           <raddar-chart :height="height" />
@@ -93,54 +87,64 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import PanelGroup from "./components/PanelGroup";
-import RaddarChart from "./components/RaddarChart";
-import PieChart from "./components/PieChart";
-import BarChart from "./components/BarChart";
+import { mapGetters } from 'vuex'
+import PanelGroup from './components/PanelGroup'
+import RaddarChart from './components/RaddarChart'
+import PieChart from './components/PieChart'
+import BarChart from './components/BarChart'
 export default {
-  name: "Dashboard",
+  name: 'Dashboard',
   components: {
     PanelGroup,
     RaddarChart,
     PieChart,
-    BarChart,
+    BarChart
   },
-  data () {
+  data() {
     return {
-      height: "0",
+      height: '0',
       userChart: '本周',
       authChart: '本周'
-    };
-  },
-  computed: {
-    ...mapGetters(["name", "current_permission"]),
-  },
-  created () {
-    window.onresize = (params) => {
-      this.getHeight();
-    };
-  },
-  mounted () {
-    this.getHeight();
-  },
-  methods: {
-    getHeight () {
-      const $chart = document.getElementById("www");
-      const height = window.getComputedStyle($chart).getPropertyValue("height");
-      this.height = parseInt(height) - 120 + "px";
-    },
-    handleSetLineChartData (type) {
-      alert(type);
-    },
-    changeUserChart (userChart) {
-      this.userChart = userChart;
-    },
-    changeAuthChart (authChart) {
-      this.authChart = authChart;
     }
   },
-};
+
+  computed: {
+    ...mapGetters(['name', 'current_permission'])
+  },
+  watch: {
+    '$route': {
+      handler: (val) => {
+        console.log('%c 🍷 val: ', 'font-size:20px;background-color: #B03734;color:#fff;', val)
+      },
+      immediate: true,
+      deep: true
+    }
+  },
+  created() {
+    window.onresize = (params) => {
+      this.getHeight()
+    }
+  },
+  mounted() {
+    this.getHeight()
+  },
+  methods: {
+    getHeight() {
+      const $chart = document.getElementById('www')
+      const height = window.getComputedStyle($chart).getPropertyValue('height')
+      this.height = parseInt(height) - 120 + 'px'
+    },
+    handleSetLineChartData(type) {
+      alert(type)
+    },
+    changeUserChart(userChart) {
+      this.userChart = userChart
+    },
+    changeAuthChart(authChart) {
+      this.authChart = authChart
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
