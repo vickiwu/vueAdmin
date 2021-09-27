@@ -9,28 +9,30 @@
         auto-complete="on"
         label-position="left"
       >
-
         <div class="title-container">
           <el-row>
             <el-col
               :span="12"
-              :class="isActive ==='account'&& 'active'"
-              @click.native="isActive='account'"
-            >账号密码登录</el-col>
+              :class="isActive === 'account' && 'active'"
+              @click.native="isActive = 'account'"
+            >
+              账号密码登录
+            </el-col>
             <el-col
               :span="12"
-              :class="isActive==='phone'&& 'active'"
-              @click.native="isActive='phone'"
-            >验证码登录</el-col>
+              :class="isActive === 'phone' && 'active'"
+              @click.native="isActive = 'phone'"
+            >
+              验证码登录
+            </el-col>
           </el-row>
           <div
             class="active-line"
-            :class="isActive==='phone'?'animation-left':'animation-right'"
+            :class="isActive === 'phone' ? 'animation-left' : 'animation-right'"
           />
-
         </div>
 
-        <div v-if="isActive==='account'">
+        <div v-if="isActive === 'account'">
           <el-form-item prop="username">
             <span class="svg-container">
               <svg-icon icon-class="user" />
@@ -61,11 +63,10 @@
               auto-complete="on"
               @keyup.enter.native="handleLogin"
             />
-            <span
-              class="show-pwd"
-              @click="showPwd"
-            >
-              <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+            <span class="show-pwd" @click="showPwd">
+              <svg-icon
+                :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
+              />
             </span>
           </el-form-item>
           <el-row>
@@ -83,7 +84,6 @@
                   tabindex="1"
                   auto-complete="on"
                 />
-
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -92,7 +92,6 @@
                   src="data:image/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAAUCAIAAABeYcl+AAAA2UlEQVR42u3W0QnDIBAGYCfJDu0YWaRbdLEOUOhT37JEdmiFgx+5/86obQ0Nig/JSciHnqfh9YctDPTWz0LYAX1/ntF59Hp6mF24sS3TLXb1lQTT+GVepSOISDU6FZtuDy1u+DbRUCp0y0wrKLtTH2Y378arN9ksrkB7KWGihcsrUI6Oz13R5m5rQMOtxC1oL6GRCflF2AFtbkQkQy2aob9Cl29Ebyg/u0r85Zw+OFrFS9Bc8jrVaa53tWhVttvRn5yI+VOQE4PPyK53j3K0VzHS+LiaDvTR0G8iO3BjUHwybgAAAABJRU5ErkJggg=="
                   alt="验证码"
                 >
-
               </div>
             </el-col>
           </el-row>
@@ -102,7 +101,7 @@
           </div>
         </div>
 
-        <div v-if="isActive==='phone'">
+        <div v-if="isActive === 'phone'">
           <el-form-item prop="username">
             <span class="svg-container">
               <svg-icon icon-class="user" />
@@ -134,7 +133,6 @@
               发送验证码
             </span>
           </el-form-item>
-
         </div>
         <el-button
           :loading="loading"
@@ -142,10 +140,8 @@
           style="width:100%;margin:20px 0 10px 0;"
           @click.native.prevent="handleLogin"
         >登录</el-button>
-
       </el-form>
     </el-card>
-
   </div>
 </template>
 
@@ -185,9 +181,15 @@ export default {
         validate: '6DWK'
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }],
-        validate: [{ required: true, trigger: 'blur', validator: validateValidate }]
+        username: [
+          { required: true, trigger: 'blur', validator: validateUsername }
+        ],
+        password: [
+          { required: true, trigger: 'blur', validator: validatePassword }
+        ],
+        validate: [
+          { required: true, trigger: 'blur', validator: validateValidate }
+        ]
       },
       loading: false,
       passwordType: 'password',
@@ -203,7 +205,7 @@ export default {
     }
   },
   created() {
-    this.$setWs.initWebSocket('ws://192.168.1.140:8080/ws')
+    // this.$setWs.initWebSocket('ws://192.168.1.140:8080/ws')
   },
   methods: {
     showPwd() {
@@ -221,40 +223,7 @@ export default {
         if (valid) {
           this.loading = true
           this.$store.dispatch('user/login', this.loginForm).then(async(res) => {
-            console.log('%c 🍮 res: ', 'font-size:20px;background-color: #93C0A4;color:#fff;', res)
-            // 挂载vue原型链
-
-            const loginData = {
-              data: 'sss',
-              type: [0, 1, 0]
-            }
-            // const obj = {
-            //   a: '苏BH1190',
-            //   b: 1627729920674,
-            //   c: 1631069591000
-            // }
-            // const objData = {
-            //   data: obj,
-            //   type: [0, 0x0a, 0]
-            // }
-            // const carObj = {
-            //   a: ['苏BH1190', '苏BH1191', '苏BH1192']
-            // }
-            // const carData = {
-            //   data: carObj,
-            //   type: [0, 0x20, 0]
-            // }
-
-            //
-
-            this.$setWs.emit(loginData).then(res => {
-              this.$router.push({ path: this.redirect || '/' })
-            })
-            // 发送消息
-
-            // this.$setWs.emit(objData)
-            // this.$setWs.emit(carData)
-
+            this.$router.push({ path: this.redirect || '/' })
             this.loading = false
           }).catch(() => {
             this.loading = false
@@ -270,8 +239,6 @@ export default {
 </script>
 
 <style lang="scss">
-/* 修复input 背景不协调 和光标变色 */
-/* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
 $bg: #283443;
 $inputBg: #fff;
@@ -285,7 +252,6 @@ $cursor: #333333;
   }
 }
 
-/* reset element-ui css */
 .login-container {
   .el-input {
     display: inline-block;
@@ -326,8 +292,7 @@ $light_gray: #333333;
 .login-container {
   min-height: 100%;
   width: 100%;
-  // background-color: $bg;
-  background: #d2e8f6 url('~@/assets/bg.png') center fixed no-repeat;
+  background: #d2e8f6 url("~@/assets/bg.png") center fixed no-repeat;
   background-size: cover;
   overflow: hidden;
   display: flex;
@@ -357,7 +322,7 @@ $light_gray: #333333;
         right: 10px;
         top: 7px;
         font-size: 13px;
-        color: #409EFF;
+        color: #409eff;
         cursor: pointer;
       }
     }
@@ -464,7 +429,7 @@ $light_gray: #333333;
     -moz-transform: translateX(0);
   }
 }
-.yzm-icon{
+.yzm-icon {
   // color: red;
 }
 </style>

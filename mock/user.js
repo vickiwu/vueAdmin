@@ -87,6 +87,7 @@ module.exports = [
           message: 'Login failed, unable to get user details.'
         }
       }
+      const sysURL1 = 'http://127.0.0.1:8080'
 
       // 路由和组件后台获取放在routes，
       // 菜单后台获取放在menuList中，
@@ -134,7 +135,7 @@ module.exports = [
                       'auth:client:set'
                     ],
                     'title': '企业信息',
-                    'url': 'http://127.0.0.1:8080'
+                    'url': `${sysURL1}/qyxx`
                   },
                   'name': '2',
                   'id': 2
@@ -150,7 +151,7 @@ module.exports = [
                       'auth:service:del'
                     ],
                     'title': '服务管理',
-                    'url': 'http://127.0.0.1:8080'
+                    'url': `${sysURL1}/rygl`
                   },
                   'name': '3',
                   'id': 3
@@ -164,7 +165,8 @@ module.exports = [
                       'auth:token:info',
                       'auth:token:del'
                     ],
-                    'title': '令牌管理'
+                    'title': '令牌管理',
+                    'url': `${sysURL1}/lpgl`
                   },
                   'name': '4',
                   'id': 4
@@ -388,7 +390,6 @@ module.exports = [
               'name': '91',
               'id': 91
             },
-
             {
               'redirect': '/html/index',
               'path': '/html',
@@ -400,7 +401,7 @@ module.exports = [
                   'meta': {
                     'affix': false,
                     'title': '服务治理',
-                    'url': 'http://127.0.0.1:8080/about'
+                    'url': `${sysURL1}/about`
                   },
                   'name': '122',
                   'id': 122
