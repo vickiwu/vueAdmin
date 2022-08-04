@@ -46,7 +46,7 @@ service.interceptors.response.use(
   response => {
     const res = response.data
 
-    if (res.code !== 200) {
+    if (res.a !== 200) {
       Message({
         message: res.msg || '错误',
         type: 'error',

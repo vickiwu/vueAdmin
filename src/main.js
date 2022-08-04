@@ -9,6 +9,10 @@ import store from './store'
 import wsConnection from '@/utils/socket'
 import router from './router'
 import permission from '@/directive/permission/index.js' // 权限判断指令
+import ElSelectTree from 'el-select-tree'
+
+Vue.use(ElSelectTree)
+
 Vue.use(permission)
 
 import '@/icons'
@@ -23,10 +27,10 @@ Vue.prototype.$setWs = wsConnection
  *MockJs将用于生产环境，
  *请先删除它，然后再上线！ ！ ！
  */
-if (process.env.NODE_ENV === 'production') {
-  const { mockXHR } = require('../mock')
-  mockXHR()
-}
+// if (process.env.NODE_ENV === 'production') {
+//   const { mockXHR } = require('../mock')
+//   mockXHR()
+// }
 
 Vue.use(ElementUI)
 

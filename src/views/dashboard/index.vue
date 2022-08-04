@@ -33,17 +33,20 @@
                 size="small"
                 :class="authChart === '本周' ? 'isActive' : ''"
                 @click="changeAuthChart('本周')"
-              >本周</el-button>
+                >本周</el-button
+              >
               <el-button
                 size="small"
                 :class="authChart === '本月' ? 'isActive' : ''"
                 @click="changeAuthChart('本月')"
-              >本月</el-button>
+                >本月</el-button
+              >
               <el-button
                 size="small"
                 :class="authChart === '本年' ? 'isActive' : ''"
                 @click="changeAuthChart('本年')"
-              >本年</el-button>
+                >本年</el-button
+              >
             </el-button-group>
           </div>
           <pie-chart :height="height" />
@@ -66,17 +69,20 @@
                 size="small"
                 :class="userChart === '本周' ? 'isActive' : ''"
                 @click="changeUserChart('本周')"
-              >本周</el-button>
+                >本周</el-button
+              >
               <el-button
                 size="small"
                 :class="userChart === '本月' ? 'isActive' : ''"
                 @click="changeUserChart('本月')"
-              >本月</el-button>
+                >本月</el-button
+              >
               <el-button
                 size="small"
                 :class="userChart === '本年' ? 'isActive' : ''"
                 @click="changeUserChart('本年')"
-              >本年</el-button>
+                >本年</el-button
+              >
             </el-button-group>
           </div>
           <raddar-chart :height="height" />
@@ -109,19 +115,17 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['name', 'current_permission'])
+    ...mapGetters(['name'])
   },
   watch: {
-    '$route': {
-      handler: (val) => {
-        console.log('%c 🍷 val: ', 'font-size:20px;background-color: #B03734;color:#fff;', val)
-      },
+    $route: {
+      handler: val => {},
       immediate: true,
       deep: true
     }
   },
   created() {
-    window.onresize = (params) => {
+    window.onresize = params => {
       this.getHeight()
     }
   },

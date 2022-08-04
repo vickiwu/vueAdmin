@@ -11,6 +11,6 @@ module.exports = {
    * @type {boolean} true | false
    * @description 是否fixed标题
    */
-  fixedHeader: false
-
+  fixedHeader: false,
+  menuType: 'top' // top left
 }

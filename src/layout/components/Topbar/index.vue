@@ -25,38 +25,62 @@
       </el-scrollbar>
     </div>
     <div class="right-menu">
-      <template v-if="device!=='mobile'">
-        <search id="header-search" class="right-menu-item" />
-
+      <template v-if="device !== 'mobile'">
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
-
-        <el-tooltip
-          content="Global Size"
-          effect="dark"
-          placement="bottom"
-        />
-
+        <el-tooltip content="Global Size" effect="dark" placement="bottom" />
       </template>
-      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
+      <el-dropdown
+        class="avatar-container right-menu-item hover-effect"
+        trigger="click"
+      >
         <div class="avatar-wrapper">
-          <img :src="avatar" class="user-avatar">
+          <img :src="avatar" class="user-avatar" />
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
           <router-link to="/">
             <el-dropdown-item>首页</el-dropdown-item>
           </router-link>
-          <router-link to="/system/user">
-            <el-dropdown-item>用户管理</el-dropdown-item>
-          </router-link>
+          <el-dropdown-item @click.native="editPwdOpen">
+            修改密码
+          </el-dropdown-item>
           <el-dropdown-item divided @click.native="logout">
-            <span style="display:block;">退出</span>
+            <span style="display: block">退出</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
+    <el-dialog
+      title="修改密码"
+      center
+      :visible.sync="dialogFormVisible"
+      append-to-body
+    >
+      <el-form :model="userData">
+        <el-form-item label="手机号码：" label-width="120px">
+          <el-input v-model="userData.phone" disabled />
+        </el-form-item>
+        <el-form-item label="新密码：" label-width="120px">
+          <el-input
+            v-model="userData.newPassword"
+            type="password"
+            placeholder="请输入新的密码"
+          />
+        </el-form-item>
+        <el-form-item label="确认新密码：" label-width="120px">
+          <el-input
+            v-model="userData.newPassword"
+            type="password"
+            placeholder="请再输入新的密码"
+          />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="editPwdBtn"> 确 定 </el-button>
+      </div>
+    </el-dialog>
   </div>
-
 </template>
 
 <script>
@@ -64,29 +88,29 @@ import { mapGetters } from 'vuex'
 import Logo from './Logo'
 import TopbarItem from './TopbarItem'
 import Screenfull from '@/components/Screenfull'
-import Search from '@/components/HeaderSearch'
 import variables from '@/styles/variables.scss'
+import { getBaseData } from '@/utils/auth'
+import { editPwd } from '@/api/user'
 
 export default {
   components: {
     TopbarItem,
     Logo,
-    Screenfull,
-    Search
+    Screenfull
   },
   data() {
     return {
-      routes: this.$store.state.user.routes
+      dialogFormVisible: false,
+      routes: this.$store.state.user.routes,
+      userData: {
+        phone: '',
+        newPassword: '',
+        password: ''
+      }
     }
   },
   computed: {
-    ...mapGetters([
-      'top_menus',
-      'sidebar',
-      'avatar',
-      'device'
-    ]),
-
+    ...mapGetters(['top_menus', 'sidebar', 'avatar', 'device']),
     activeMenu() {
       const route = this.$route
       const { meta, path } = route
@@ -106,7 +130,11 @@ export default {
       return !this.sidebar.opened
     }
   },
-  created() {
+  created() {},
+  mounted() {
+    const baseData = getBaseData()
+    this.userData.phone = baseData.phone
+    this.userData.password = baseData.password
   },
   methods: {
     handleSelect(key, keyPath) {
@@ -126,6 +154,14 @@ export default {
     },
     async logout() {
       await this.$store.dispatch('user/logout')
+    },
+    editPwdOpen() {
+      this.dialogFormVisible = true
+    },
+    editPwdBtn() {
+      editPwd(this.userData).then(res => {
+        this.dialogFormVisible = false
+      })
     }
   }
 }

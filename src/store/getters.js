@@ -6,18 +6,17 @@ const getters = {
   name: state => state.user.name,
   visitedViews: state => state.tagsView.visitedViews,
   cachedViews: state => state.tagsView.cachedViews,
-  permission_routes: state => state.user.routes,
+  permission_routes: state => state.permission.routes,
   menu_type: (state, getters) => {
-    return state.user.menuType
+    return state.permission.menuType || 'top'
   },
   left_menus: (state, getters) => {
-    return state.user.leftMenu
+    return state.permission.leftMenu || []
   },
   top_menus: (state, getters) => {
-    return state.user.topMenu
+    return state.permission.topMenu || []
   },
-  permission: state => state.user.permission,
-  current_permission: state => state.user.currentPermission,
+  roles: state => state.user.roles || [],
   eventlist: (state) => {
     return state.socket.eventlist
   },

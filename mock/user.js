@@ -26,7 +26,7 @@ const users = {
 module.exports = [
   // user login
   {
-    url: '/api-auth/oauth/user/token',
+    url: '/login',
     type: 'post',
     response: config => {
       const { username } = config.body
@@ -41,8 +41,16 @@ module.exports = [
       }
 
       return {
-        code: 200,
-        data: access_token
+        a: 200,
+        d: {
+          userName: '姓名',
+          phone: '手机号',
+          companyId: 1001, // '公司id',
+          deptId: 2001, // '部门id',
+          roleType: ['admins'], // '角色类型',
+          roleName: '角色名称',
+          userId: 3001// '人员id'
+        }
       }
     }
   },
@@ -64,8 +72,8 @@ module.exports = [
       }
 
       return {
-        code: 200,
-        data: {
+        a: 200,
+        d: {
           ...info,
           permission: ['user:del', 'table:edit', 'user:look']
         }
@@ -94,8 +102,8 @@ module.exports = [
       // 菜单类型menuType，top和left两种，
       // 其中top类型包含有下拉无侧菜单，及无下拉有侧边栏两种情况
       return {
-        code: 200,
-        'data': {
+        a: 200,
+        d: {
           'routes': [
             {
               'redirect': '/dashboard/index',
@@ -486,7 +494,7 @@ module.exports = [
                 'title': '基础信息管理'
               },
               'id': 1,
-              'showSubMenu': false
+              'hideSubMenu': false
             },
             {
               'path': '/right',
@@ -553,7 +561,7 @@ module.exports = [
                 'title': '运力管理'
               },
               'id': 31,
-              'showSubMenu': false
+              'hideSubMenu': false
             },
             {
               'path': '/organize',
@@ -594,7 +602,7 @@ module.exports = [
                 'title': '订单管理'
               },
               'id': 61,
-              'showSubMenu': false
+              'hideSubMenu': false
             },
             {
               'path': '/system',
@@ -654,9 +662,8 @@ module.exports = [
                 'title': '系统管理'
               },
               'id': 91,
-              'showSubMenu': false
+              'hideSubMenu': false
             },
-
             {
               'path': '/html',
               'children': [
@@ -674,7 +681,7 @@ module.exports = [
                 'title': '系统监控3'
               },
               'id': 121,
-              'showSubMenu': false
+              'hideSubMenu': false
             }
           ],
           'menuType': 'top'
@@ -688,8 +695,8 @@ module.exports = [
     type: 'post',
     response: _ => {
       return {
-        code: 200,
-        data: 'success'
+        a: 200,
+        d: 'success'
       }
     }
   }

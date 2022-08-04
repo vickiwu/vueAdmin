@@ -385,7 +385,7 @@
           "title": "认证中心"
         },
         "id": 1,
-        "showSubMenu": false
+        "hideSubMenu": false
       },
       {
         "path": "/right",
@@ -452,7 +452,7 @@
           "title": "权限中心"
         },
         "id": 31,
-        "showSubMenu": false
+        "hideSubMenu": false
       },
       {
         "path": "/organize",
@@ -493,7 +493,7 @@
           "title": "组织管理"
         },
         "id": 61,
-        "showSubMenu": false
+        "hideSubMenu": false
       },
       {
         "path": "/system",
@@ -553,7 +553,7 @@
           "title": "系统管理"
         },
         "id": 91,
-        "showSubMenu": false
+        "hideSubMenu": false
       },
       {
         "path": "/monitor",
@@ -572,7 +572,7 @@
           "title": "系统监控"
         },
         "id": 121,
-        "showSubMenu": false
+        "hideSubMenu": false
       }
     ],
     "menuType": "left"

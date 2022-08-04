@@ -1,18 +1,33 @@
 <template>
-  <div>
+  <div v-if="!item.hidden">
     <!-- 单菜单 1.子菜单等于1-->
-    <template v-if="!hasSubMenu(item.children,item)">
-      <app-link v-if="showingTopMenu.meta" :to="resolvePath(showingTopMenu.path)">
+    <template v-if="!hasSubMenu(item.children, item)">
+      <app-link
+        v-if="showingTopMenu.meta"
+        :to="resolvePath(showingTopMenu.path)"
+      >
         <el-menu-item :index="resolvePath(showingTopMenu.path)">
-          <item :icon="showingTopMenu.meta.icon||(item.meta&&item.meta.icon)" :title="showingTopMenu.meta.title" />
+          <item
+            :icon="showingTopMenu.meta.icon || (item.meta && item.meta.icon)"
+            :title="showingTopMenu.meta.title"
+          />
         </el-menu-item>
       </app-link>
     </template>
 
     <!-- 下拉菜单 -->
-    <el-submenu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body>
+    <el-submenu
+      v-else
+      ref="subMenu"
+      :index="resolvePath(item.path)"
+      popper-append-to-body
+    >
       <template slot="title">
-        <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="item.meta.title" />
+        <item
+          v-if="item.meta"
+          :icon="item.meta && item.meta.icon"
+          :title="item.meta.title"
+        />
       </template>
       <topbar-item
         v-for="child in item.children"
@@ -58,11 +73,10 @@ export default {
     this.showingTopMenu = null
     return {}
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
     hasSubMenu(children = [], parent) {
-      if (parent.showSubMenu) {
+      if (parent.hideSubMenu) {
         // 需要展示下拉菜单---到下个模板
         return true
       } else {

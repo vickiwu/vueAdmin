@@ -1,159 +1,75 @@
 <template>
   <div class="login-container">
-    <el-card class="login-card">
+    <el-card class="login-card animation-right">
       <el-form
         ref="loginForm"
         :model="loginForm"
         :rules="loginRules"
         class="login-form"
         auto-complete="on"
-        label-position="left"
+        label-position="top"
+        label-width="80px"
       >
-        <div class="title-container">
-          <el-row>
-            <el-col
-              :span="12"
-              :class="isActive === 'account' && 'active'"
-              @click.native="isActive = 'account'"
-            >
-              账号密码登录
-            </el-col>
-            <el-col
-              :span="12"
-              :class="isActive === 'phone' && 'active'"
-              @click.native="isActive = 'phone'"
-            >
-              验证码登录
-            </el-col>
-          </el-row>
-          <div
-            class="active-line"
-            :class="isActive === 'phone' ? 'animation-left' : 'animation-right'"
+        <el-form-item prop="username" label="用户名：">
+          <span class="svg-container">
+            <svg-icon icon-class="user" />
+          </span>
+          <el-input
+            ref="username"
+            v-model="loginForm.username"
+            placeholder="请输入用户名"
+            name="username"
+            type="text"
+            tabindex="1"
+            auto-complete="on"
           />
-        </div>
+        </el-form-item>
 
-        <div v-if="isActive === 'account'">
-          <el-form-item prop="username">
-            <span class="svg-container">
-              <svg-icon icon-class="user" />
-            </span>
-            <el-input
-              ref="username"
-              v-model="loginForm.username"
-              placeholder="请输入用户名"
-              name="username"
-              type="text"
-              tabindex="1"
-              auto-complete="on"
+        <el-form-item prop="password" label="密码：">
+          <span class="svg-container">
+            <svg-icon icon-class="password" />
+          </span>
+          <el-input
+            :key="passwordType"
+            ref="password"
+            v-model="loginForm.password"
+            :type="passwordType"
+            placeholder="请输入密码"
+            name="password"
+            tabindex="2"
+            auto-complete="on"
+            @keyup.enter.native="handleLogin"
+          />
+          <span class="show-pwd" @click="showPwd">
+            <svg-icon
+              :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
             />
-          </el-form-item>
+          </span>
+        </el-form-item>
 
-          <el-form-item prop="password">
-            <span class="svg-container">
-              <svg-icon icon-class="password" />
-            </span>
-            <el-input
-              :key="passwordType"
-              ref="password"
-              v-model="loginForm.password"
-              :type="passwordType"
-              placeholder="请输入密码"
-              name="password"
-              tabindex="2"
-              auto-complete="on"
-              @keyup.enter.native="handleLogin"
-            />
-            <span class="show-pwd" @click="showPwd">
-              <svg-icon
-                :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
-              />
-            </span>
-          </el-form-item>
-          <el-row>
-            <el-col :span="18">
-              <el-form-item prop="validate">
-                <span class="svg-container">
-                  <svg-icon icon-class="yzm" />
-                </span>
-                <el-input
-                  ref="validate"
-                  v-model="loginForm.validate"
-                  placeholder="请输入验证码"
-                  name="validate"
-                  type="text"
-                  tabindex="1"
-                  auto-complete="on"
-                />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-              <div class="valid-img">
-                <img
-                  src="data:image/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAAUCAIAAABeYcl+AAAA2UlEQVR42u3W0QnDIBAGYCfJDu0YWaRbdLEOUOhT37JEdmiFgx+5/86obQ0Nig/JSciHnqfh9YctDPTWz0LYAX1/ntF59Hp6mF24sS3TLXb1lQTT+GVepSOISDU6FZtuDy1u+DbRUCp0y0wrKLtTH2Y378arN9ksrkB7KWGihcsrUI6Oz13R5m5rQMOtxC1oL6GRCflF2AFtbkQkQy2aob9Cl29Ebyg/u0r85Zw+OFrFS9Bc8jrVaa53tWhVttvRn5yI+VOQE4PPyK53j3K0VzHS+LiaDvTR0G8iO3BjUHwybgAAAABJRU5ErkJggg=="
-                  alt="验证码"
-                >
-              </div>
-            </el-col>
-          </el-row>
-
-          <div class="remember-pwd">
-            <el-checkbox v-model="checked">记住密码</el-checkbox>
-          </div>
-        </div>
-
-        <div v-if="isActive === 'phone'">
-          <el-form-item prop="username">
-            <span class="svg-container">
-              <svg-icon icon-class="user" />
-            </span>
-            <el-input
-              ref="username"
-              v-model="loginForm.username"
-              placeholder="请输入手机号码"
-              name="username"
-              type="text"
-              tabindex="1"
-              auto-complete="on"
-            />
-          </el-form-item>
-
-          <el-form-item prop="username">
-            <span class="svg-container">
-              <svg-icon icon-class="yzm" class-name="yzm-icon" />
-            </span>
-            <el-input
-              ref="username"
-              v-model="loginForm.username"
-              placeholder="请输入验证码"
-              name="username"
-              type="text"
-              tabindex="1"
-            />
-            <span class="send-yzm">
-              发送验证码
-            </span>
-          </el-form-item>
-        </div>
+        <!-- <div class="remember-pwd">
+          <el-checkbox v-model="checked">记住密码</el-checkbox>
+        </div> -->
         <el-button
           :loading="loading"
           type="primary"
-          style="width:100%;margin:20px 0 10px 0;"
+          style="width: 100%; margin: 10px 0 10px 0"
           @click.native.prevent="handleLogin"
-        >登录</el-button>
+        >
+          登录
+        </el-button>
       </el-form>
     </el-card>
   </div>
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
-
 export default {
   name: 'Login',
   data() {
     const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error('请输入正确的用户名'))
+      if (value.length < 1) {
+        callback(new Error('用户名不能为空'))
       } else {
         callback()
       }
@@ -165,20 +81,12 @@ export default {
         callback()
       }
     }
-    const validateValidate = (rule, value, callback) => {
-      if (value.length < 1) {
-        callback(new Error('验证码不能为空'))
-      } else {
-        callback()
-      }
-    }
+
     return {
-      checked: true,
-      isActive: 'account',
+      // checked: true,
       loginForm: {
-        username: 'admin',
-        password: 'admin',
-        validate: '6DWK'
+        username: '13182811030',
+        password: '123456'
       },
       loginRules: {
         username: [
@@ -186,9 +94,6 @@ export default {
         ],
         password: [
           { required: true, trigger: 'blur', validator: validatePassword }
-        ],
-        validate: [
-          { required: true, trigger: 'blur', validator: validateValidate }
         ]
       },
       loading: false,
@@ -222,12 +127,17 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$store.dispatch('user/login', this.loginForm).then(async(res) => {
-            this.$router.push({ path: this.redirect || '/' })
-            this.loading = false
-          }).catch(() => {
-            this.loading = false
-          })
+          this.$store
+            .dispatch('user/login', this.loginForm)
+            .then(res => {
+              // cookie 存值
+
+              this.$router.push({ path: this.redirect || '/' })
+              this.loading = false
+            })
+            .catch(() => {
+              this.loading = false
+            })
         } else {
           console.log('error submit!!')
           return false
@@ -239,7 +149,6 @@ export default {
 </script>
 
 <style lang="scss">
-
 $bg: #283443;
 $inputBg: #fff;
 $light_gray: #333333;
@@ -275,7 +184,7 @@ $cursor: #333333;
     }
   }
 
-  .el-form-item {
+  .el-form-item__content {
     border: 1px solid #dddddd;
     background: rgba(0, 0, 0, 0);
     border-radius: 5px;
@@ -292,17 +201,21 @@ $light_gray: #333333;
 .login-container {
   min-height: 100%;
   width: 100%;
-  background: #d2e8f6 url("~@/assets/bg.png") center fixed no-repeat;
+  background: #d2e8f6 url('~@/assets/bg.png') center fixed no-repeat;
   background-size: cover;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
 
+  .el-form-item__label {
+    padding: 0;
+  }
+
   .login-card {
-    width: 440px;
+    width: 420px;
     max-width: 100%;
-    height: 380px;
+    height: 350px;
     .login-form {
       padding: 5px 0px;
       margin: 0 auto;
@@ -384,10 +297,7 @@ $light_gray: #333333;
   -webkit-animation: fadeInRight 0.5s 0.1s ease both;
   -moz-animation: fadeInRight 0.5s 0.1s ease both;
 }
-.animation-left {
-  -webkit-animation: fadeInLeft 0.5s 0.1s ease both;
-  -moz-animation: fadeInLeft 0.5s 0.1s ease both;
-}
+
 @-webkit-keyframes fadeInLeft {
   0% {
     opacity: 0;

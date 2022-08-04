@@ -1,24 +1,34 @@
 <template>
   <div id="tags-view-container" class="tags-view-container">
-    <scroll-pane ref="scrollPane" class="tags-view-wrapper" @scroll="handleScroll">
+    <scroll-pane
+      ref="scrollPane"
+      class="tags-view-wrapper"
+      @scroll="handleScroll"
+    >
       <router-link
         v-for="tag in visitedViews"
         ref="tag"
         :key="tag.path"
-        :class="isActive(tag)?'active':''"
+        :class="isActive(tag) ? 'active' : ''"
         :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
         tag="span"
         class="tags-view-item"
-        @click.middle.native="!isAffix(tag)?closeSelectedTag(tag):''"
-        @contextmenu.prevent.native="openMenu(tag,$event)"
+        @click.middle.native="!isAffix(tag) ? closeSelectedTag(tag) : ''"
+        @contextmenu.prevent.native="openMenu(tag, $event)"
       >
         {{ tag.title }}
-        <span v-if="!isAffix(tag)" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
+        <span
+          v-if="!isAffix(tag)"
+          class="el-icon-close"
+          @click.prevent.stop="closeSelectedTag(tag)"
+        />
       </router-link>
     </scroll-pane>
-    <ul v-show="visible" :style="{left:left+'px'}" class="contextmenu">
+    <ul v-show="visible" :style="{ left: left + 'px' }" class="contextmenu">
       <li @click="refreshSelectedTag(selectedTag)">刷新</li>
-      <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">关闭</li>
+      <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">
+        关闭
+      </li>
       <li @click="closeOthersTags">关闭其他</li>
       <li @click="closeAllTags(selectedTag)">关闭全部</li>
     </ul>
@@ -45,7 +55,7 @@ export default {
       return this.$store.state.tagsView.visitedViews
     },
     routes() {
-      return this.$store.state.user.routes
+      return this.$store.state.permission.routes
     }
   },
   watch: {
@@ -61,8 +71,7 @@ export default {
       }
     }
   },
-  created() {
-  },
+  created() {},
   mounted() {
     this.initTags()
     this.addTags()
@@ -97,7 +106,7 @@ export default {
     },
     initTags() {
       // 默认固定的标签
-      const affixTags = this.affixTags = this.filterAffixTags(this.routes)
+      const affixTags = (this.affixTags = this.filterAffixTags(this.routes))
       for (const tag of affixTags) {
         // 必须具有name属性
         if (tag.name) {
@@ -138,17 +147,21 @@ export default {
       })
     },
     closeSelectedTag(view) {
-      this.$store.dispatch('tagsView/delView', view).then(({ visitedViews }) => {
-        if (this.isActive(view)) {
-          this.toLastView(visitedViews, view)
-        }
-      })
+      this.$store
+        .dispatch('tagsView/delView', view)
+        .then(({ visitedViews }) => {
+          if (this.isActive(view)) {
+            this.toLastView(visitedViews, view)
+          }
+        })
     },
     closeOthersTags() {
       this.$router.push(this.selectedTag)
-      this.$store.dispatch('tagsView/delOthersViews', this.selectedTag).then(() => {
-        this.moveToCurrentTag()
-      })
+      this.$store
+        .dispatch('tagsView/delOthersViews', this.selectedTag)
+        .then(() => {
+          this.moveToCurrentTag()
+        })
     },
     closeAllTags(view) {
       this.$store.dispatch('tagsView/delAllViews').then(({ visitedViews }) => {
@@ -169,7 +182,7 @@ export default {
           // to reload home page
           this.$router.replace({ path: '/redirect' + view.fullPath })
         } else {
-          this.$router.push('/')
+          this.$router.push('/index')
         }
       }
     },
@@ -206,12 +219,12 @@ export default {
   width: 100%;
   background: #fff;
   border-bottom: 1px solid #d8dce5;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
   .tags-view-wrapper {
     .is-horizontal {
       display: none;
     }
-    .is-horizontal>div {
+    .is-horizontal > div {
       display: none;
     }
     .tags-view-item {
@@ -261,7 +274,7 @@ export default {
     font-size: 12px;
     font-weight: 400;
     color: #333;
-    box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, .3);
+    box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
     li {
       margin: 0;
       padding: 7px 16px;
@@ -284,10 +297,10 @@ export default {
       vertical-align: 2px;
       border-radius: 50%;
       text-align: center;
-      transition: all .3s cubic-bezier(.645, .045, .355, 1);
+      transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
       transform-origin: 100% 50%;
       &:before {
-        transform: scale(.6);
+        transform: scale(0.6);
         display: inline-block;
         vertical-align: -3px;
       }

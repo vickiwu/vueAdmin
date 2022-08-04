@@ -1,13 +1,14 @@
 import router from './router'
+import { menuType } from './settings'
 import store from './store'
 import { Message } from 'element-ui'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { getToken } from '@/utils/auth'
-import { initMenu } from '@/utils/routesInit'
 import getPageTitle from '@/utils/get-page-title'
 
 NProgress.configure({ showSpinner: false }) // NProgress配置
+store.dispatch('permission/setMenuType', menuType)
 
 const whiteList = ['/login'] // 没有重定向白名单
 
@@ -17,26 +18,28 @@ router.beforeEach(async(to, from, next) => {
   document.title = getPageTitle(to.meta.title)
 
   const hasToken = getToken()
-
   if (hasToken) {
     if (to.path === '/login') {
-      next({ path: '/' })
+      next({ path: '/index' })
       NProgress.done()
     } else {
-      // 是否有路由
-      const permissionRoutes = store.getters.permission_routes
-      if (permissionRoutes.length > 0) {
-        const { permission } = to.meta
-        // 获取页面中权限控制
-        store.dispatch('user/setCurrentPermission', permission)
-
+      // 获取用户权限
+      const hasRoles = store.getters.roles && store.getters.roles.length > 0
+      if (hasRoles) {
         next()
       } else {
         try {
           // 重新获取用户信息和路由
-          await store.dispatch('user/getInfo')
-          await initMenu(router, store, to.path)
-
+          const { roleType } = await store.dispatch('user/getInfo')
+          // 根据权限生成权限可访问路由
+          const accessRoutes = await store.dispatch('permission/generateRoutes', [roleType])
+          if (menuType === 'top') {
+            store.dispatch('permission/setTopMenu', accessRoutes)
+          } else if (menuType === 'left') {
+            store.dispatch('permission/setLeftMenu', accessRoutes)
+          }
+          // 动态添加路由
+          router.addRoutes(accessRoutes)
           next({ ...to, replace: true })
         } catch (error) {
           console.log(error, 'error')
@@ -50,7 +53,6 @@ router.beforeEach(async(to, from, next) => {
     }
   } else {
     /* 没有token*/
-
     if (whiteList.indexOf(to.path) !== -1) {
       //  在免登录白名单中，直接进入
       next()

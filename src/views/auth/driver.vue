@@ -1,14 +1,14 @@
 <template>
   <div class="app-container">
+    <!-- <small>认证中心-应用管理页面</small> -->
     <div class="filter-container">
       <el-input
-        v-model="appId"
+        v-model="userName"
         placeholder="请输入关键字"
         style="width: 200px; margin-right: 10px"
         class="filter-item"
       />
       <el-button
-        class=""
         size="small"
         type="success"
         icon="el-icon-search"
@@ -22,9 +22,9 @@
         style="margin-left: 10px"
         type="primary"
         icon="el-icon-edit"
-        @click="openNew"
+        @click="addDriver"
       >
-        新增
+        新增司机
       </el-button>
     </div>
     <el-table
@@ -46,22 +46,43 @@
       />
       <el-table-column
         show-overflow-tooltip
-        label="appId"
+        label="司机姓名"
         align="left"
         header-align="center"
+        width="300"
       >
         <template slot-scope="{ row }">
-          <span>{{ row.appId }}</span>
+          <span>{{ row.name }}</span>
         </template>
       </el-table-column>
       <el-table-column
         show-overflow-tooltip
-        label="appSecret"
+        label="部门名称"
         align="left"
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span>{{ row.appSecret }}</span>
+          <span>{{ row.companyName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        show-overflow-tooltip
+        label="身份证号"
+        align="left"
+        header-align="center"
+      >
+        <template slot-scope="{ row }">
+          <span>{{ row.idcard }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        show-overflow-tooltip
+        label="手机号"
+        align="left"
+        header-align="center"
+      >
+        <template slot-scope="{ row }">
+          <span>{{ row.phone }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -71,40 +92,49 @@
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span>{{ row.type }}</span>
+          <span>{{ row.isEscort === 1 ? '司机' : '押运员' }}</span>
         </template>
       </el-table-column>
       <el-table-column
         show-overflow-tooltip
-        label="描述"
+        label="出生日期"
         align="left"
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span>{{ row.description }}</span>
+          <span>{{ row.birthDay }}</span>
         </template>
       </el-table-column>
       <el-table-column
         show-overflow-tooltip
-        label="生效日期"
+        label="类别"
         align="left"
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span>{{ row.validityDateStr }}</span>
+          <span>{{ row.classify === 2 ? '外协' : '自有' }}</span>
         </template>
       </el-table-column>
       <el-table-column
         show-overflow-tooltip
-        label="到期日期"
+        label="备注"
         align="left"
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span>{{ row.expireDateStr }}</span>
+          <span>{{ row.remark }}</span>
         </template>
       </el-table-column>
-
+      <el-table-column
+        show-overflow-tooltip
+        label="规则"
+        align="left"
+        header-align="center"
+      >
+        <template slot-scope="{ row }">
+          <span>{{ row.rule }}</span>
+        </template>
+      </el-table-column>
       <el-table-column
         show-overflow-tooltip
         label="操作"
@@ -114,23 +144,23 @@
       >
         <template slot-scope="{ row }">
           <div style="display: flex; justify-content: flex-end">
-            <div style="display: flex; justify-content: flex-end">
-              <el-button
-                key="修改"
-                size="mini"
-                icon="el-icon-edit"
-                @click="handelClick('修改', row)"
-                >修改</el-button
-              >
-              <el-button
-                key="删除"
-                size="mini"
-                icon="el-icon-delete"
-                type="danger"
-                @click="handelClick('删除', row)"
-                >删除</el-button
-              >
-            </div>
+            <el-button
+              key="修改"
+              size="mini"
+              icon="el-icon-edit"
+              @click="handelClick('修改', row)"
+            >
+              修改
+            </el-button>
+            <el-button
+              key="删除"
+              size="mini"
+              icon="el-icon-delete"
+              type="danger"
+              @click="handelClick('删除', row)"
+            >
+              删除
+            </el-button>
           </div>
         </template>
       </el-table-column>
@@ -142,72 +172,77 @@
       :page-size="pageSize"
       @current-change="handleCurrentChange"
     />
-    <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
+    <el-dialog
+      :title="dialogTitle"
+      :visible.sync="driveFromVisible"
+      class="dialog-driveFrom"
+    >
       <el-form
-        ref="ruleForm"
-        :model="ruleForm"
+        ref="driveFrom"
+        :model="driveFrom"
         :rules="rules"
         label-width="100px"
-        class="service-ruleForm"
+        class="client-driveFrom"
       >
         <el-row :gutter="20">
-          <el-col :span="21">
-            <el-form-item label="appId" prop="appId">
-              <el-input v-model="ruleForm.appId" placeholder="请输入appId" />
+          <el-col :span="11">
+            <el-form-item label="姓名" prop="name">
+              <el-input v-model="driveFrom.name" placeholder="请输入司机姓名" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="11">
+            <el-form-item label="手机号" prop="phone">
+              <el-input v-model="driveFrom.phone" placeholder="请输入手机号" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="21">
-            <el-form-item label="secret" prop="appSecret">
+          <el-col :span="11">
+            <el-form-item label="身份证号" prop="idcard">
               <el-input
-                v-model="ruleForm.appSecret"
-                placeholder="请输入secret"
+                v-model="driveFrom.idcard"
+                placeholder="请输入身份证号"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="11">
+            <el-form-item label="出生日期" prop="birthDay">
+              <el-date-picker
+                v-model="driveFrom.birthDay"
+                type="date"
+                placeholder="选择出生日期"
               />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="21">
-            <el-form-item label="秘钥类型" prop="type">
-              <el-input v-model="ruleForm.type" placeholder="请输入秘钥类型" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="21">
-            <el-form-item label="生效日期" prop="validityDateStr">
+          <el-col :span="11">
+            <el-form-item label="备注" prop="remark">
               <el-input
-                v-model="ruleForm.validityDateStr"
-                placeholder="请选择生效日期"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="21">
-            <el-form-item label="到期日期" prop="expireDateStr">
-              <el-input
-                v-model="ruleForm.expireDateStr"
-                placeholder="请选择到期日期"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="21">
-            <el-form-item label="描述" prop="description">
-              <el-input
-                v-model="ruleForm.description"
+                v-model="driveFrom.remark"
                 type="textarea"
-                placeholder="请输入描述"
+                placeholder="请输入备注内容"
+                maxlength="100"
+                show-word-limit
+              />
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="11">
+            <el-form-item label="规则" prop="rule">
+              <el-input
+                v-model="driveFrom.rule"
+                type="textarea"
+                placeholder="请输入规则内容"
+                maxlength="100"
+                show-word-limit
               />
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false"> 取消 </el-button>
+        <el-button @click="driveFromVisible = false"> 取消 </el-button>
         <el-button type="primary" @click="handleSave"> 确认 </el-button>
       </div>
     </el-dialog>
@@ -220,57 +255,40 @@ import { Message } from 'element-ui'
 export default {
   data() {
     return {
-      appId: '',
+      userName: '',
+      dialogTitle: '新增司机',
       listLoading: false,
-      dialogFormVisible: false,
-      dialogTitle: '新增应用',
-      dialogApply: false,
-      list: [],
+      driveFromVisible: false,
+      driveAddVisible: false,
+      list: [{}],
       page: 1,
       pageSize: 5,
       total: 0,
-      ruleForm: {
-        appId: '',
-        appSecret: '',
-        type: '',
-        higherService: '',
-        validityDateStr: '',
-        expireDateStr: '',
-        description: ''
-      },
-
-      rules: {
-        appId: [{ required: true, message: '请输入appId', trigger: 'blur' }],
-        appSecret: [
-          { required: true, message: '请输入secret', trigger: 'blur' }
-        ],
-        type: [{ required: true, message: '请输入秘钥类型', trigger: 'blur' }]
+      driveFrom: {
+        name: '',
+        deptId: '',
+        idcard: '',
+        phone: '',
+        isDriver: '', // 1 是 2否
+        isEscort: '', // 1 是 2 否
+        birthDay: '',
+        classify: '', // 1 自有 2外协
+        remark: '',
+        rule: ''
       }
     }
   },
   computed: {},
   created() {
     // this.loadTable()
-    // const carObj = {
-    //   a: ['苏BH1190', '苏BH1191', '苏BH1192']
-    // }
-    // const carData = {
-    //   data: carObj,
-    //   type: [0, 0x20, 0]
-    // }
-    // 在使用地方调用
-    // 发送消息
-    // this.$setWs.emit(loginData)
-    // this.$setWs.emit(objData)
-    // this.$setWs.emit(carData)
   },
   methods: {
     async loadTable(pageSize, page) {
       await authApi
-        .getSysSecretPageResult({
+        .getTokenList({
           limit: this.pageSize,
           page: this.page,
-          appId: this.appId
+          userName: this.userName
         })
         .then(response => {
           const { data } = response
@@ -285,46 +303,21 @@ export default {
       this.listLoading = true
       this.loadTable()
     },
-    handleSave() {
-      this.$refs['ruleForm'].validate(valid => {
-        if (valid) {
-          authApi
-            .saveSysSecret({ ...this.ruleForm })
-            .then(response => {
-              Message({
-                message: response.msg,
-                type: 'success',
-                duration: 2 * 1000
-              })
-              if (response.code === 200) {
-                this.listLoading = true
-                this.loadTable()
-                this.dialogFormVisible = false
-              }
-            })
-            .catch(error => error)
-        } else {
-          console.log('验证出错')
-          return false
-        }
-      })
-    },
-    openNew() {
-      this.dialogFormVisible = true
-      for (const k of Object.keys(this.ruleForm)) {
-        this.ruleForm[k] = ''
-      }
+    addDriver() {
+      this.dialogTitle = '新增司机'
+      this.driveFromVisible = true
+      this.driveFrom = {}
     },
     handelClick(item, row) {
       if (item === '修改') {
-        this.dialogTitle = '修改应用'
-        this.dialogFormVisible = true
-        this.ruleForm = { ...row }
+        this.driveFromVisible = true
+        this.dialogTitle = '修改司机'
+        this.driveFrom = { ...row }
       } else if (item === '删除') {
         this.$confirm('确认删除吗？')
           .then(_ => {
             authApi
-              .deleteSysSecret({ id: row.id })
+              .removeToken({ id: row.id })
               .then(response => {
                 Message({
                   message: response.msg,
@@ -353,14 +346,22 @@ export default {
   .el-button--mini.is-round {
     padding: 5px 10px;
   }
+  .cell {
+    span {
+      word-break: initial;
+    }
+  }
 }
 
 .search-btn {
   background-color: rgba(0, 204, 102, 1);
 }
-.service-ruleForm {
+.dialog-driveFrom {
   .el-select {
-    width: 85%;
+    width: 100%;
+  }
+  .el-date-editor {
+    width: 100%;
   }
 }
 </style>
