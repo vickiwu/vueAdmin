@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: '后台管理Vue框架',
+  title: 'SYWL - OTMS管理系统',
 
   /**
    * @type {boolean} true | false
