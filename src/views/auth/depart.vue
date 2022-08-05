@@ -10,13 +10,14 @@
               style="float: right; padding: 0"
               type="text"
               icon="el-icon-edit"
-              @click="openNew"
+              @click="addDepartClick"
             >
               新增部门
             </el-button>
           </div>
           <el-tree
-            :data="data"
+            v-loading="departLoading"
+            :data="departData"
             :props="defaultProps"
             show-checkbox
             node-key="id"
@@ -27,16 +28,17 @@
             <span slot-scope="{ node, data }" class="custom-tree-node">
               <span>{{ node.label }}</span>
               <span>
-                <el-tooltip effect="dark" content="新增部门" placement="top">
+                <!-- <el-tooltip effect="dark" content="新增部门" placement="top">
                   <i
+                    v-if="node.id == 1"
                     class="el-icon-circle-plus-outline tree-btn btn-succ"
                     @click="() => append(data)"
                   />
-                </el-tooltip>
+                </el-tooltip> -->
                 <el-tooltip effect="dark" content="修改部门" placement="top">
                   <i
                     class="el-icon-edit tree-btn btn-edit"
-                    @click="() => remove(node, data)"
+                    @click="() => editDepart(node, data)"
                   />
                 </el-tooltip>
                 <el-tooltip effect="dark" content="删除部门" placement="top">
@@ -73,7 +75,6 @@
             v-loading="listLoading"
             class="auth-table"
             :data="list"
-            row-key="id"
             border
             fit
             highlight-current-row
@@ -120,16 +121,7 @@
                 <span>{{ row.deptName }}</span>
               </template>
             </el-table-column>
-            <el-table-column
-              show-overflow-tooltip
-              label="角色类型"
-              align="left"
-              header-align="center"
-            >
-              <template slot-scope="{ row }">
-                <span>{{ row.roleType }}</span>
-              </template>
-            </el-table-column>
+
             <el-table-column
               show-overflow-tooltip
               label="角色名称"
@@ -202,27 +194,32 @@
 </template>
 
 <script>
-let id = 1000
-import authApi from '@/api/auth'
 import { Message } from 'element-ui'
+import {
+  getDeportList,
+  addDeport,
+  editDeport,
+  delDeport,
+  delPeople
+} from '@/api/people'
+import { mapGetters } from 'vuex'
+import { getPeopleList } from '../../api/people'
 export default {
   data() {
     return {
       dialogDepartTitle: '新增部门',
+      currentParent: null,
       dialogDepart: false,
       name: '',
       listLoading: false,
-      list: [{}],
+      departLoading: false,
+      list: [],
       deportForm: {
-        name: '',
-        companyId: '',
-        typeName: '',
-        parentId: '',
-        sort: ''
+        name: ''
       },
       higherServiceList: [],
       page: 1,
-      pageSize: 5,
+      pageSize: 10,
       total: 0,
       rules: {
         name: [{ required: true, message: '请输入服务名称', trigger: 'blur' }],
@@ -230,166 +227,172 @@ export default {
           { required: true, message: '请输入服务路径', trigger: 'blur' }
         ]
       },
-      data: [
-        {
-          id: 1,
-          label: '一级部门 1',
-          children: [
-            {
-              id: 4,
-              label: '二级部门 1-1',
-              children: [
-                {
-                  id: 9,
-                  label: '三级部门 1-1-1'
-                },
-                {
-                  id: 10,
-                  label: '三级部门 1-1-2'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          id: 2,
-          label: '一级部门 2',
-          children: [
-            {
-              id: 5,
-              label: '二级部门 2-1'
-            },
-            {
-              id: 6,
-              label: '二级部门 2-2'
-            }
-          ]
-        },
-        {
-          id: 3,
-          label: '一级部门 3',
-          children: [
-            {
-              id: 7,
-              label: '二级部门 3-1'
-            },
-            {
-              id: 8,
-              label: '二级部门 3-2'
-            }
-          ]
-        }
-      ],
+      departData: [],
       defaultProps: {
-        children: 'children',
-        label: 'label'
+        children: 'd',
+        label: 'name'
       }
     }
   },
-  computed: {},
+  computed: {
+    ...mapGetters(['companyId', 'deptId'])
+  },
   created() {
-    // this.loadTable()
-    // this.getHigherServiceList()
+    this.getDeportList()
   },
   methods: {
+    addDepartClick() {
+      // 新增子部门
+      this.dialogDepartTitle = '新增部门'
+      this.dialogDepart = true
+      // this.currentParent = data
+    },
+    handleNodeClick(data) {
+      // 加载当前部门得人员
+      this.loadPeople(data.id)
+    },
+    loadPeople(deptId) {
+      getPeopleList({
+        pageSize: this.pageSize,
+        page: this.page, // 1 y 10
+        deptId: deptId,
+        companyId: this.companyId
+      })
+        .then((response) => {
+          const data = response.d
+          this.list = data
+          this.total = response.z
+          this.listLoading = false
+        })
+        .catch((error) => error)
+    },
+    getDeportList() {
+      getDeportList({
+        pageSize: 9999,
+        page: 1, // 1 y 10
+        id: this.deptId,
+        companyId: this.companyId
+      })
+        .then((response) => {
+          const data = response.d
+          this.departData = data
+          this.loadPeople(this.deptId)
+        })
+        .catch((error) => error)
+    },
+
     handleCurrentChange(page) {
       this.page = page
       this.listLoading = true
-      authApi
-        .getPageResult({ limit: this.pageSize, page })
-        .then(response => {
-          const { data } = response
-          this.list = data.data
-          this.total = data.count
-          this.listLoading = false
-        })
-        .catch(error => error)
+      this.loadPeople(this.currentParent.id)
     },
-    append(data) {
-      // 新增子部门
-      this.dialogDepartTitle = '新增子部门'
+    editDepart(node, data) {
+      this.dialogDepartTitle = '修改部门'
       this.dialogDepart = true
-      const newChild = { id: id++, label: 'testtest', children: [] }
-      if (!data.children) {
-        this.$set(data, 'children', [])
-      }
-      data.children.push(newChild)
+      this.currentParent = data
     },
     remove(node, data) {
-      const parent = node.parent
-      const children = parent.data.children || parent.data
-      const index = children.findIndex(d => d.id === data.id)
-      children.splice(index, 1)
-    },
-    handleNodeClick(data) {
-      console.log(data)
-    },
-    async getHigherServiceList() {
-      await authApi.getSysServiceSelect().then(response => {
-        const { data } = response
-        this.higherServiceList = data
-      })
-    },
-    async loadTable() {
-      await authApi
-        .getSysServiceTableTree({ name: this.name })
-        .then(response => {
-          const { data } = response
-          this.list = data
-          this.listLoading = false
-        })
-        .catch(error => error)
-    },
-    handleSave() {
-      this.$refs['deportForm'].validate(valid => {
-        if (valid) {
-          authApi
-            .saveService({ ...this.deportForm })
-            .then(response => {
+      this.$confirm('确认删除吗？')
+        .then((_) => {
+          delDeport({ id: data.id })
+            .then((response) => {
               Message({
-                message: response.msg,
+                message: response.m || '删除成功',
                 type: 'success',
                 duration: 2 * 1000
               })
-              if (response.code === 200) {
-                this.listLoading = true
-                this.loadTable()
+
+              if (response.a === 200) {
+                this.getDeportList()
                 this.dialogDepart = false
               }
             })
-            .catch(error => error)
+            .catch((error) => {
+              console.log(error, 'eee')
+            })
+        })
+        .catch((_) => {
+          console.log(_, '取消删除了')
+        })
+    },
+
+    handleSave() {
+      this.$refs['deportForm'].validate((valid) => {
+        if (valid) {
+          this.departLoading = true
+
+          switch (this.dialogDepartTitle) {
+            case '新增部门':
+              addDeport({
+                ...this.deportForm,
+                parentId: 1,
+                companyId: this.companyId
+              })
+                .then((response) => {
+                  Message({
+                    message: response.m || '添加成功',
+                    type: 'success',
+                    duration: 2 * 1000
+                  })
+                  if (response.a === 200) {
+                    this.getDeportList()
+                    this.dialogDepart = false
+                  }
+                })
+                .catch((error) => error)
+                .finally(() => {
+                  this.departLoading = false
+                })
+              break
+            case '修改部门':
+              editDeport({
+                ...this.deportForm,
+                id: this.currentParent.id
+              })
+                .then((response) => {
+                  Message({
+                    message: response.m || '修改成功',
+                    type: 'success',
+                    duration: 2 * 1000
+                  })
+                  if (response.a === 200) {
+                    this.getDeportList()
+                    this.dialogDepart = false
+                  }
+                })
+                .catch((error) => error)
+                .finally(() => {
+                  this.departLoading = false
+                })
+              break
+            default:
+              break
+          }
         } else {
           console.log('验证出错')
           return false
         }
       })
     },
-    openNew() {
-      this.dialogDepart = true
-      for (const k of Object.keys(this.deportForm)) {
-        this.deportForm[k] = ''
-      }
-    },
+
     handelClick(item, row) {
       this.$confirm('确认删除吗？')
-        .then(_ => {
-          authApi
-            .deleteService({ id: row.id })
-            .then(response => {
+        .then((_) => {
+          delPeople({ userId: row.userId })
+            .then((response) => {
               Message({
-                message: response.msg,
+                message: response.m || '删除成功',
                 type: 'success',
                 duration: 2 * 1000
               })
-              if (response.code === 200) {
-                this.loadTable()
-              }
+
+              this.loadPeople(row.deptId)
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error, 'eee')
             })
         })
-        .catch(_ => {
+        .catch((_) => {
           console.log(_, '取消删除了')
         })
     }

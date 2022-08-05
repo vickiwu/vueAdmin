@@ -143,24 +143,6 @@
             >
               删除
             </el-button>
-            <el-button
-              key="角色设置"
-              size="mini"
-              type="primary"
-              icon="el-icon-share"
-              @click="handelClick('角色设置', row)"
-            >
-              角色设置
-            </el-button>
-            <el-button
-              key="部门设置"
-              size="mini"
-              type="primary"
-              icon="el-icon-share"
-              @click="handelClick('部门设置', row)"
-            >
-              部门设置
-            </el-button>
           </div>
         </template>
       </el-table-column>
@@ -188,34 +170,19 @@
           </el-col>
           <el-col :span="11">
             <el-form-item label="手机号" prop="phone">
-              <el-input v-model="ruleForm.phone" placeholder="请输入手机号" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="11">
-            <el-form-item label="公司id" prop="companyId">
               <el-input
-                v-model="ruleForm.companyId"
-                placeholder="请输入公司id"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="11">
-            <el-form-item label="密码" prop="password">
-              <el-input
-                v-model="ruleForm.password"
-                type="password"
-                placeholder="请输入密码"
+                v-model="ruleForm.phone"
+                placeholder="请输入手机号"
+                :disabled="dialogTitle === '修改人员'"
               />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="11">
-            <el-form-item label="部门" prop="deptId">
+            <el-form-item label="部门">
               <el-select-tree
-                v-model="selectTreeValue"
+                v-model="ruleForm.deptId"
                 :popper-append-to-body="false"
                 placeholder="请选择部门"
                 :data="selectTreeData"
@@ -224,13 +191,13 @@
             </el-form-item>
           </el-col>
           <el-col :span="11">
-            <el-form-item label="角色" prop="roleId">
-              <el-select v-model="roleValue" placeholder="请选择角色">
+            <el-form-item label="角色">
+              <el-select v-model="ruleForm.roleId" placeholder="请选择角色">
                 <el-option
                   v-for="item in roleOption"
-                  :key="item.roleId"
+                  :key="item.id"
                   :label="item.roleName"
-                  :value="item.roleId"
+                  :value="item.id"
                 />
               </el-select>
             </el-form-item>
@@ -239,235 +206,115 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false"> 取消 </el-button>
-        <el-button type="primary" @click="handleSave"> 确认 </el-button>
-      </div>
-    </el-dialog>
-    <el-dialog title="部门设置" :visible.sync="dialogApply">
-      <el-tree
-        :data="data"
-        show-checkbox
-        node-key="id"
-        :default-expanded-keys="[3]"
-        :props="defaultProps"
-      />
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogApply = false"> 取消 </el-button>
-        <el-button type="primary"> 确认 </el-button>
-      </div>
-    </el-dialog>
-    <el-dialog title="角色设置" :visible.sync="dialogAuthApply">
-      <el-tree
-        :data="data"
-        show-checkbox
-        node-key="id"
-        :default-expanded-keys="[3]"
-        :props="defaultProps"
-      />
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogAuthApply = false"> 取消 </el-button>
-        <el-button type="primary"> 确认 </el-button>
+        <el-button type="primary" @click="handleSave()"> 确认 </el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import authApi from '@/api/auth'
+import ElSelectTree from 'el-select-tree'
+import {
+  getPeopleList,
+  getRoleList,
+  getDeportList,
+  addPeople,
+  delPeople,
+  editPeople
+} from '@/api/people'
 import { Message } from 'element-ui'
+import { mapGetters } from 'vuex'
 export default {
+  components: {
+    ElSelectTree
+  },
   data() {
     return {
       dialogTitle: '新增人员',
       phone: '',
       listLoading: false,
       dialogFormVisible: false,
-      dialogApply: false,
-      dialogAuthApply: false,
-      list: [{}],
+      list: [],
       roleValue: '',
-      roleOption: [
-        {
-          roleId: '1',
-          roleName: '角色1'
-        },
-        {
-          roleId: '2',
-          roleName: '角色2'
-        },
-        {
-          roleId: '3',
-          roleName: '角色3'
-        },
-        {
-          roleId: '4',
-          roleName: '角色4'
-        },
-        {
-          roleId: '5',
-          roleName: '角色5'
-        }
-      ],
+      roleOption: [],
       selectTreeValue: '',
-      selectTreeData: [
-        {
-          id: 1,
-          name: 1,
-          child: [{ id: 2, name: 2 }]
-        }
-      ],
+      selectTreeData: [],
       props: {
         value: 'id',
-        label: data => data.name,
-        children: 'child'
+        label: 'name',
+        children: 'd'
       },
       page: 1,
-      pageSize: 5,
+      pageSize: 10,
       total: 0,
       ruleForm: {
-        accessTokenValidity: null,
-        additionalInformation: null,
-        authorities: null,
-        roleType: null,
-        autoapprove: null,
         userName: null,
         phone: null,
-        companyId: null,
-        clientSecretStr: null,
-        createTime: null,
-        delFlag: null,
-        id: null,
-        ifLimit: null,
-        limitCount: null,
-        refreshTokenValidity: null,
-        resourceIds: null,
-        scope: null,
-        updateTime: null,
-        deptId: null
+        deptId: '',
+        roleId: ''
       },
 
       rules: {
-        userName: [
-          { required: true, message: '请输入应用标识', trigger: 'blur' }
-        ],
-        phone: [{ required: true, message: '请输入应用名称', trigger: 'blur' }],
-        roleType: [
-          {
-            required: true,
-            message: '请选择至少一种授权方式',
-            trigger: 'change'
-          }
-        ],
-        accessTokenValidity: [
-          {
-            required: true,
-            message: '请输入access token有效期',
-            trigger: 'blur'
-          }
-        ],
-        refreshTokenValidity: [
-          {
-            required: true,
-            message: '请输入refresh token有效期',
-            trigger: 'blur'
-          }
-        ]
-      },
-      activeName: 'first',
-      data: [
-        {
-          id: 1,
-          label: '一级 1',
-          children: [
-            {
-              id: 4,
-              label: '二级 1-1',
-              children: [
-                {
-                  id: 9,
-                  label: '三级 1-1-1'
-                },
-                {
-                  id: 10,
-                  label: '三级 1-1-2'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          id: 2,
-          label: '一级 2',
-          children: [
-            {
-              id: 5,
-              label: '二级 2-1'
-            },
-            {
-              id: 6,
-              label: '二级 2-2'
-            }
-          ]
-        },
-        {
-          id: 3,
-          label: '一级 3',
-          children: [
-            {
-              id: 7,
-              label: '二级 3-1'
-            },
-            {
-              id: 8,
-              label: '二级 3-2'
-            }
-          ]
-        }
-      ],
-      defaultProps: {
-        children: 'children',
-        label: 'label'
+        userName: [{ required: true, message: '请输入名称', trigger: 'blur' }],
+        phone: [{ required: true, message: '请输入手机号', trigger: 'blur' }],
+        deptId: [{ required: true, message: '请选择部门', trigger: 'change' }],
+        roleId: [{ required: true, message: '请选择角色', trigger: 'change' }]
       }
     }
   },
-  computed: {},
+  computed: {
+    ...mapGetters(['companyId', 'deptId'])
+  },
   created() {
-    // const obj = {
-    //   a: '苏BH1190',
-    //   b: 1627729920674,
-    //   c: 1631069591000
-    // }
-    // const objData = {
-    //   data: obj,
-    //   type: [0, 0x0a, 0]
-    // }
-    // const carObj = {
-    //   a: ['苏BH1190', '苏BH1191', '苏BH1192']
-    // }
-    // const carData = {
-    //   data: carObj,
-    //   type: [0, 0x20, 0]
-    // }
-    // 在使用地方调用
-    // 发送消息
-    // this.$setWs.emit(loginData)
-    // this.$setWs.emit(objData)
-    // this.$setWs.emit(carData)
+    this.loadTable()
+  },
+  mounted() {
+    this.getRoleList()
+    this.getDeportList()
   },
   methods: {
-    async loadTable(pageSize, page) {
-      await authApi
-        .getPageResult({
-          limit: this.pageSize,
-          page: this.page,
-          phone: this.phone
-        })
-        .then(response => {
-          const { data } = response
-          this.list = data.data
-          this.total = data.count
+    loadTable() {
+      getPeopleList({
+        pageSize: this.pageSize,
+        page: this.page, // 1 y 10
+        deptId: this.deptId,
+        companyId: this.companyId
+      })
+        .then((response) => {
+          const data = response.d
+          this.list = data
+          this.total = response.z
           this.listLoading = false
         })
-        .catch(error => error)
+        .catch((error) => error)
+    },
+    getRoleList() {
+      getRoleList({
+        pageSize: 9999,
+        page: 1, // 1 y 10
+        deptId: this.deptId,
+        companyId: this.companyId
+      })
+        .then((response) => {
+          const data = response.d
+          this.roleOption = data
+        })
+        .catch((error) => error)
+    },
+    getDeportList() {
+      getDeportList({
+        pageSize: 9999,
+        page: 1, // 1 y 10
+        id: this.deptId,
+        // parentId: 1, // 固定传1
+        companyId: this.companyId
+      })
+        .then((response) => {
+          const data = response.d
+
+          this.selectTreeData = data
+        })
+        .catch((error) => error)
     },
     handleClick(tab, event) {
       console.log(tab, event)
@@ -475,42 +322,68 @@ export default {
     handleCurrentChange(page) {
       this.page = page
       this.listLoading = true
-      authApi
-        .getPageResult({ limit: this.pageSize, page })
-        .then(response => {
-          const { data } = response
-          this.list = data.data
-          this.total = data.count
-          this.listLoading = false
-        })
-        .catch(error => error)
+      this.loadTable()
     },
-    handleSave() {
-      this.$refs['ruleForm'].validate(valid => {
+    handleSave(type) {
+      this.$refs['ruleForm'].validate((valid) => {
         if (valid) {
-          authApi
-            .saveClient({ ...this.ruleForm })
-            .then(response => {
-              Message({
-                message: response.msg,
-                type: 'success',
-                duration: 2 * 1000
-              })
-              if (response.code === 200) {
-                this.listLoading = true
-                this.loadTable()
-                this.dialogFormVisible = false
-              }
-            })
-            .catch(error => error)
+          switch (this.dialogTitle) {
+            case '新增人员':
+              this.addPeople()
+              break
+            case '修改人员':
+              this.editPeople()
+              break
+            default:
+              break
+          }
         } else {
           console.log('验证出错')
           return false
         }
       })
     },
+    addPeople() {
+      this.listLoading = true
+      addPeople({
+        ...this.ruleForm,
+        password: '123456',
+        companyId: this.companyId
+      })
+        .then((response) => {
+          Message({
+            message: response.m || '添加成功',
+            type: 'success',
+            duration: 2 * 1000
+          })
+          this.listLoading = false
+          this.loadTable()
+          this.dialogFormVisible = false
+        })
+        .catch((error) => error)
+    },
+    editPeople() {
+      this.listLoading = true
+      editPeople({
+        ...this.ruleForm,
+        password: '123456',
+        companyId: this.companyId
+      })
+        .then((response) => {
+          Message({
+            message: response.m || '修改成功',
+            type: 'success',
+            duration: 2 * 1000
+          })
+          this.dialogFormVisible = false
+          this.listLoading = false
+          this.loadTable()
+        })
+        .catch((error) => error)
+    },
     openNew() {
       this.dialogFormVisible = true
+      this.dialogTitle = '新增人员'
       for (const k of Object.keys(this.ruleForm)) {
         this.ruleForm[k] = null
       }
@@ -519,38 +392,32 @@ export default {
       switch (item) {
         case '修改':
           this.dialogTitle = '修改人员'
+
           this.dialogFormVisible = true
           this.ruleForm = { ...row }
           break
         case '删除':
           this.$confirm('确认删除吗？')
-            .then(_ => {
-              authApi
-                .deleteClient({ id: row.id })
-                .then(response => {
+            .then((_) => {
+              delPeople({ userId: row.userId })
+                .then((response) => {
                   Message({
-                    message: response.msg,
+                    message: response.m || '删除成功',
                     type: 'success',
                     duration: 2 * 1000
                   })
-                  if (response.code === 200) {
-                    this.loadTable()
-                  }
+
+                  this.loadTable()
                 })
-                .catch(error => {
+                .catch((error) => {
                   console.log(error, 'eee')
                 })
             })
-            .catch(_ => {
+            .catch((_) => {
               console.log(_, '取消删除了')
             })
           break
-        case '部门设置':
-          this.dialogApply = true
-          break
-        case '角色设置':
-          this.dialogAuthApply = true
-          break
+
         default:
           break
       }

@@ -53,7 +53,7 @@ export const constantRoutes = [{
   children: [{
     'path': '/index',
     name: 'Dashboard',
-    component: () => import('@/views/dashboard/index'), // 父级 router-view ,
+    component: () => import('@/views/dashboard/indexBg'), // 父级 router-view ,
     'meta': {
       'affix': true,
       'title': '首页'
@@ -429,7 +429,7 @@ export const asyncRoutes = [
       'meta': {
         'icon': 'el-icon-menu',
         'affix': false,
-        'title': '服务治理'
+        'title': '服务监控'
       },
       'name': '122',
       'id': 122

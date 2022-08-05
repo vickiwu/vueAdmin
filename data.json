@@ -300,7 +300,7 @@
             "component": "/monitor/server",
             "meta": {
               "affix": false,
-              "title": "服务治理"
+              "title": "服务监控"
             },
             "name": "122",
             "id": 122
@@ -562,7 +562,7 @@
             "path": "/monitor/server",
             "meta": {
               "icon": null,
-              "title": "服务治理"
+              "title": "服务监控"
             },
             "id": 122
           }

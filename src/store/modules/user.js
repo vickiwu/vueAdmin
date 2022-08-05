@@ -6,6 +6,9 @@ import router from '@/router'
 const getDefaultState = () => {
   return {
     token: getToken(),
+    companyId: getBaseData() ? getBaseData().companyId : '',
+    deptId: getBaseData() ? getBaseData().deptId : '',
+    userId: getBaseData() ? getBaseData().userId : '',
     name: '',
     avatar: '',
     path: '',
@@ -21,6 +24,11 @@ const mutations = {
   },
   SET_TOKEN: (state, token) => {
     state.token = token
+  },
+  SET_BASEDATA: (state, baseData) => {
+    state.companyId = baseData.companyId
+    state.deptId = baseData.deptId
+    state.userId = baseData.userId
   },
   SET_NAME: (state, name) => {
     state.name = name
@@ -40,11 +48,12 @@ const mutations = {
 
 const actions = {
   login({ commit }, userInfo) {
-    const { username, password } = userInfo
+    const { phone, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
+      login({ phone: phone.trim(), password: password }).then(response => {
         const { d } = response
         commit('SET_TOKEN', d.userId)
+        commit('SET_BASEDATA', d)
 
         // cookie 存值
         setToken(d.userId) // 存token 即userId

@@ -9,11 +9,12 @@ import store from './store'
 import wsConnection from '@/utils/socket'
 import router from './router'
 import permission from '@/directive/permission/index.js' // 权限判断指令
-import ElSelectTree from 'el-select-tree'
+// import ElSelectTree from 'el-select-tree'
 
-Vue.use(ElSelectTree)
+// Vue.use(ElSelectTree)
 
 Vue.use(permission)
+Vue.config.silent = true
 
 import '@/icons'
 import '@/permission'

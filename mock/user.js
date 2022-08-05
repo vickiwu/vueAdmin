@@ -408,7 +408,7 @@ module.exports = [
                   'component': '/html/index',
                   'meta': {
                     'affix': false,
-                    'title': '服务治理',
+                    'title': '服务监控',
                     'url': `${sysURL1}/about`
                   },
                   'name': '122',
@@ -671,7 +671,7 @@ module.exports = [
                   'path': '/html/index',
                   'meta': {
                     'icon': 'el-icon-menu',
-                    'title': '服务治理2'
+                    'title': '服务监控2'
                   },
                   'id': 122
                 }

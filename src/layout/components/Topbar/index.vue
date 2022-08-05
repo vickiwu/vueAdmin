@@ -12,7 +12,6 @@
           :unique-opened="false"
           :active-text-color="variables.textColor"
           mode="horizontal"
-          @select="handleSelect"
         >
           <topbar-item
             v-for="route in top_menus"
@@ -34,7 +33,7 @@
         trigger="click"
       >
         <div class="avatar-wrapper">
-          <img :src="avatar" class="user-avatar" />
+          <img src="../../../assets/avatar2.jpg" class="user-avatar" />
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -56,22 +55,33 @@
       :visible.sync="dialogFormVisible"
       append-to-body
     >
-      <el-form :model="userData">
+      <el-form :model="userData" :rules="rulesPwd">
         <el-form-item label="手机号码：" label-width="120px">
           <el-input v-model="userData.phone" disabled />
         </el-form-item>
-        <el-form-item label="新密码：" label-width="120px">
+        <el-form-item label="原始密码：" label-width="120px" prop="password">
+          <el-input
+            v-model="userData.password"
+            type="password"
+            placeholder="请输入原始密码"
+          />
+        </el-form-item>
+        <el-form-item label="新密码：" label-width="120px" prop="newPassword">
           <el-input
             v-model="userData.newPassword"
             type="password"
             placeholder="请输入新的密码"
           />
         </el-form-item>
-        <el-form-item label="确认新密码：" label-width="120px">
+        <el-form-item
+          label="确认新密码："
+          label-width="120px"
+          prop="newPassword2"
+        >
           <el-input
-            v-model="userData.newPassword"
+            v-model="userData.newPassword2"
             type="password"
-            placeholder="请再输入新的密码"
+            placeholder="请再次输入新的密码"
           />
         </el-form-item>
       </el-form>
@@ -91,6 +101,8 @@ import Screenfull from '@/components/Screenfull'
 import variables from '@/styles/variables.scss'
 import { getBaseData } from '@/utils/auth'
 import { editPwd } from '@/api/user'
+import { isPhone, isPassword } from '@/utils/validate.js'
+import { Message } from 'element-ui'
 
 export default {
   components: {
@@ -99,18 +111,58 @@ export default {
     Screenfull
   },
   data() {
+    const validatePassword2 = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error('请再次输入新密码'))
+      } else if (value !== this.userData.newPassword) {
+        callback(new Error('新密码不一致'))
+      } else {
+        callback()
+      }
+    }
+    const validatePassword = (rule, value, callback) => {
+      if (value && !isPassword(value)) {
+        callback(new Error('密码不能少于6位'))
+      } else {
+        callback()
+      }
+    }
+    const validatePhone = (rule, value, callback) => {
+      if (!isPhone(value)) {
+        callback(new Error('手机号码格式不正确'))
+      } else {
+        callback()
+      }
+    }
     return {
       dialogFormVisible: false,
       routes: this.$store.state.user.routes,
       userData: {
         phone: '',
         newPassword: '',
-        password: ''
+        password: '',
+        newPassword2: ''
+      },
+      rulesPwd: {
+        phone: [{ required: true, trigger: 'blur', validator: validatePhone }],
+        password: [
+          { required: true, trigger: 'blur', validator: validatePassword }
+        ],
+        newPassword: [
+          { required: true, trigger: 'blur', validator: validatePassword }
+        ],
+        newPassword2: [
+          {
+            required: true,
+            trigger: 'blur',
+            validator: validatePassword2
+          }
+        ]
       }
     }
   },
   computed: {
-    ...mapGetters(['top_menus', 'sidebar', 'avatar', 'device']),
+    ...mapGetters(['top_menus', 'sidebar', 'device']),
     activeMenu() {
       const route = this.$route
       const { meta, path } = route
@@ -131,18 +183,11 @@ export default {
     }
   },
   created() {},
-  mounted() {
-    const baseData = getBaseData()
-    this.userData.phone = baseData.phone
-    this.userData.password = baseData.password
-  },
+  mounted() {},
   methods: {
-    handleSelect(key, keyPath) {
-      // let route = this.permission_routes.find(item => item.path === key)
-      // if (!route) {
-      //   route = []
-      // }
-      // this.setSidebarHide(route)
+    setPhoneNum() {
+      const baseData = getBaseData()
+      this.userData.phone = baseData.phone
     },
     // 设置侧边栏的显示和隐藏
     setSidebarHide(route) {
@@ -156,11 +201,33 @@ export default {
       await this.$store.dispatch('user/logout')
     },
     editPwdOpen() {
+      this.userData = {
+        phone: '',
+        newPassword: '',
+        password: '',
+        newPassword2: ''
+      }
+      this.setPhoneNum()
       this.dialogFormVisible = true
     },
     editPwdBtn() {
-      editPwd(this.userData).then(res => {
-        this.dialogFormVisible = false
+      delete this.userData.newPassword2
+      editPwd(this.userData).then((res) => {
+        if (+res.a === 200) {
+          Message({
+            message: res.m || '修改成功,请重新登录',
+            type: 'success',
+            duration: 2 * 1000
+          })
+          this.dialogFormVisible = false
+          this.logout()
+        } else {
+          Message({
+            message: '修改失败',
+            type: 'error',
+            duration: 2 * 1000
+          })
+        }
       })
     }
   }

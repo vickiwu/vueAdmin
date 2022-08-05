@@ -46,65 +46,54 @@
       />
       <el-table-column
         show-overflow-tooltip
-        label="appId"
+        label="客户名称"
         align="left"
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span>{{ row.appId }}</span>
+          <span>{{ row.name }}</span>
         </template>
       </el-table-column>
       <el-table-column
         show-overflow-tooltip
-        label="appSecret"
+        label="客户类型"
         align="left"
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span>{{ row.appSecret }}</span>
+          <span>{{ row.type === 1 ? '托运商' : '承运商' }}</span>
         </template>
       </el-table-column>
       <el-table-column
         show-overflow-tooltip
-        label="类型"
+        label="联系人姓名"
         align="left"
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span>{{ row.type }}</span>
+          <span>{{ row.contactName }}</span>
         </template>
       </el-table-column>
       <el-table-column
         show-overflow-tooltip
-        label="描述"
+        label="联系人手机号"
         align="left"
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span>{{ row.description }}</span>
+          <span>{{ row.contactPhone }}</span>
         </template>
       </el-table-column>
       <el-table-column
         show-overflow-tooltip
-        label="生效日期"
+        label="联系人地址"
         align="left"
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span>{{ row.validityDateStr }}</span>
+          <span>{{ row.address }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="到期日期"
-        align="left"
-        header-align="center"
-      >
-        <template slot-scope="{ row }">
-          <span>{{ row.expireDateStr }}</span>
-        </template>
-      </el-table-column>
-
       <el-table-column
         show-overflow-tooltip
         label="操作"
@@ -120,16 +109,18 @@
                 size="mini"
                 icon="el-icon-edit"
                 @click="handelClick('修改', row)"
-                >修改</el-button
               >
+                修改
+              </el-button>
               <el-button
                 key="删除"
                 size="mini"
                 icon="el-icon-delete"
                 type="danger"
                 @click="handelClick('删除', row)"
-                >删除</el-button
               >
+                删除
+              </el-button>
             </div>
           </div>
         </template>
@@ -144,64 +135,59 @@
     />
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
       <el-form
-        ref="ruleForm"
-        :model="ruleForm"
+        ref="clientForm"
+        :model="clientForm"
         :rules="rules"
-        label-width="100px"
-        class="service-ruleForm"
+        label-width="140px"
+        class="service-clientForm"
       >
         <el-row :gutter="20">
           <el-col :span="21">
-            <el-form-item label="appId" prop="appId">
-              <el-input v-model="ruleForm.appId" placeholder="请输入appId" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="21">
-            <el-form-item label="secret" prop="appSecret">
+            <el-form-item label="客户名称" prop="name">
               <el-input
-                v-model="ruleForm.appSecret"
-                placeholder="请输入secret"
+                v-model="clientForm.name"
+                placeholder="请输入客户名称"
               />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="21">
-            <el-form-item label="秘钥类型" prop="type">
-              <el-input v-model="ruleForm.type" placeholder="请输入秘钥类型" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="21">
-            <el-form-item label="生效日期" prop="validityDateStr">
+            <el-form-item label="联系人姓名" prop="contactName">
               <el-input
-                v-model="ruleForm.validityDateStr"
-                placeholder="请选择生效日期"
+                v-model="clientForm.contactName"
+                placeholder="请输入联系人姓名"
               />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="21">
-            <el-form-item label="到期日期" prop="expireDateStr">
+            <el-form-item label="联系人手机号" prop="contactPhone">
               <el-input
-                v-model="ruleForm.expireDateStr"
-                placeholder="请选择到期日期"
+                v-model="clientForm.contactPhone"
+                placeholder="请输入联系人手机号"
               />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="21">
-            <el-form-item label="描述" prop="description">
+            <el-form-item label="联系人地址" prop="address">
               <el-input
-                v-model="ruleForm.description"
-                type="textarea"
-                placeholder="请输入描述"
+                v-model="clientForm.address"
+                placeholder="请输入联系人地址"
               />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="21">
+            <el-form-item label="客户类型" prop="type">
+              <el-radio-group v-model="clientForm.type">
+                <el-radio :label="1">托运商</el-radio>
+                <el-radio :label="2">承运商</el-radio>
+              </el-radio-group>
             </el-form-item>
           </el-col>
         </el-row>
@@ -215,94 +201,128 @@
 </template>
 
 <script>
-import authApi from '@/api/auth'
+import { getClientList, addClient, editClient, delClient } from '@/api/people'
 import { Message } from 'element-ui'
+import { mapGetters } from 'vuex'
+
 export default {
   data() {
     return {
       appId: '',
       listLoading: false,
       dialogFormVisible: false,
-      dialogTitle: '新增应用',
+      dialogTitle: '新增客户',
       dialogApply: false,
-      list: [],
+      list: [{}],
       page: 1,
       pageSize: 5,
       total: 0,
-      ruleForm: {
-        appId: '',
-        appSecret: '',
-        type: '',
-        higherService: '',
-        validityDateStr: '',
-        expireDateStr: '',
-        description: ''
+      clientForm: {
+        name: '',
+        contactName: '',
+        contactPhone: '',
+        address: '',
+        type: 1
       },
-
       rules: {
-        appId: [{ required: true, message: '请输入appId', trigger: 'blur' }],
-        appSecret: [
-          { required: true, message: '请输入secret', trigger: 'blur' }
+        name: [{ required: true, message: '请输入客户名称', trigger: 'blur' }],
+        contactName: [
+          { required: true, message: '请输入联系人姓名', trigger: 'blur' }
         ],
-        type: [{ required: true, message: '请输入秘钥类型', trigger: 'blur' }]
+        contactPhone: [
+          { required: true, message: '请输入联系人手机号', trigger: 'blur' }
+        ],
+        address: [
+          { required: true, message: '请输入联系人地址', trigger: 'blur' }
+        ]
       }
     }
   },
-  computed: {},
+  computed: {
+    ...mapGetters(['companyId', 'deptId', 'userId'])
+  },
   created() {
-    // this.loadTable()
-    // const carObj = {
-    //   a: ['苏BH1190', '苏BH1191', '苏BH1192']
-    // }
-    // const carData = {
-    //   data: carObj,
-    //   type: [0, 0x20, 0]
-    // }
-    // 在使用地方调用
-    // 发送消息
-    // this.$setWs.emit(loginData)
-    // this.$setWs.emit(objData)
-    // this.$setWs.emit(carData)
+    this.loadTable()
   },
   methods: {
-    async loadTable(pageSize, page) {
-      await authApi
-        .getSysSecretPageResult({
-          limit: this.pageSize,
-          page: this.page,
-          appId: this.appId
-        })
-        .then(response => {
-          const { data } = response
-          this.list = data.data
-          this.total = data.count
+    loadTable() {
+      this.listLoading = true
+      getClientList({
+        pageSize: this.pageSize,
+        page: this.page // 1 y 10
+      })
+        .then((response) => {
+          const data = response.d
+          this.list = data
+          this.total = response.z
           this.listLoading = false
         })
-        .catch(error => error)
+        .catch((error) => error)
     },
     handleCurrentChange(page) {
       this.page = page
       this.listLoading = true
       this.loadTable()
     },
+    addClient() {
+      this.listLoading = true
+      addClient({
+        ...this.clientForm,
+        companyId: this.companyId,
+        deptId: this.deptId,
+        userId: this.userId
+      })
+        .then((response) => {
+          Message({
+            message: response.m || '添加成功',
+            type: 'success',
+            duration: 2 * 1000
+          })
+          this.loadTable()
+          this.dialogFormVisible = false
+        })
+        .catch((error) => {
+          error
+        })
+        .finally(() => {
+          this.listLoading = false
+        })
+    },
+    editClient() {
+      this.listLoading = true
+      editClient({
+        ...this.clientForm
+      })
+        .then((response) => {
+          Message({
+            message: response.m || '修改成功',
+            type: 'success',
+            duration: 2 * 1000
+          })
+
+          this.loadTable()
+          this.dialogFormVisible = false
+        })
+        .catch((error) => {
+          error
+        })
+        .finally(() => {
+          this.listLoading = false
+        })
+    },
     handleSave() {
-      this.$refs['ruleForm'].validate(valid => {
+      this.$refs['clientForm'].validate((valid) => {
         if (valid) {
-          authApi
-            .saveSysSecret({ ...this.ruleForm })
-            .then(response => {
-              Message({
-                message: response.msg,
-                type: 'success',
-                duration: 2 * 1000
-              })
-              if (response.code === 200) {
-                this.listLoading = true
-                this.loadTable()
-                this.dialogFormVisible = false
-              }
-            })
-            .catch(error => error)
+          switch (this.dialogTitle) {
+            case '新增客户':
+              this.addClient()
+              break
+            case '修改客户':
+              this.editClient()
+              break
+            default:
+              break
+          }
         } else {
           console.log('验证出错')
           return false
@@ -311,35 +331,34 @@ export default {
     },
     openNew() {
       this.dialogFormVisible = true
-      for (const k of Object.keys(this.ruleForm)) {
-        this.ruleForm[k] = ''
+      for (const k of Object.keys(this.clientForm)) {
+        this.clientForm[k] = ''
       }
     },
     handelClick(item, row) {
       if (item === '修改') {
-        this.dialogTitle = '修改应用'
+        this.dialogTitle = '修改客户'
         this.dialogFormVisible = true
-        this.ruleForm = { ...row }
+        this.clientForm = { ...row }
       } else if (item === '删除') {
         this.$confirm('确认删除吗？')
-          .then(_ => {
-            authApi
-              .deleteSysSecret({ id: row.id })
-              .then(response => {
+          .then((_) => {
+            delClient({ id: row.id })
+              .then((response) => {
                 Message({
-                  message: response.msg,
+                  message: response.m || '删除成功',
                   type: 'success',
                   duration: 2 * 1000
                 })
-                if (response.code === 200) {
+                if (response.a === 200) {
                   this.loadTable()
                 }
               })
-              .catch(error => {
+              .catch((error) => {
                 console.log(error, 'eee')
               })
           })
-          .catch(_ => {
+          .catch((_) => {
             console.log(_, '取消删除了')
           })
       }
@@ -358,7 +377,7 @@ export default {
 .search-btn {
   background-color: rgba(0, 204, 102, 1);
 }
-.service-ruleForm {
+.service-clientForm {
   .el-select {
     width: 85%;
   }

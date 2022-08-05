@@ -10,15 +10,15 @@
         label-position="top"
         label-width="80px"
       >
-        <el-form-item prop="username" label="用户名：">
+        <el-form-item prop="phone" label="手机号：">
           <span class="svg-container">
             <svg-icon icon-class="user" />
           </span>
           <el-input
-            ref="username"
-            v-model="loginForm.username"
-            placeholder="请输入用户名"
-            name="username"
+            ref="phone"
+            v-model="loginForm.phone"
+            placeholder="请输入手机号"
+            name="phone"
             type="text"
             tabindex="1"
             auto-complete="on"
@@ -69,7 +69,7 @@ export default {
   data() {
     const validateUsername = (rule, value, callback) => {
       if (value.length < 1) {
-        callback(new Error('用户名不能为空'))
+        callback(new Error('手机号不能为空'))
       } else {
         callback()
       }
@@ -85,11 +85,11 @@ export default {
     return {
       // checked: true,
       loginForm: {
-        username: '13182811030',
+        phone: '13182811030',
         password: '123456'
       },
       loginRules: {
-        username: [
+        phone: [
           { required: true, trigger: 'blur', validator: validateUsername }
         ],
         password: [
@@ -124,14 +124,13 @@ export default {
       })
     },
     handleLogin() {
-      this.$refs.loginForm.validate(valid => {
+      this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true
           this.$store
             .dispatch('user/login', this.loginForm)
-            .then(res => {
+            .then((res) => {
               // cookie 存值
-
               this.$router.push({ path: this.redirect || '/' })
               this.loading = false
             })
@@ -201,8 +200,10 @@ $light_gray: #333333;
 .login-container {
   min-height: 100%;
   width: 100%;
-  background: #d2e8f6 url('~@/assets/bg.png') center fixed no-repeat;
+  background: rgba(214, 212, 212, 0.607) url('~@/assets/index-bg2.jpg') center
+    fixed no-repeat;
   background-size: cover;
+  background-blend-mode: multiply;
   overflow: hidden;
   display: flex;
   align-items: center;

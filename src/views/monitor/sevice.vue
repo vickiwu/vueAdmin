@@ -1,5 +1,3 @@
 <template>
-  <div>
-    新增文件
-  </div>
+  <div>新增文件</div>
 </template>

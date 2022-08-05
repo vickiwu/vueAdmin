@@ -22,7 +22,7 @@
         style="margin-left: 10px"
         type="primary"
         icon="el-icon-edit"
-        @click="addDriver"
+        @click="addDriverHandle"
       >
         新增司机
       </el-button>
@@ -49,7 +49,7 @@
         label="司机姓名"
         align="left"
         header-align="center"
-        width="300"
+        width="150"
       >
         <template slot-scope="{ row }">
           <span>{{ row.name }}</span>
@@ -62,7 +62,7 @@
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span>{{ row.companyName }}</span>
+          <span>{{ row.deptName }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -85,16 +85,7 @@
           <span>{{ row.phone }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="类型"
-        align="left"
-        header-align="center"
-      >
-        <template slot-scope="{ row }">
-          <span>{{ row.isEscort === 1 ? '司机' : '押运员' }}</span>
-        </template>
-      </el-table-column>
+
       <el-table-column
         show-overflow-tooltip
         label="出生日期"
@@ -105,16 +96,7 @@
           <span>{{ row.birthDay }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="类别"
-        align="left"
-        header-align="center"
-      >
-        <template slot-scope="{ row }">
-          <span>{{ row.classify === 2 ? '外协' : '自有' }}</span>
-        </template>
-      </el-table-column>
+
       <el-table-column
         show-overflow-tooltip
         label="备注"
@@ -138,7 +120,7 @@
       <el-table-column
         show-overflow-tooltip
         label="操作"
-        width="300"
+        width="200"
         align="right"
         header-align="center"
       >
@@ -206,11 +188,13 @@
             </el-form-item>
           </el-col>
           <el-col :span="11">
-            <el-form-item label="出生日期" prop="birthDay">
+            <el-form-item label="出生日期">
               <el-date-picker
                 v-model="driveFrom.birthDay"
                 type="date"
                 placeholder="选择出生日期"
+                format="yyyy 年 MM 月 dd 日"
+                value-format="yyyy-MM-dd"
               />
             </el-form-item>
           </el-col>
@@ -250,8 +234,9 @@
 </template>
 
 <script>
-import authApi from '@/api/auth'
+import { getDriveList, addDriver, editDriver, delDriver } from '@/api/people'
 import { Message } from 'element-ui'
+import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
@@ -260,53 +245,141 @@ export default {
       listLoading: false,
       driveFromVisible: false,
       driveAddVisible: false,
-      list: [{}],
+      list: [],
       page: 1,
-      pageSize: 5,
+      pageSize: 10,
       total: 0,
       driveFrom: {
         name: '',
         deptId: '',
         idcard: '',
         phone: '',
-        isDriver: '', // 1 是 2否
-        isEscort: '', // 1 是 2 否
-        birthDay: '',
-        classify: '', // 1 自有 2外协
+        birthDay: null,
         remark: '',
         rule: ''
+      },
+      rules: {
+        name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
+        phone: [{ required: true, message: '请输入手机号', trigger: 'blur' }],
+        idcard: [{ required: true, message: '请输入身份证', trigger: 'blur' }]
       }
     }
   },
-  computed: {},
+  computed: {
+    ...mapGetters(['companyId', 'deptId'])
+  },
   created() {
-    // this.loadTable()
+    this.loadTable()
   },
   methods: {
-    async loadTable(pageSize, page) {
-      await authApi
-        .getTokenList({
-          limit: this.pageSize,
-          page: this.page,
-          userName: this.userName
+    addDriver() {
+      this.listLoading = true
+      addDriver({
+        ...this.driveFrom,
+        companyId: this.companyId,
+        deptId: this.deptId,
+        isDriver: 1,
+        isEscort: 2,
+        classify: 1
+      })
+        .then((response) => {
+          Message({
+            message: response.m || '添加成功',
+            type: 'success',
+            duration: 2 * 1000
+          })
+
+          this.loadTable()
+          this.driveFromVisible = false
         })
-        .then(response => {
-          const { data } = response
-          this.list = data.data
-          this.total = data.count
+        .catch((error) => {
+          error
+        })
+        .finally(() => {
           this.listLoading = false
         })
-        .catch(error => error)
+    },
+    editDriver() {
+      this.listLoading = true
+      editDriver({
+        ...this.driveFrom,
+        companyId: this.companyId,
+        deptId: this.deptId
+      })
+        .then((response) => {
+          Message({
+            message: response.m || '修改成功',
+            type: 'success',
+            duration: 2 * 1000
+          })
+
+          this.loadTable()
+          this.driveFromVisible = false
+        })
+        .catch((error) => {
+          error
+        })
+        .finally(() => {
+          this.listLoading = false
+        })
+    },
+    handleSave() {
+      this.$refs['driveFrom'].validate((valid) => {
+        if (valid) {
+          switch (this.dialogTitle) {
+            case '新增司机':
+              this.addDriver()
+              break
+            case '修改司机':
+              this.editDriver()
+              break
+            default:
+              break
+          }
+        } else {
+          console.log('验证出错')
+          return false
+        }
+      })
+    },
+    loadTable() {
+      this.listLoading = true
+      getDriveList({
+        pageSize: this.pageSize,
+        page: this.page, // 1 y 10
+        deptId: this.deptId,
+        companyId: this.companyId
+      })
+        .then((response) => {
+          const data = response.d
+          this.list = data
+          this.total = response.z
+        })
+        .catch((error) => error)
+        .finally(() => {
+          this.listLoading = false
+        })
     },
     handleCurrentChange(page) {
       this.page = page
       this.listLoading = true
       this.loadTable()
     },
-    addDriver() {
+    addDriverHandle() {
       this.dialogTitle = '新增司机'
       this.driveFromVisible = true
-      this.driveFrom = {}
+      this.driveFrom = {
+        name: '',
+        deptId: '',
+        idcard: '',
+        phone: '',
+        isDriver: '', // 1 是 2否
+        isEscort: '', // 1 是 2 否
+        birthDay: null,
+        classify: '', // 1 自有 2外协
+        remark: '',
+        rule: ''
+      }
     },
     handelClick(item, row) {
       if (item === '修改') {
@@ -315,24 +388,22 @@ export default {
         this.driveFrom = { ...row }
       } else if (item === '删除') {
         this.$confirm('确认删除吗？')
-          .then(_ => {
-            authApi
-              .removeToken({ id: row.id })
-              .then(response => {
+          .then((_) => {
+            delDriver({ id: row.id })
+              .then((response) => {
                 Message({
-                  message: response.msg,
+                  message: response.m || '删除成功',
                   type: 'success',
                   duration: 2 * 1000
                 })
-                if (response.code === 200) {
-                  this.loadTable()
-                }
+
+                this.loadTable()
               })
-              .catch(error => {
+              .catch((error) => {
                 console.log(error, 'eee')
               })
           })
-          .catch(_ => {
+          .catch((_) => {
             console.log(_, '取消删除了')
           })
       }
