@@ -75,65 +75,65 @@ export const constantRoutes = [{
 
 ]
 
-const threeRoute = [
-  {
-    path: '/nested',
-    component: Layout,
-    redirect: '/nested/menu1',
-    name: 'Nested',
-    meta: {
-      title: 'Nested',
-      icon: 'nested'
-    },
-    children: [
-      {
-        path: '/nested/menu1',
-        component: () => import('@/views/nested/menu1/index'), // 父级 router-view
-        name: 'Menu1',
-        meta: { title: 'Menu1' },
-        children: [
-          {
-            path: '/nested/menu1/menu1-1',
-            component: () => import('@/views/nested/menu1/menu1-1'),
-            name: 'Menu1-1',
-            meta: { title: 'Menu1-1' }
-          },
-          {
-            path: '/nested/menu1/menu1-2',
-            component: () => import('@/views/nested/menu1/menu1-2'),
-            name: 'Menu1-2',
-            meta: { title: 'Menu1-2' },
-            children: [
-              {
-                path: '/nested/menu1/menu1-2-1',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-                name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1zzzzz', roles: ['editor'] }
-              },
-              {
-                path: '/nested/menu1/menu1-2-2',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-                name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' }
-              }
-            ]
-          },
-          {
-            path: 'menu1-3',
-            component: () => import('@/views/nested/menu1/menu1-3'),
-            name: 'Menu1-3',
-            meta: { title: 'Menu1-3' }
-          }
-        ]
-      },
-      {
-        path: '/nested/menu2',
-        component: () => import('@/views/nested/menu2/index'),
-        meta: { title: 'menu2' }
-      }
-    ]
-  }
-]
+// const threeRoute = [
+//   {
+//     path: '/nested',
+//     component: Layout,
+//     redirect: '/nested/menu1',
+//     name: 'Nested',
+//     meta: {
+//       title: 'Nested',
+//       icon: 'nested'
+//     },
+//     children: [
+//       {
+//         path: '/nested/menu1',
+//         component: () => import('@/views/nested/menu1/index'), // 父级 router-view
+//         name: 'Menu1',
+//         meta: { title: 'Menu1' },
+//         children: [
+//           {
+//             path: '/nested/menu1/menu1-1',
+//             component: () => import('@/views/nested/menu1/menu1-1'),
+//             name: 'Menu1-1',
+//             meta: { title: 'Menu1-1' }
+//           },
+//           {
+//             path: '/nested/menu1/menu1-2',
+//             component: () => import('@/views/nested/menu1/menu1-2'),
+//             name: 'Menu1-2',
+//             meta: { title: 'Menu1-2' },
+//             children: [
+//               {
+//                 path: '/nested/menu1/menu1-2-1',
+//                 component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
+//                 name: 'Menu1-2-1',
+//                 meta: { title: 'Menu1-2-1zzzzz', roles: ['editor'] }
+//               },
+//               {
+//                 path: '/nested/menu1/menu1-2-2',
+//                 component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
+//                 name: 'Menu1-2-2',
+//                 meta: { title: 'Menu1-2-2' }
+//               }
+//             ]
+//           },
+//           {
+//             path: 'menu1-3',
+//             component: () => import('@/views/nested/menu1/menu1-3'),
+//             name: 'Menu1-3',
+//             meta: { title: 'Menu1-3' }
+//           }
+//         ]
+//       },
+//       {
+//         path: '/nested/menu2',
+//         component: () => import('@/views/nested/menu2/index'),
+//         meta: { title: 'menu2' }
+//       }
+//     ]
+//   }
+// ]
 export const asyncRoutes = [
   // ...threeRoute,
   {
@@ -187,6 +187,21 @@ export const asyncRoutes = [
       'id': 4
     },
     {
+      'path': '/auth/car',
+      component: () => import('@/views/auth/car'),
+      'meta': {
+        'icon': 'el-icon-menu',
+        'affix': false,
+        'permission': [
+          'auth:car:info',
+          'auth:car:del'
+        ],
+        'title': '车辆管理'
+      },
+      'name': 'car',
+      'id': 5
+    },
+    {
       'path': '/auth/client',
       component: () => import('@/views/auth/client'),
       'meta': {
@@ -213,84 +228,33 @@ export const asyncRoutes = [
     'id': 1
   },
   {
-    'redirect': '/right/user',
-    'path': '/right',
+    'redirect': '/area/address',
+    'path': '/area',
     component: Layout,
     'children': [{
-      'path': '/right/user',
-      component: () => import('@/views/html/index'),
+      'path': '/area/address',
+      component: () => import('@/views/area/address'),
       'meta': {
         'icon': 'el-icon-menu',
         'affix': false,
         'permission': [
-          'right:user:list',
-          'right:user:add',
-          'right:user:info',
-          'right:user:update',
-          'right:user:del'
+          'area:user:list',
+          'area:user:add',
+          'area:user:info',
+          'area:user:update',
+          'area:user:del'
         ],
-        'title': '人员管理'
+        'title': '区域列表'
       },
       'name': '32',
       'id': 32
-    },
-    {
-      'path': '/right/role',
-      component: () => import('@/views/html/index'),
-      'meta': {
-        'icon': 'el-icon-menu',
-        'affix': false,
-        'permission': [
-          'right:role:add',
-          'right:role:update',
-          'right:role:del',
-          'right:role:set'
-        ],
-        'title': '车辆管理'
-      },
-      'name': '33',
-      'id': 33
-    },
-    {
-      'path': '/right/menu',
-      component: () => import('@/views/html/index'),
-      'meta': {
-        'icon': 'el-icon-menu',
-        'affix': false,
-        'permission': [
-          'right:menu:update',
-          'right:menu:del',
-          'right:menu:add',
-          'right:menu:insert'
-        ],
-        'title': '运力管理sss'
-
-      },
-      hidden: true,
-      'name': '34',
-      'id': 34
-    },
-    {
-      'path': '/right/permission',
-      component: () => import('@/views/html/index'),
-      'meta': {
-        'icon': 'el-icon-menu',
-        'affix': false,
-        'permission': [
-          'right:permission:add',
-          'right:permission:update',
-          'right:permission:del'
-        ],
-        'title': '权限管理'
-      },
-      'name': '35',
-      'id': 35
     }
+
     ],
     'meta': {
       'icon': 'el-icon-menu',
       'affix': false,
-      'title': '运力管理'
+      'title': '区域管理'
     },
     'name': '31',
     'id': 31
