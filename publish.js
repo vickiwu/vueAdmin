@@ -8,6 +8,13 @@ const Remote = {
     username: 'root',
     password: 'Wcgj2020*',
     remotePath: '/frontend/wwwroot/wl'
+  },
+  per: {
+    host: '120.48.162.194',
+    port: '22',
+    username: 'root',
+    password: 'Sywl123!@#',
+    remotePath: '/frontend/wwwroot/wl'
   }
 }
 if (!remoteName || !Remote[remoteName]) {

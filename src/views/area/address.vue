@@ -164,7 +164,11 @@
       :page-size="pageSize"
       @current-change="handleCurrentChange"
     />
-    <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
+    <el-dialog
+      :title="dialogTitle"
+      :visible.sync="dialogFormVisible"
+      @opened="loadMap"
+    >
       <el-form
         ref="ruleForm"
         :model="ruleForm"
@@ -180,6 +184,24 @@
                 :data="pcaa"
                 type="text"
                 :level="2"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="11">
+            <el-form-item label="联系人名称">
+              <el-input
+                v-model="ruleForm.address"
+                placeholder="请输入联系人名称"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="11">
+            <el-form-item label="手机号">
+              <el-input
+                v-model="ruleForm.address"
+                placeholder="请输入联系人手机号"
               />
             </el-form-item>
           </el-col>
@@ -207,21 +229,8 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="11">
-            <el-form-item label="联系人名称">
-              <el-input
-                v-model="ruleForm.address"
-                placeholder="请输入联系人名称"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="11">
-            <el-form-item label="手机号">
-              <el-input
-                v-model="ruleForm.address"
-                placeholder="请输入联系人手机号"
-              />
-            </el-form-item>
+          <el-col :span="22">
+            <div id="address-map">sss</div>
           </el-col>
         </el-row>
       </el-form>
@@ -273,9 +282,48 @@ export default {
   },
   created() {
     this.loadTable()
+    // this.loadMap()
   },
   mounted() {},
   methods: {
+    loadMap() {
+      var map = new AMap.Map('address-map', {
+        resizeEnable: true
+      })
+
+      var geocoder = new AMap.Geocoder({
+        radius: 1000 // 范围，默认：500
+      })
+      var marker = new AMap.Marker()
+      map.on('click', (e) => {
+        console.log(
+          '%c 经纬度: ',
+          'font-size:20px;background-color: #465975;color:#fff;',
+          e.lnglat
+        )
+        map.add(marker)
+        marker.setPosition(e.lnglat)
+        geocoder.getAddress(e.lnglat, (status, result) => {
+          console.log(
+            '%c 🍣 status, result: ',
+            'font-size:20px;background-color: #7F2B82;color:#fff;',
+            status,
+            result
+          )
+          if (status === 'complete' && result.regeocode) {
+            var address = result.regeocode.formattedAddress
+            console.log(
+              '%c 🌽 address: ',
+              'font-size:20px;background-color: #33A5FF;color:#fff;',
+              address
+            )
+            // document.getElementById('address').value = address;
+          } else {
+            console.log('根据经纬度查询地址失败')
+          }
+        })
+      })
+    },
     loadTable() {
       getAreaList({
         pageSize: this.pageSize,
@@ -402,6 +450,10 @@ export default {
 }
 </script>
  <style lang="scss" scoped>
+#address-map {
+  height: 350px;
+  margin-left: 100px;
+}
 .auth-table {
   .el-button--mini,
   .el-button--mini.is-round {
