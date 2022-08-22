@@ -25,7 +25,7 @@
         icon="el-icon-edit"
         @click="openNew"
       >
-        新增
+        订单发布
       </el-button>
     </div>
     <el-table
@@ -307,8 +307,8 @@ export default {
   methods: {
     areaChange(areaValue) {
       this.ruleForm.addrOne = areaValue[0] + ''
-      this.ruleForm.addrTwo = areaValue[1] + ''
-      this.ruleForm.addrThree = areaValue[2] + ''
+      this.ruleForm.addrTwo = areaValue[0] + ''
+      this.ruleForm.addrThree = areaValue[0] + ''
     },
     initMap() {
       AMapLoader.load({

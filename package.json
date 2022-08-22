@@ -15,6 +15,7 @@
     "test:ci": "npm run lint && npm run test:unit"
   },
   "dependencies": {
+    "@amap/amap-jsapi-loader": "^1.0.1",
     "area-data": "^5.0.6",
     "axios": "0.18.1",
     "core-js": "^3.17.3",

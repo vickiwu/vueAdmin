@@ -260,41 +260,41 @@ export const asyncRoutes = [
     'id': 31
   },
   {
-    'redirect': '/organize/oper',
-    'path': '/organize',
+    'redirect': '/order/publish',
+    'path': '/order',
     component: Layout,
     'children': [{
-      'path': '/organize/oper',
-      component: () => import('@/views/html/index'),
+      'path': '/order/publish',
+      component: () => import('@/views/order/publish'),
       'meta': {
         'icon': 'el-icon-menu',
         'affix': false,
         'permission': [
-          'organize:oper:update',
-          'organize:oper:del',
-          'organize:oper:add',
-          'organize:oper:insert'
+          'order:oper:update',
+          'order:oper:del',
+          'order:oper:add',
+          'order:oper:insert'
         ],
-        'title': '平台订单'
+        'title': '订单发布'
       },
       'name': '62',
       'id': 62
     },
     {
-      'path': '/organize/org',
-      component: () => import('@/views/html/index'),
+      'path': '/order/list',
+      component: () => import('@/views/order/list'),
       'meta': {
         'icon': 'el-icon-menu',
         'affix': false,
         'permission': [
-          'organize:org:dept',
-          'organize:org:user',
-          'organize:org:add',
-          'organize:org:insert',
-          'organize:org:update',
-          'organize:org:del'
+          'order:org:dept',
+          'order:org:user',
+          'order:org:add',
+          'order:org:insert',
+          'order:org:update',
+          'order:org:del'
         ],
-        'title': '自有订单'
+        'title': '订单列表'
       },
       'name': '63',
       'id': 63

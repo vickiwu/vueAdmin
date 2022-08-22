@@ -212,58 +212,91 @@
         ref="CarFrom"
         :model="CarFrom"
         :rules="rules"
-        label-width="100px"
+        label-width="120px"
         class="client-CarFrom"
       >
         <el-row :gutter="20">
-          <el-col :span="11">
-            <el-form-item label="车牌号" prop="carNo">
-              <el-input v-model="CarFrom.carNo" placeholder="请输入车牌号" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="11">
-            <el-form-item label="车型" prop="carType">
-              <el-input v-model="CarFrom.carType" placeholder="请输入手机号" />
+          <el-col :span="22">
+            <el-form-item label="车型" prop="type">
+              <el-radio-group v-model="CarFrom.type">
+                <el-radio
+                  v-for="item in carTypeOption"
+                  :key="item.id"
+                  :label="item.id"
+                >
+                  {{ item.carTypeName }}
+                </el-radio>
+              </el-radio-group>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="11">
-            <el-form-item label="车辆类型" prop="type">
-              <el-input v-model="CarFrom.type" placeholder="请输入身份证号" />
+            <el-form-item
+              :label="CarFrom.type === 1 ? '车牌号' : '挂车号'"
+              prop="carNo"
+            >
+              <el-input
+                v-model="CarFrom.carNo"
+                :placeholder="
+                  CarFrom.type === 1 ? '请输入车牌号' : '请输入挂车号'
+                "
+              />
             </el-form-item>
           </el-col>
           <el-col :span="11">
-            <el-form-item label="类别">
-              <el-date-picker
-                v-model="CarFrom.classify"
-                type="date"
-                placeholder="选择出生日期"
-                format="yyyy 年 MM 月 dd 日"
-                value-format="yyyy-MM-dd"
+            <el-form-item label="荷载吨数" prop="maxLoad">
+              <el-input
+                v-model.number="CarFrom.maxLoad"
+                placeholder="请输入荷载吨数"
               />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="11">
+            <el-form-item label="总重量（kg）" prop="carWeight">
+              <el-input
+                v-model.number="CarFrom.carWeight"
+                placeholder="请输入总重量（kg）"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="11">
+            <el-form-item label="长（m）" prop="carLength">
+              <el-input
+                v-model.number="CarFrom.carLength"
+                placeholder="请输入长（m）"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="11">
+            <el-form-item label="宽（m）" prop="carWide">
+              <el-input
+                v-model.number="CarFrom.carWide"
+                placeholder="请输入宽（m）"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="11">
+            <el-form-item label="高（m）" prop="carHeight">
+              <el-input
+                v-model.number="CarFrom.carHeight"
+                placeholder="请输入高（m）"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="20">
+          <el-col :span="22">
             <el-form-item label="备注" prop="remark">
               <el-input
                 v-model="CarFrom.remark"
                 type="textarea"
                 placeholder="请输入备注内容"
-                maxlength="100"
-                show-word-limit
-              />
-            </el-form-item>
-          </el-col>
-
-          <el-col :span="11">
-            <el-form-item label="规则" prop="rule">
-              <el-input
-                v-model="CarFrom.rule"
-                type="textarea"
-                placeholder="请输入规则内容"
                 maxlength="100"
                 show-word-limit
               />
@@ -297,18 +330,45 @@ export default {
       total: 0,
       CarFrom: {
         carNo: '',
-        deptId: '',
-        type: '',
-        carType: '',
-        classify: null,
+        type: 1,
+        carType: 1,
+        classify: 1, // 1自有；2外协
         remark: '',
-        rule: ''
+        maxLoad: '',
+        carWeight: '',
+        carLength: '',
+        carWide: '',
+        carHeight: ''
       },
       rules: {
         carNo: [{ required: true, message: '请输入车牌号', trigger: 'blur' }],
-        carType: [{ required: true, message: '请输入手机号', trigger: 'blur' }],
-        type: [{ required: true, message: '请输入身份证', trigger: 'blur' }]
-      }
+        type: [{ required: true, message: '请输入车型', trigger: 'change' }],
+        maxLoad: [
+          { required: true, message: '请输入荷载吨数', trigger: 'blur' }
+        ],
+        carWeight: [
+          { required: true, message: '请输入车总重量（kg', trigger: 'blur' }
+        ],
+        carLength: [
+          { required: true, message: '请输入车长（m）', trigger: 'blur' }
+        ],
+        carWide: [
+          { required: true, message: '请输入车宽（m）', trigger: 'blur' }
+        ],
+        carHeight: [
+          { required: true, message: '请输入车高（m）', trigger: 'blur' }
+        ]
+      },
+      carTypeOption: [
+        {
+          carTypeName: '车头',
+          id: 1
+        },
+        {
+          carTypeName: '挂车',
+          id: 2
+        }
+      ]
     }
   },
   computed: {
@@ -319,14 +379,17 @@ export default {
   },
   methods: {
     addCar() {
+      const tem = Object.assign({}, this.CarFrom)
+      if (tem.type === 2) {
+        // 挂车
+        tem.guaNo = tem.carNo
+        delete tem.carNo
+      }
       this.listLoading = true
       addCar({
-        ...this.CarFrom,
+        ...tem,
         companyId: this.companyId,
-        deptId: this.deptId,
-        isCar: 1,
-        isEscort: 2,
-        classify: 1
+        deptId: this.deptId
       })
         .then((response) => {
           Message({
@@ -347,8 +410,14 @@ export default {
     },
     editCar() {
       this.listLoading = true
+      const tem = Object.assign({}, this.CarFrom)
+      if (tem.type === 2) {
+        // 挂车
+        tem.carNo = tem.guaNo
+        delete tem.guaNo
+      }
       editCar({
-        ...this.CarFrom,
+        ...tem,
         companyId: this.companyId,
         deptId: this.deptId
       })
@@ -417,17 +486,24 @@ export default {
       this.CarFrom = {
         carNo: '',
         deptId: '',
-        type: '',
-        carType: '',
-        isCar: '', // 1 是 2否
-        isEscort: '', // 1 是 2 否
-        classify: null,
-        classify: '', // 1 自有 2外协
+        type: 1,
+        carType: 1,
+        classify: 1, // 1自有；2外协
         remark: '',
-        rule: ''
+        guaNo: '',
+        maxLoad: '',
+        carWeight: '',
+        carLength: '',
+        carWide: '',
+        carHeight: ''
       }
     },
     handelClick(item, row) {
+      console.log(
+        '%c 🍢 row: ',
+        'font-size:20px;background-color: #7F2B82;color:#fff;',
+        row
+      )
       if (item === '修改') {
         this.CarFromVisible = true
         this.dialogTitle = '修改车辆'
