@@ -97,7 +97,7 @@
       <el-table-column
         show-overflow-tooltip
         label="操作"
-        width="300"
+        width="180"
         align="right"
         header-align="center"
       >

@@ -393,7 +393,7 @@ module.exports = [
               ],
               'meta': {
                 'affix': false,
-                'title': '系统管理'
+                'title': '轨迹管理'
               },
               'name': '91',
               'id': 91
@@ -417,7 +417,7 @@ module.exports = [
               ],
               'meta': {
                 'affix': false,
-                'title': '系统监控'
+                'title': '轨迹监控'
               },
               'name': '121',
               'id': 121
@@ -659,7 +659,7 @@ module.exports = [
               ],
               'meta': {
                 'icon': 'el-icon-menu',
-                'title': '系统管理'
+                'title': '轨迹管理'
               },
               'id': 91,
               'hideSubMenu': false
@@ -678,7 +678,7 @@ module.exports = [
               ],
               'meta': {
                 'icon': 'el-icon-menu',
-                'title': '系统监控3'
+                'title': '轨迹监控3'
               },
               'id': 121,
               'hideSubMenu': false

@@ -49,20 +49,9 @@
         label="车牌号"
         align="left"
         header-align="center"
-        width="150"
       >
         <template slot-scope="{ row }">
-          <span>{{ row.carNo }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="挂车号"
-        align="left"
-        header-align="center"
-      >
-        <template slot-scope="{ row }">
-          <span>{{ row.guaNo }}</span>
+          <span>{{ row.type === 1 ? row.carNo : row.guaNo }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -75,7 +64,7 @@
           <span>{{ row.type === 1 ? '车头' : '挂车' }}</span>
         </template>
       </el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         show-overflow-tooltip
         label="车型"
         align="left"
@@ -84,9 +73,9 @@
         <template slot-scope="{ row }">
           <span>{{ row.carType === 1 ? '平板' : '--' }}</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
-      <el-table-column
+      <!-- <el-table-column
         show-overflow-tooltip
         label="类别"
         align="left"
@@ -95,7 +84,7 @@
         <template slot-scope="{ row }">
           <span>{{ row.classify }}</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column
         show-overflow-tooltip
         label="荷载吨数"
@@ -156,7 +145,7 @@
           <span>{{ row.remark }}</span>
         </template>
       </el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         show-overflow-tooltip
         label="规则"
         align="left"
@@ -165,12 +154,11 @@
         <template slot-scope="{ row }">
           <span>{{ row.rule }}</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column
-        show-overflow-tooltip
         label="操作"
-        width="200"
-        align="right"
+        width="180"
+        align="center"
         header-align="center"
       >
         <template slot-scope="{ row }">

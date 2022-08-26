@@ -248,6 +248,44 @@ export const asyncRoutes = [
       },
       'name': '32',
       'id': 32
+    },
+    {
+      'path': '/area/add',
+      component: () => import('@/views/area/add'),
+      'meta': {
+        'icon': 'el-icon-menu',
+        'affix': false,
+
+        'permission': [
+          'area:user:list',
+          'area:user:add',
+          'area:user:info',
+          'area:user:update',
+          'area:user:del'
+        ],
+        'title': '新增区域'
+      },
+      'name': 'areaAdd',
+      hidden: true
+
+    },
+    {
+      'path': '/area/edit',
+      component: () => import('@/views/area/edit'),
+      'meta': {
+        'icon': 'el-icon-menu',
+        'affix': false,
+        'permission': [
+          'area:user:list',
+          'area:user:add',
+          'area:user:info',
+          'area:user:update',
+          'area:user:del'
+        ],
+        'title': '修改区域'
+      },
+      'name': 'areaEdit',
+      hidden: true
     }
 
     ],
@@ -298,6 +336,23 @@ export const asyncRoutes = [
       },
       'name': '63',
       'id': 63
+    },
+    {
+      'path': '/order/detail',
+      component: () => import('@/views/order/detail'),
+      'meta': {
+        'icon': 'el-icon-menu',
+        'affix': false,
+        'permission': [
+          'order:oper:update',
+          'order:oper:del',
+          'order:oper:add',
+          'order:oper:insert'
+        ],
+        'title': '订单详情'
+      },
+      'name': 'OrderDetail',
+      hidden: true
     }
     ],
     'meta': {
@@ -308,92 +363,18 @@ export const asyncRoutes = [
     'name': '61',
     'id': 61
   },
-  {
-    'redirect': '/system/dic',
-    'path': '/system',
-    component: Layout,
-    'children': [{
-      'path': '/system/dic',
-      component: () => import('@/views/html/index'),
-      'meta': {
-        'icon': 'el-icon-menu',
-        'affix': false,
-        'permission': [
-          'system:dic:add',
-          'system:dic:update',
-          'system:dic:del',
-          'system:dic:item'
-        ],
-        'title': '字典管理'
-      },
-      'name': '92',
-      'id': 92
-    },
 
-    {
-      'path': '/system/file',
-      component: () => import('@/views/html/index'),
-      'meta': {
-        'icon': 'el-icon-menu',
-        'affix': false,
-        'permission': [
-          'system:file:del',
-          'system:file:info'
-        ],
-        'title': '文件管理'
-      },
-      'name': '93',
-      'id': 93
-    },
-    {
-      'path': '/system/log',
-      component: () => import('@/views/html/index'),
-      'meta': {
-        'icon': 'el-icon-menu',
-        'affix': false,
-        'permission': [
-          'system:log:info'
-        ],
-        'title': '日志管理'
-      },
-      'name': '94',
-      'id': 94
-    },
-    {
-      'path': '/system/matter',
-      component: () => import('@/views/html/index'),
-      'meta': {
-        'icon': 'el-icon-menu',
-        'affix': false,
-        'permission': [
-          'system:matter:add',
-          'system:matter:update'
-        ],
-        'title': '因子管理'
-      },
-      'name': '95',
-      'id': 95
-    }
-    ],
-    'meta': {
-      'icon': 'el-icon-menu',
-      'affix': false,
-      'title': '系统管理'
-    },
-    'name': '91',
-    'id': 91
-  },
   {
-    'redirect': '/html/index',
-    'path': '/html',
+    'redirect': '/map/index',
+    'path': '/map',
     component: Layout,
     'children': [{
-      'path': '/html/index',
-      component: () => import('@/views/html/index'),
+      'path': '/map/index',
+      component: () => import('@/views/map/index'),
       'meta': {
         'icon': 'el-icon-menu',
         'affix': false,
-        'title': '服务监控'
+        'title': '轨迹监控'
       },
       'name': '122',
       'id': 122
@@ -401,7 +382,8 @@ export const asyncRoutes = [
     'meta': {
       'icon': 'el-icon-menu',
       'affix': false,
-      'title': '系统监控'
+      'title': '轨迹监控',
+      hideLeftMenu: true
     },
     'name': '121',
     'id': 121

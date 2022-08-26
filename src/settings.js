@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: 'SYWL - OTMS管理系统',
+  title: 'SYWL - OTMS管理轨迹',
 
   /**
    * @type {boolean} true | false
