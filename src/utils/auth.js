@@ -53,3 +53,4 @@ export function setOrderDetail(OrderDetail) {
 export function removeOrderDetail() {
   return Cookies.remove(OrderDetailKey)
 }
+

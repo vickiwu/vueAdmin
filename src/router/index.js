@@ -338,6 +338,26 @@ export const asyncRoutes = [
       'id': 63
     },
     {
+      'path': '/order/addCar',
+      component: () => import('@/views/order/addCar'),
+      'meta': {
+        'icon': 'el-icon-menu',
+        'affix': false,
+        'permission': [
+          'order:org:dept',
+          'order:org:user',
+          'order:org:add',
+          'order:org:insert',
+          'order:org:update',
+          'order:org:del'
+        ],
+        'title': '派车'
+      },
+      'name': 'addCar',
+      hidden: true
+    },
+
+    {
       'path': '/order/detail',
       component: () => import('@/views/order/detail'),
       'meta': {

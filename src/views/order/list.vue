@@ -1,268 +1,58 @@
 <template>
   <div class="app-container">
-    <!-- <small>认证中心-应用管理页面</small> -->
-    <div class="filter-container">
-      <el-input
-        v-model="searchStr"
-        placeholder="请输入关键字"
-        style="width: 200px; margin-right: 10px"
-        class="filter-item"
-      />
-      <el-button
-        class=""
-        size="small"
-        type="success"
-        icon="el-icon-search"
-        @click="loadTable()"
-      >
-        搜索
-      </el-button>
-      <el-button
-        class="filter-item"
-        size="small"
-        style="margin-left: 10px"
-        type="primary"
-        icon="el-icon-edit"
-        @click="openNew"
-      >
-        订单发布
-      </el-button>
-    </div>
-    <el-table
-      v-loading="listLoading"
-      class="auth-table"
-      :data="list"
-      border
-      fit
-      highlight-current-row
-      style="width: 100%; margin: 10px 0"
-    >
-      <el-table-column
-        label="序号"
-        type="index"
-        align="center"
-        header-align="center"
-        show-overflow-tooltip
-        width="80"
-      />
-      <el-table-column
-        show-overflow-tooltip
-        label="省"
-        align="left"
-        width="120"
-        header-align="center"
-      >
-        <template slot-scope="{ row }">
-          <span>{{ row.addrOne }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="市"
-        align="left"
-        width="280"
-        header-align="center"
-      >
-        <template slot-scope="{ row }">
-          <span>{{ row.addrTwo }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-        show-overflow-tooltip
-        label="区"
-        align="left"
-        header-align="center"
-      >
-        <template slot-scope="{ row }">
-          <span>{{ row.addrThree }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="详细地址"
-        align="left"
-        header-align="center"
-      >
-        <template slot-scope="{ row }">
-          <span>{{ row.address }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="联系人名称"
-        align="left"
-        header-align="center"
-      >
-        <template slot-scope="{ row }">
-          <span>{{ row.contactName }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="联系人手机号"
-        align="left"
-        header-align="center"
-      >
-        <template slot-scope="{ row }">
-          <span>{{ row.contactPhone }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="经度"
-        align="left"
-        header-align="center"
-      >
-        <template slot-scope="{ row }">
-          <span>{{ row.jd }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="纬度"
-        align="left"
-        header-align="center"
-      >
-        <template slot-scope="{ row }">
-          <span>{{ row.wd }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="操作"
-        width="180"
-        align="right"
-        header-align="center"
-      >
-        <template slot-scope="{ row }">
-          <div style="display: flex; justify-content: flex-end">
-            <el-button
-              key="详情"
-              size="mini"
-              icon="el-icon-view"
-              @click="handelClick('详情', row)"
-            >
-              详情
-            </el-button>
-            <el-button
-              key="删除"
-              size="mini"
-              icon="el-icon-delete"
-              type="danger"
-              @click="handelClick('删除', row)"
-            >
-              删除
-            </el-button>
-          </div>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      background
-      layout="total, prev, pager, next"
-      :total="total"
-      :page-size="pageSize"
-      @current-change="handleCurrentChange"
-    />
+    <el-tabs type="card">
+      <el-tab-pane>
+        <span slot="label"><i class="el-icon-date" /> 待调配</span>
+        <ListCard :order-type="1" />
+      </el-tab-pane>
+      <el-tab-pane>
+        <span slot="label"><i class="el-icon-date" /> 待提货</span>
+        <ListCard :order-type="2" />
+      </el-tab-pane>
+      <el-tab-pane>
+        <span slot="label"><i class="el-icon-date" /> 运输中</span>
+        <ListCard :order-type="3" />
+      </el-tab-pane>
+      <el-tab-pane>
+        <span slot="label"><i class="el-icon-date" /> 已送达</span>
+        <ListCard :order-type="4" />
+      </el-tab-pane>
+      <el-tab-pane>
+        <span slot="label"><i class="el-icon-date" /> 已完结</span>
+        <ListCard :order-type="5" />
+      </el-tab-pane>
+      <el-tab-pane>
+        <span slot="label"><i class="el-icon-date" /> 已锁定</span>
+        <ListCard :order-type="6" />
+      </el-tab-pane>
+      <el-tab-pane>
+        <span slot="label"><i class="el-icon-date" /> 已作废</span>
+        <ListCard :order-type="7" />
+      </el-tab-pane>
+      <el-tab-pane>
+        <span slot="label"><i class="el-icon-date" /> 全部</span>
+        <ListCard :order-type="8" />
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
 <script>
-import { getAreaList, delArea } from '@/api/people'
-import { setOrderDetail } from '@/utils/auth'
-import { Message } from 'element-ui'
+import ListCard from './listCard.vue'
+
 import { mapGetters } from 'vuex'
 export default {
-  components: {},
+  components: { ListCard },
   data() {
-    return {
-      searchStr: '',
-
-      listLoading: false,
-      list: [],
-      page: 1,
-      pageSize: 10,
-      total: 0
-    }
+    return {}
   },
   computed: {
-    ...mapGetters(['companyId', 'deptId', 'userId'])
+    ...mapGetters(['companyId', 'deptId', 'userId', 'roleType'])
   },
-  created() {
-    this.loadTable()
-  },
+  created() {},
   mounted() {},
-  methods: {
-    loadTable() {
-      getAreaList({
-        pageSize: this.pageSize,
-        page: this.page, // 1 y 10
-        deptId: this.deptId,
-        companyId: this.companyId
-      })
-        .then((response) => {
-          const data = response.d
-          this.list = data
-          this.total = response.z
-          this.listLoading = false
-        })
-        .catch((error) => error)
-    },
-
-    handleCurrentChange(page) {
-      this.page = page
-      this.listLoading = true
-      this.loadTable()
-    },
-
-    openNew() {
-      this.$router.push('/order/publish')
-    },
-    handelClick(item, row) {
-      switch (item) {
-        case '详情':
-          this.$router.push('/order/detail')
-          this.ruleForm = { ...row }
-          setOrderDetail(row)
-          break
-        case '删除':
-          this.$confirm('确认删除吗？')
-            .then((_) => {
-              delArea({ id: row.id })
-                .then((response) => {
-                  Message({
-                    message: response.m || '删除成功',
-                    type: 'success',
-                    duration: 2 * 1000
-                  })
-
-                  this.loadTable()
-                })
-                .catch((error) => {
-                  console.log(error, 'eee')
-                })
-            })
-            .catch((_) => {
-              console.log(_, '取消删除了')
-            })
-          break
-
-        default:
-          break
-      }
-    }
-  }
+  methods: {}
 }
 </script>
  <style lang="scss" scoped>
-.auth-table {
-  .el-button--mini,
-  .el-button--mini.is-round {
-    padding: 5px 10px;
-  }
-}
-
-.search-btn {
-  background-color: rgba(0, 204, 102, 1);
-}
 </style>

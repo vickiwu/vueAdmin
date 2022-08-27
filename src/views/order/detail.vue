@@ -1,64 +1,108 @@
 <template>
   <div class="app-container">
     <el-page-header content="订单详情" class="page-header" @back="goBack" />
-    <el-form ref="form" :model="form" label-width="80px" class="order-form">
-      <el-form-item label="活动名称">
-        <el-input v-model="form.name" />
-      </el-form-item>
-      <el-form-item label="活动区域">
-        <el-select v-model="form.region" placeholder="请选择活动区域">
-          <el-option label="区域一" value="shanghai" />
-          <el-option label="区域二" value="beijing" />
+    <el-form
+      ref="orderForm"
+      v-loading="formLoading"
+      :model="orderForm"
+      label-width="120px"
+      class="edit-form"
+    >
+      <el-form-item label="托运方">
+        <el-select
+          v-model="orderForm.customerId"
+          placeholder="请选择托运方"
+          @change="customerIdChange"
+        >
+          <el-option
+            v-for="item in customers"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+          />
         </el-select>
       </el-form-item>
-      <el-form-item label="活动时间">
-        <el-col :span="11">
-          <el-date-picker
-            v-model="form.date1"
-            type="date"
-            placeholder="选择日期"
-            style="width: 100%"
+      <el-form-item label="托运方手机号">
+        <el-input
+          v-model="orderForm.customerPhone"
+          :disabled="true"
+          placeholder="托运方手机号"
+        />
+      </el-form-item>
+      <el-form-item label="承运方">
+        <el-select
+          v-model="orderForm.transportId"
+          placeholder="请选择承运方"
+          @change="transportIdChange"
+        >
+          <el-option
+            v-for="item in transports"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
           />
-        </el-col>
-        <el-col class="line" :span="2">-</el-col>
-        <el-col :span="11">
-          <el-time-picker
-            v-model="form.date2"
-            placeholder="选择时间"
-            style="width: 100%"
+        </el-select>
+      </el-form-item>
+      <el-form-item label="承运方手机号">
+        <el-input
+          v-model="orderForm.transportPhone"
+          :disabled="true"
+          placeholder="托运方手机号"
+        />
+      </el-form-item>
+      <el-form-item label="产品名称">
+        <el-input v-model="orderForm.msdsName" placeholder="请输入产品名称" />
+      </el-form-item>
+      <el-form-item label="产品价格">
+        <el-input
+          v-model.number="orderForm.price"
+          placeholder="请输入产品价格"
+        />
+      </el-form-item>
+      <el-form-item label="装货地">
+        <el-select
+          v-model="orderForm.loadAddressId"
+          placeholder="请选择装货地"
+          @change="loadAddressIdChange"
+        >
+          <el-option
+            v-for="item in addressList"
+            :key="item.id"
+            :label="item.address"
+            :value="item.id"
           />
-        </el-col>
+        </el-select>
       </el-form-item>
-      <el-form-item label="即时配送">
-        <el-switch v-model="form.delivery" />
+      <el-form-item label="卸货地">
+        <el-select
+          v-model="orderForm.unLoadAddressId"
+          placeholder="请选择卸货地"
+          @change="unLoadAddressChange"
+        >
+          <el-option
+            v-for="item in addressList"
+            :key="item.id"
+            :label="item.address"
+            :value="item.id"
+          />
+        </el-select>
       </el-form-item>
-      <el-form-item label="活动性质">
-        <el-checkbox-group v-model="form.type">
-          <el-checkbox label="美食/餐厅线上活动" name="type" />
-          <el-checkbox label="地推活动" name="type" />
-          <el-checkbox label="线下主题活动" name="type" />
-          <el-checkbox label="单纯品牌曝光" name="type" />
-        </el-checkbox-group>
-      </el-form-item>
-      <el-form-item label="特殊资源">
-        <el-radio-group v-model="form.resource">
-          <el-radio label="线上品牌商赞助" />
-          <el-radio label="线下场地免费" />
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="活动形式">
-        <el-input v-model="form.desc" type="textarea" />
+      <el-form-item label="装货吨数">
+        <el-input
+          v-model.number="orderForm.loadNum"
+          placeholder="请输入装货吨数"
+        />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">立即创建</el-button>
-        <el-button>取消</el-button>
+        <el-button type="primary" @click="onSubmit">修改订单</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
-import AMapLoader from '@amap/amap-jsapi-loader'
+import { editOrder } from '@/api/order'
+import { getAreaList, getClientList } from '@/api/people'
 import { getOrderDetail, removeOrderDetail } from '@/utils/auth'
 import { Message } from 'element-ui'
 import { mapGetters } from 'vuex'
@@ -66,24 +110,36 @@ export default {
   components: {},
   data() {
     return {
-      form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
-      }
+      customers: [],
+      transports: [],
+      addressList: [],
+      orderForm: {
+        customerId: '',
+        customerName: '',
+        customerPhone: '',
+        transportId: '',
+        transportPhone: '',
+        transportName: '',
+        price: undefined,
+        msdsName: '',
+        loadAddress: '',
+        unLoadAddress: '',
+        loadAddressId: '',
+        unLoadAddressId: '',
+        loadNum: undefined
+      },
+      formLoading: false
     }
   },
   computed: {
     ...mapGetters(['companyId', 'deptId', 'userId'])
   },
   created() {
+    this.getCustomers()
+    this.getTransports()
+    this.getAddressList()
     const orderDetail = getOrderDetail()
-    this.form = { ...orderDetail }
+    this.orderForm = { ...orderDetail }
   },
   mounted() {},
   methods: {
@@ -92,118 +148,124 @@ export default {
       this.$router.push('/order/list')
       removeOrderDetail()
     },
-    initMap() {
-      AMapLoader.load({
-        key: '499cf0c29e7adba17f559a42b305d58c', // 申请好的Web端开发者Key，首次调用 load 时必填
-        version: '1.4.15', // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
-        plugins: ['AMap.Geocoder'], // 需要使用的的插件列表，如比例尺'AMap.Scale'等
-        AMapUI: {
-          // 是否加载 AMapUI，缺省不加载
-          version: '1.1', // AMapUI 缺省 1.1
-          plugins: [] // 需要加载的 AMapUI ui插件
-        },
-        Loca: {
-          // 是否加载 Loca， 缺省不加载
-          version: '1.3.2' // Loca 版本，缺省 1.3.2
-        }
-      })
-        .then((AMap) => {
-          this.mapInstance = new AMap.Map('address-map')
-          this.geocoder = new AMap.Geocoder()
-          this.marker = new AMap.Marker()
-          this.AMap = AMap
-          this.mapInstance.on('click', (e) => {
-            this.handleMapClick(e.lnglat)
-          })
-          if (this.dialogTitle === '修改区域') {
-            // 地图加点
-            this.selected = [
-              this.ruleForm.addrOne,
-              this.ruleForm.addrTwo,
-              this.ruleForm.addrThree
-            ]
-            const lnglat = [this.ruleForm.jd, this.ruleForm.wd]
-            this.marker.setPosition(lnglat)
-            this.mapInstance.add(this.marker)
-            this.mapInstance.setFitView(this.marker, 12)
-          }
-        })
-        .catch((e) => {
-          console.log(e)
-        })
-    },
-    handleMapClick(lnglat) {
-      this.geocoder.getAddress(lnglat, (status, result) => {
-        if (status === 'complete' && result.regeocode) {
-          var address = result.regeocode.formattedAddress
-          this.ruleForm.address = address
-          this.ruleForm.jd = lnglat.lng + ''
-          this.ruleForm.wd = lnglat.lat + ''
+    getCustomers() {
+      getClientList({
+        pageSize: 9999,
+        page: 1,
+        type: 1
+      }).then((res) => {
+        if (+res.a === 200) {
+          this.customers = res.d
         } else {
-          console.log('根据经纬度查询地址失败')
+          Message({
+            message: res.m || '获取托运方列表报错',
+            type: 'error',
+            duration: 2 * 1000
+          })
         }
-        this.marker.setPosition(lnglat)
-        this.mapInstance.add(this.marker)
-        this.mapInstance.setFitView(this.marker, 12)
       })
     },
-
-    handleSave() {
-      this.$refs['ruleForm'].validate((valid) => {
+    getTransports() {
+      getClientList({
+        pageSize: 9999,
+        page: 1,
+        type: 2
+      }).then((res) => {
+        if (+res.a === 200) {
+          this.transports = res.d
+        } else {
+          Message({
+            message: res.m || '获取承运方列表报错',
+            type: 'error',
+            duration: 2 * 1000
+          })
+        }
+      })
+    },
+    getAddressList() {
+      getAreaList({
+        pageSize: 9999,
+        page: 1, // 1 y 10
+        deptId: this.deptId,
+        companyId: this.companyId
+      }).then((res) => {
+        if (+res.a === 200) {
+          this.addressList = res.d
+        } else {
+          Message({
+            message: res.m || '获取区域列表报错',
+            type: 'error',
+            duration: 2 * 1000
+          })
+        }
+      })
+    },
+    loadAddressIdChange(val) {
+      const currentAddress = this.addressList.filter((item) => {
+        return item.id === val
+      })
+      if (currentAddress && currentAddress.length > 0) {
+        this.orderForm.loadAddress = currentAddress[0].address
+      }
+    },
+    unLoadAddressChange(val) {
+      const currentAddress = this.addressList.filter((item) => {
+        return item.id === val
+      })
+      if (currentAddress && currentAddress.length > 0) {
+        this.orderForm.unLoadAddress = currentAddress[0].address
+      }
+    },
+    transportIdChange(val) {
+      const currentData = this.transports.filter((item) => {
+        return item.id === val
+      })
+      if (currentData && currentData.length > 0) {
+        this.orderForm.transportPhone = currentData[0].contactPhone
+        this.orderForm.transportName = currentData[0].name
+      }
+    },
+    customerIdChange(val) {
+      const currentData = this.customers.filter((item) => {
+        return item.id === val
+      })
+      if (currentData && currentData.length > 0) {
+        this.orderForm.customerPhone = currentData[0].contactPhone
+        this.orderForm.customerName = currentData[0].name
+      }
+    },
+    onSubmit() {
+      this.$refs['orderForm'].validate((valid) => {
         if (valid) {
-          switch (this.dialogTitle) {
-            case '新增区域':
-              this.addArea()
-              break
-            case '修改区域':
-              this.editArea()
-              break
-            default:
-              break
-          }
+          this.editOrderApi()
         } else {
           console.log('验证出错')
           return false
         }
       })
     },
-    addArea() {
-      this.listLoading = true
-      addArea({
-        ...this.ruleForm,
-        userId: this.userId,
-        companyId: this.companyId,
-        deptId: this.deptId
-      })
-        .then((response) => {
-          Message({
-            message: response.m || '添加成功',
-            type: 'success',
-            duration: 2 * 1000
-          })
-          this.listLoading = false
-          this.loadTable()
-          this.dialogFormVisible = false
-        })
-        .catch((error) => error)
-    },
-    editArea() {
-      this.listLoading = true
-      editArea({
-        ...this.ruleForm,
-        userId: this.userId,
-        companyId: this.companyId,
-        deptId: this.deptId
-      })
+    editOrderApi() {
+      this.formLoading = true
+      const paramsData = Object.assign(
+        {
+          userId: this.userId,
+          companyId: this.companyId,
+          deptId: this.deptId,
+          userName: this.userName
+        },
+        this.orderForm
+      )
+
+      paramsData.price = paramsData.price * 1000
+      editOrder(paramsData)
         .then((response) => {
           Message({
             message: response.m || '修改成功',
             type: 'success',
             duration: 2 * 1000
           })
-          this.dialogFormVisible = false
-          this.listLoading = false
-          this.loadTable()
+          this.formLoading = false
+          this.goBack()
         })
         .catch((error) => error)
     }
@@ -211,14 +273,19 @@ export default {
 }
 </script>
  <style lang="scss" scoped>
-.order-form {
-  width: 70%;
+.edit-form {
+  width: 80%;
   margin: 0 auto;
+  padding-top: 20px;
 }
+
 .page-header {
   margin: 10px auto 30px 10px;
 }
 ::v-deep {
+  .el-select {
+    width: 100%;
+  }
   .el-form-item__content {
     .area-select-wrap {
       line-height: 16px;

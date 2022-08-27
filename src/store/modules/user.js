@@ -8,7 +8,9 @@ const getDefaultState = () => {
     token: getToken(),
     companyId: getBaseData() ? getBaseData().companyId : '',
     deptId: getBaseData() ? getBaseData().deptId : '',
+    roleType: getBaseData() ? getBaseData().roleType : '',
     userId: getBaseData() ? getBaseData().userId : '',
+    userName: getBaseData() ? getBaseData().userName : '',
     name: '',
     avatar: '',
     path: '',
@@ -26,9 +28,13 @@ const mutations = {
     state.token = token
   },
   SET_BASEDATA: (state, baseData) => {
+    console.log('%c 🥘 baseData: ', 'font-size:20px;background-color: #42b983;color:#fff;', baseData)
     state.companyId = baseData.companyId
     state.deptId = baseData.deptId
+    state.roleType = baseData.roleType
+
     state.userId = baseData.userId
+    state.userName = baseData.userName
   },
   SET_NAME: (state, name) => {
     state.name = name
