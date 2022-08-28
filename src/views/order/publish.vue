@@ -63,7 +63,7 @@
             <el-col :span="11">
               <el-form-item label="车型要求" prop="carNeed">
                 <el-input
-                  v-model.number="orderForm.carNeed"
+                  v-model="orderForm.carNeed"
                   placeholder="请输入车型要求"
                 />
               </el-form-item>
@@ -73,16 +73,13 @@
           <el-row :gutter="20" type="flex" justify="center">
             <el-col :span="11">
               <el-form-item label="备注" prop="remark">
-                <el-input
-                  v-model.number="orderForm.remark"
-                  placeholder="请输入备注"
-                />
+                <el-input v-model="orderForm.remark" placeholder="请输入备注" />
               </el-form-item>
             </el-col>
             <el-col :span="11">
               <el-form-item label="东华备注" prop="dhRemark">
                 <el-input
-                  v-model.number="orderForm.dhRemark"
+                  v-model="orderForm.dhRemark"
                   placeholder="请输入东华备注"
                 />
               </el-form-item>
@@ -668,8 +665,8 @@ export default {
           companyId: this.companyId,
           deptId: this.deptId,
           userName: this.userName
-        }
-        // this.orderForm
+        },
+        this.orderForm
       )
       paramsData.price = paramsData.price * 1000
       publishOrder(paramsData)

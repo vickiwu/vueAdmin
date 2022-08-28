@@ -19,7 +19,6 @@
             v-loading="departLoading"
             :data="departData"
             :props="defaultProps"
-            show-checkbox
             node-key="id"
             default-expand-all
             :expand-on-click-node="false"

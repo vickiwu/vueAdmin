@@ -1,6 +1,5 @@
 <template>
   <div class="list-card">
-    {{ orderType }}
     <div class="filter-container">
       <el-input
         v-model="searchStr"
@@ -216,37 +215,57 @@
       <el-table-column
         label="操作"
         fixed="right"
-        width="400"
+        :width="width"
         align="right"
         header-align="center"
       >
         <template slot-scope="{ row }">
           <div style="display: flex; justify-content: flex-end">
-            <el-button key="编辑" size="mini" @click="handelClick('编辑', row)">
+            <el-button
+              v-if="[1, 3, 4].includes(orderType)"
+              size="mini"
+              @click="handelClick('编辑', row)"
+            >
               编辑
             </el-button>
-            <el-button key="派车" size="mini" @click="handelClick('派车', row)">
+            <el-button
+              v-if="[1].includes(orderType)"
+              size="mini"
+              @click="handelClick('派车', row)"
+            >
               派车
             </el-button>
-            <el-button key="轨迹" size="mini" @click="handelClick('轨迹', row)">
+            <el-button
+              v-if="[3, 4, 8, 10].includes(orderType)"
+              size="mini"
+              @click="handelClick('轨迹', row)"
+            >
               轨迹
             </el-button>
+
             <el-button
-              key="查看回单"
+              v-if="[8].includes(orderType)"
               size="mini"
               @click="handelClick('查看回单', row)"
             >
               查看回单
             </el-button>
             <el-button
-              key="上传回单"
+              v-if="[3, 4].includes(orderType)"
               size="mini"
               @click="handelClick('上传回单', row)"
             >
               上传回单
             </el-button>
             <el-button
-              key="删除"
+              v-if="[8].includes(orderType)"
+              size="mini"
+              @click="handelClick('完成', row)"
+            >
+              完成
+            </el-button>
+            <el-button
+              v-if="[1, 3, 4].includes(orderType)"
               size="mini"
               type="danger"
               @click="handelClick('删除', row)"
@@ -303,6 +322,22 @@ export default {
         this.loadTable()
         break
     }
+    switch (this.orderType) {
+      case 3:
+      case 4:
+        this.width = 260 // 4个
+        break
+      case 1:
+        this.width = 180 // 3个
+        break
+      case 8:
+        this.width = 200 // 3个
+        // this.width = 150 // 2个
+        break
+      default:
+        this.width = 70
+        break
+    }
   },
   mounted() {},
   methods: {
@@ -311,13 +346,22 @@ export default {
         pageSize: this.pageSize,
         page: this.page, // 1 y 10
         deptId: this.deptId,
-        companyId: this.companyId
+        companyId: this.companyId,
+        status: +this.orderType
       })
         .then((response) => {
           const data = response.d
+          console.log(
+            '%c 🦐 data: ',
+            'font-size:20px;background-color: #42b983;color:#fff;',
+            data
+          )
           this.list = data
           this.total = response.z
           this.listLoading = false
+          if (data === null) {
+            this.list = [{}]
+          }
         })
         .catch((error) => error)
     },
@@ -326,13 +370,18 @@ export default {
         pageSize: this.pageSize,
         page: this.page, // 1 y 10
         deptId: this.deptId,
-        companyId: this.companyId
+        companyId: this.companyId,
+        status: +this.orderType
       })
         .then((response) => {
           const data = response.d
+
           this.list = data
           this.total = response.z
           this.listLoading = false
+          if (!data) {
+            this.list = [{}]
+          }
         })
         .catch((error) => error)
     },

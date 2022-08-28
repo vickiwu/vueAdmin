@@ -1,7 +1,6 @@
 <template>
   <div class="app-container">
     <el-page-header content="派车" class="page-header" @back="goBack" />
-    {{ orderDetail }}
     <el-form
       ref="orderDetail"
       v-loading="formLoading"

@@ -7,31 +7,31 @@
       </el-tab-pane>
       <el-tab-pane>
         <span slot="label"><i class="el-icon-date" /> 待提货</span>
-        <ListCard :order-type="2" />
-      </el-tab-pane>
-      <el-tab-pane>
-        <span slot="label"><i class="el-icon-date" /> 运输中</span>
         <ListCard :order-type="3" />
       </el-tab-pane>
       <el-tab-pane>
-        <span slot="label"><i class="el-icon-date" /> 已送达</span>
+        <span slot="label"><i class="el-icon-date" /> 运输中</span>
         <ListCard :order-type="4" />
       </el-tab-pane>
       <el-tab-pane>
+        <span slot="label"><i class="el-icon-date" /> 已送达</span>
+        <ListCard :order-type="8" />
+      </el-tab-pane>
+      <el-tab-pane>
         <span slot="label"><i class="el-icon-date" /> 已完结</span>
-        <ListCard :order-type="5" />
+        <ListCard :order-type="10" />
       </el-tab-pane>
       <el-tab-pane>
         <span slot="label"><i class="el-icon-date" /> 已锁定</span>
-        <ListCard :order-type="6" />
+        <ListCard :order-type="0" />
       </el-tab-pane>
       <el-tab-pane>
         <span slot="label"><i class="el-icon-date" /> 已作废</span>
-        <ListCard :order-type="7" />
+        <ListCard :order-type="0" />
       </el-tab-pane>
       <el-tab-pane>
         <span slot="label"><i class="el-icon-date" /> 全部</span>
-        <ListCard :order-type="8" />
+        <ListCard :order-type="0" />
       </el-tab-pane>
     </el-tabs>
   </div>
