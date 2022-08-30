@@ -269,7 +269,7 @@ export default {
       const PolylineList = lnglatList.map((item) => {
         return item.lnglat.split(',')
       })
-      var polyline = new AMap.Polyline({
+      new AMap.Polyline({
         map: this.mapInstance,
         path: PolylineList,
         showDir: true,
@@ -290,10 +290,10 @@ export default {
     sendSocketCarLine(device) {
       // 结束时间：当前时间，开始时间往前8小时
       const currentTime = new Date().getTime()
-      const startTime = currentTime - 24 * 60 * 60 * 1000
+      const startTime = currentTime - 10 * 60 * 60 * 1000
       const deviceObj = {
         a: device,
-        b: startTime, // 开始时间
+        b: startTime, // kais
         c: currentTime // 结束时间
       }
       this.$store.dispatch('carLog/SOCKET_SEND', {
