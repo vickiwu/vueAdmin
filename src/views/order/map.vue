@@ -233,6 +233,10 @@ export default {
             type: [0, 1, 0]
           })
           this.sendSocketCar([this.orderDetail.deviceNo])
+          if ([4, 8, 10].includes(this.orderDetail.status)) {
+            this.sendSocketCarLine(this.orderDetail.deviceNo)
+          }
+          // let myView = toView(obj, 0, 0x0a, 0); // 发送给websocket
         })
     },
     drawMarker(data, type) {
@@ -282,6 +286,20 @@ export default {
       const lnglat = new AMap.LngLat(...carLngLat.split(','))
       mark.moveTo(lnglat, speed)
       text.moveTo(lnglat, speed)
+    },
+    sendSocketCarLine(device) {
+      // 结束时间：当前时间，开始时间往前8小时
+      const currentTime = new Date().getTime()
+      const startTime = currentTime - 24 * 60 * 60 * 1000
+      const deviceObj = {
+        a: device,
+        b: startTime, // 开始时间
+        c: currentTime // 结束时间
+      }
+      this.$store.dispatch('carLog/SOCKET_SEND', {
+        msg: deviceObj,
+        type: [0, 0x0a, 0]
+      })
     },
     sendSocketCar(device) {
       const deviceObj = {
