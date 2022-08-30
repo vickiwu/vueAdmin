@@ -140,86 +140,76 @@ export const asyncRoutes = [
     'redirect': '/auth/people',
     'path': '/auth',
     component: Layout,
-    'children': [{
-      'path': '/auth/people',
-      component: () => import('@/views/auth/people'),
-      'meta': {
-        'icon': 'el-icon-menu',
-        'affix': false,
-        'permission': [
-          'auth:people:add',
-          'auth:people:update',
-          'auth:people:del',
-          'auth:people:set'
-        ],
-        'title': '人员管理'
+    'children': [
+      {
+        'path': '/auth/depart',
+        component: () => import('@/views/auth/depart'),
+        'meta': {
+          'icon': 'el-icon-menu',
+          'affix': false,
+          roles: [1, 2, 3],
+          'permission': [
+            'auth:depart:add',
+            'auth:depart:update',
+            'auth:depart:del'
+          ],
+          'title': '部门管理'
+        },
+        'name': '3'
       },
-      'name': '2'
-    },
-    {
-      'path': '/auth/depart',
-      component: () => import('@/views/auth/depart'),
-      'meta': {
-        'icon': 'el-icon-menu',
-        'affix': false,
-        'permission': [
-          'auth:depart:add',
-          'auth:depart:update',
-          'auth:depart:del'
-        ],
-        'title': '部门管理'
+      {
+        'path': '/auth/driver',
+        component: () => import('@/views/auth/driver'),
+        'meta': {
+          'icon': 'el-icon-menu',
+          'affix': false,
+          roles: [1, 2, 3],
+          'permission': [
+            'auth:driver:info',
+            'auth:driver:del'
+          ],
+          'title': '司机管理'
+        },
+        'name': '4',
+        'id': 4
       },
-      'name': '3'
-    },
-    {
-      'path': '/auth/driver',
-      component: () => import('@/views/auth/driver'),
-      'meta': {
-        'icon': 'el-icon-menu',
-        'affix': false,
-        'permission': [
-          'auth:driver:info',
-          'auth:driver:del'
-        ],
-        'title': '司机管理'
+      {
+        'path': '/auth/car',
+        component: () => import('@/views/auth/car'),
+        'meta': {
+          roles: [1, 2, 3],
+          'icon': 'el-icon-menu',
+          'affix': false,
+          'permission': [
+            'auth:car:info',
+            'auth:car:del'
+          ],
+          'title': '车辆管理'
+        },
+        'name': 'car',
+        'id': 5
       },
-      'name': '4',
-      'id': 4
-    },
-    {
-      'path': '/auth/car',
-      component: () => import('@/views/auth/car'),
-      'meta': {
-        'icon': 'el-icon-menu',
-        'affix': false,
-        'permission': [
-          'auth:car:info',
-          'auth:car:del'
-        ],
-        'title': '车辆管理'
-      },
-      'name': 'car',
-      'id': 5
-    },
-    {
-      'path': '/auth/client',
-      component: () => import('@/views/auth/client'),
-      'meta': {
-        'icon': 'el-icon-menu',
-        'affix': false,
-        'permission': [
-          'auth:client:del',
-          'auth:client:show',
-          'auth:client:add',
-          'auth:client:update'
-        ],
-        'title': '客户管理'
-      },
-      'name': '5',
-      'id': 5
-    }
+      {
+        'path': '/auth/client',
+        component: () => import('@/views/auth/client'),
+        'meta': {
+          'icon': 'el-icon-menu',
+          'affix': false,
+          roles: [1, 2, 3],
+          'permission': [
+            'auth:client:del',
+            'auth:client:show',
+            'auth:client:add',
+            'auth:client:update'
+          ],
+          'title': '客户管理'
+        },
+        'name': '5',
+        'id': 5
+      }
     ],
     'meta': {
+      roles: [1, 2, 3],
       'icon': 'el-icon-menu',
       'affix': false,
       'title': '基础信息'
@@ -237,6 +227,7 @@ export const asyncRoutes = [
       'meta': {
         'icon': 'el-icon-menu',
         'affix': false,
+        roles: [1, 2, 3],
         'permission': [
           'area:user:list',
           'area:user:add',
@@ -255,7 +246,7 @@ export const asyncRoutes = [
       'meta': {
         'icon': 'el-icon-menu',
         'affix': false,
-
+        roles: [1, 2, 3],
         'permission': [
           'area:user:list',
           'area:user:add',
@@ -275,6 +266,7 @@ export const asyncRoutes = [
       'meta': {
         'icon': 'el-icon-menu',
         'affix': false,
+        roles: [1, 2, 3],
         'permission': [
           'area:user:list',
           'area:user:add',
@@ -290,6 +282,7 @@ export const asyncRoutes = [
 
     ],
     'meta': {
+      roles: [1, 2, 3],
       'icon': 'el-icon-menu',
       'affix': false,
       'title': '区域管理'
@@ -305,6 +298,7 @@ export const asyncRoutes = [
       'path': '/order/publish',
       component: () => import('@/views/order/publish'),
       'meta': {
+        roles: [1, 2, 3],
         'icon': 'el-icon-menu',
         'affix': false,
         'permission': [
@@ -315,8 +309,8 @@ export const asyncRoutes = [
         ],
         'title': '订单发布'
       },
-      'name': '62',
-      'id': 62
+      'name': 'orderPublish',
+      hidden: true
     },
     {
       'path': '/order/list',
@@ -324,6 +318,7 @@ export const asyncRoutes = [
       'meta': {
         'icon': 'el-icon-menu',
         'affix': false,
+        roles: [1, 10, 11, 2, 3],
         'permission': [
           'order:org:dept',
           'order:org:user',
@@ -341,6 +336,7 @@ export const asyncRoutes = [
       'path': '/order/addCar',
       component: () => import('@/views/order/addCar'),
       'meta': {
+        roles: [1, 2, 3],
         'icon': 'el-icon-menu',
         'affix': false,
         'permission': [
@@ -363,6 +359,7 @@ export const asyncRoutes = [
       'meta': {
         'icon': 'el-icon-menu',
         'affix': false,
+        roles: [1, 10, 11, 2, 3],
         'permission': [
           'order:oper:update',
           'order:oper:del',
@@ -377,6 +374,7 @@ export const asyncRoutes = [
       'path': '/order/map',
       component: () => import('@/views/order/map'),
       'meta': {
+        roles: [1, 10, 11, 2, 3],
         'icon': 'el-icon-menu',
         'affix': false,
         'title': '轨迹监控'
@@ -386,6 +384,7 @@ export const asyncRoutes = [
     }
     ],
     'meta': {
+      roles: [1, 10, 11, 2, 3],
       'icon': 'el-icon-menu',
       'affix': false,
       'title': '订单管理'
@@ -393,8 +392,6 @@ export const asyncRoutes = [
     'name': '61',
     'id': 61
   },
-
-  // 404 page must be placed at the end !!!
   {
     path: '*',
     redirect: '/404',

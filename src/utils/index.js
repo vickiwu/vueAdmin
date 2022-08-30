@@ -158,20 +158,16 @@ export function debounce(func, wait, immediate) {
 }
 
 export function parseBetyData(betyData) {
-  console.log('%c 🍅 betyData: ', 'font-size:20px;background-color: #EA7E5C;color:#fff;', betyData)
   // 0 不压缩 1 解压
   const dataBf = betyData.slice(3, betyData.byteLength) // 数据buff 从第4个字节开始
   const typeBfView = new Int8Array(betyData, 2, 1) // 第三个字节是否压缩
-  console.log('%c 🍑 typeBfView: ', 'font-size:20px;background-color: #33A5FF;color:#fff;', typeBfView)
   let jsonStr
   if (typeBfView[0] === 0) {
     var byteArray = new Uint8Array(dataBf)
     jsonStr = new TextDecoder().decode(byteArray)
-    console.log('%c 不压缩的 jsonStr: ', 'font-size:20px;background-color: #ED9EC7;color:#fff;', jsonStr)
   } else {
     const data = pako.inflate(dataBf)
     jsonStr = new TextDecoder().decode(data)
-    console.log('%c 压缩解压后的 jsonStr: ', 'font-size:20px;background-color: #93C0A4;color:#fff;', jsonStr)
   }
   // return JSON.parse(jsonStr);
   return jsonStr
@@ -183,7 +179,6 @@ export function stringSource(str) {
   }
 }
 export function toView(data, type1, type2, isP) {
-  console.log('%c 🥒 type1, type2, isP: ', 'font-size:20px;background-color: #2EAFB0;color:#fff;', type1, type2, isP)
   let str
   if (typeof (data) === 'object') {
     str = JSON.stringify(data)
@@ -202,6 +197,5 @@ export function toView(data, type1, type2, isP) {
   utfx.encodeUTF16toUTF8(stringSource(str), function(b) {
     view.setUint8(offset++, b)
   })
-  console.log('%c 🍺 view: ', 'font-size:20px;background-color: #33A5FF;color:#fff;', view)
   return view
 }

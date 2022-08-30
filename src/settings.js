@@ -12,7 +12,7 @@ module.exports = {
    * @description 是否fixed标题
    */
   fixedHeader: false,
-  menuType: 'top', // top left
+  menuType: 'left', // top left
   FILE_UPLOAD: `/file/upLoad2?u=2&ft=1`,
   HIGH_IMG_URL: '/sybdfile'
 }

@@ -17,7 +17,6 @@ const mutations = {
     }
   },
   SOCKET_RECIVE(state, wsData) {
-    // console.log("%c 🍸 data: ", "font-size:20px;background-color: #33A5FF;color:#fff;", wsData);
     // 接收数据 处理
     var data = wsData[0]
     var type = wsData[1]

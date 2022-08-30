@@ -17,6 +17,7 @@
         搜索
       </el-button>
       <el-button
+        v-if="![10, 11].includes(roleType)"
         class="filter-item"
         size="small"
         style="margin-left: 10px"
@@ -223,14 +224,16 @@
         <template slot-scope="{ row }">
           <div style="display: flex; justify-content: flex-end">
             <el-button
-              v-if="[1, 3, 4].includes(orderType)"
+              v-if="
+                [1, 3, 4].includes(orderType) && ![10, 11].includes(roleType)
+              "
               size="mini"
               @click="handelClick('编辑', row)"
             >
               编辑
             </el-button>
             <el-button
-              v-if="[1].includes(orderType)"
+              v-if="[1].includes(orderType) && ![10, 11].includes(roleType)"
               size="mini"
               @click="handelClick('派车', row)"
             >
@@ -253,7 +256,7 @@
             </el-button>
 
             <el-button
-              v-if="[3, 4].includes(orderType)"
+              v-if="[3, 4].includes(orderType) && ![10, 11].includes(roleType)"
               size="mini"
               @click="handelClick('上传回单', row)"
             >
@@ -261,14 +264,16 @@
             </el-button>
 
             <el-button
-              v-if="[8].includes(orderType)"
+              v-if="[8].includes(orderType) && ![10, 11].includes(roleType)"
               size="mini"
               @click="handelClick('完成', row)"
             >
               完成
             </el-button>
             <el-button
-              v-if="[1, 3, 4].includes(orderType)"
+              v-if="
+                [1, 3, 4].includes(orderType) && ![10, 11].includes(roleType)
+              "
               size="mini"
               type="danger"
               @click="handelClick('删除', row)"

@@ -29,7 +29,6 @@ const mutations = {
     state.token = token
   },
   SET_BASEDATA: (state, baseData) => {
-    console.log('%c 🥘 baseData: ', 'font-size:20px;background-color: #42b983;color:#fff;', baseData)
     state.companyId = baseData.companyId
     state.deptId = baseData.deptId
     state.roleType = baseData.roleType

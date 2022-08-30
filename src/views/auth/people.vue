@@ -67,17 +67,7 @@
           <span>{{ row.phone }}</span>
         </template>
       </el-table-column>
-      <!-- <el-table-column
-        show-overflow-tooltip
-        label="公司id"
-        align="left"
-        header-align="center"
-      >
-        <template slot-scope="{ row }">
-          <span>{{ row.companyId }}</span>
 
-        </template>
-      </el-table-column> -->
       <el-table-column
         show-overflow-tooltip
         label="部门名称"
@@ -108,16 +98,7 @@
           <span>{{ row.roleName }}</span>
         </template>
       </el-table-column>
-      <!-- <el-table-column
-        show-overflow-tooltip
-        label="人员id"
-        align="left"
-        header-align="center"
-      >
-        <template slot-scope="{ row }">
-          <span>{{ row.userId }}</span>
-        </template>
-      </el-table-column> -->
+
       <el-table-column
         label="操作"
         width="400"
@@ -127,7 +108,6 @@
         <template slot-scope="{ row }">
           <div style="display: flex; justify-content: flex-end">
             <el-button
-              key="修改"
               size="mini"
               icon="el-icon-edit"
               @click="handelClick('修改', row)"

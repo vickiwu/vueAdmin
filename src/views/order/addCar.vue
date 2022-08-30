@@ -296,11 +296,6 @@ export default {
   created() {
     this.orderDetail = getOrderDetail()
 
-    console.log(
-      '%c 🥡 this.orderDetail: ',
-      'font-size:20px;background-color: #FCA650;color:#fff;',
-      this.orderDetail
-    )
     this.getDriveListApi()
     this.getCarListApi()
     this.getDeviceApi()
@@ -320,11 +315,6 @@ export default {
         page: 1
       })
         .then((res) => {
-          console.log(
-            '%c 获取设备列表: ',
-            'font-size:20px;background-color: #465975;color:#fff;',
-            res
-          )
           if (+res.a === 200) {
             this.deviceList = res.d
           } else {
@@ -348,11 +338,6 @@ export default {
         companyId: this.companyId
       })
         .then((res) => {
-          console.log(
-            '%c 获取司机列表: ',
-            'font-size:20px;background-color: #465975;color:#fff;',
-            res
-          )
           if (+res.a === 200) {
             this.driveList = res.d
           } else {
@@ -375,11 +360,6 @@ export default {
         deptId: this.deptId,
         companyId: this.companyId
       }).then((res) => {
-        console.log(
-          '%c 获取车辆列表报错: ',
-          'font-size:20px;background-color: #ED9EC7;color:#fff;',
-          res
-        )
         if (+res.a === 200) {
           this.carList = res.d
         } else {

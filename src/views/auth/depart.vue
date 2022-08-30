@@ -5,7 +5,9 @@
         <el-card class="left-bg">
           <div slot="header" class="clearfix">
             <span>部门</span>
+            {{ roleType }}
             <el-button
+              v-if="![2, 3].includes(roleType)"
               size="small"
               style="float: right; padding: 0"
               type="text"
@@ -36,12 +38,14 @@
                 </el-tooltip> -->
                 <el-tooltip effect="dark" content="修改部门" placement="top">
                   <i
+                    v-if="![2, 3].includes(roleType)"
                     class="el-icon-edit tree-btn btn-edit"
                     @click="() => editDepart(node, data)"
                   />
                 </el-tooltip>
                 <el-tooltip effect="dark" content="删除部门" placement="top">
                   <i
+                    v-if="![2, 3].includes(roleType)"
                     class="el-icon-delete tree-btn btn-del"
                     @click="() => remove(node, data)"
                   />
@@ -65,9 +69,20 @@
               size="small"
               type="success"
               icon="el-icon-search"
-              @click="loadTable()"
+              @click="loadPeople(currentDept.id)"
             >
               搜索
+            </el-button>
+            <el-button
+              v-if="![2, 3].includes(roleType)"
+              class="filter-item"
+              size="small"
+              style="margin-left: 10px"
+              type="primary"
+              icon="el-icon-edit"
+              @click="openNew"
+            >
+              新增
             </el-button>
           </div>
           <el-table
@@ -80,11 +95,11 @@
             style="width: 100%; margin: 10px 0"
           >
             <el-table-column
-              show-overflow-tooltip
               label="序号"
               type="index"
               align="center"
               header-align="center"
+              show-overflow-tooltip
               width="80"
             />
             <el-table-column
@@ -120,7 +135,16 @@
                 <span>{{ row.deptName }}</span>
               </template>
             </el-table-column>
-
+            <el-table-column
+              show-overflow-tooltip
+              label="角色类型"
+              align="left"
+              header-align="center"
+            >
+              <template slot-scope="{ row }">
+                <span>{{ row.roleType }}</span>
+              </template>
+            </el-table-column>
             <el-table-column
               show-overflow-tooltip
               label="角色名称"
@@ -133,14 +157,22 @@
             </el-table-column>
 
             <el-table-column
-              show-overflow-tooltip
+              v-if="![2, 3].includes(roleType)"
               label="操作"
-              width="100"
+              width="180"
               align="right"
               header-align="center"
             >
               <template slot-scope="{ row }">
                 <div style="display: flex; justify-content: flex-end">
+                  <el-button
+                    key="修改"
+                    size="mini"
+                    icon="el-icon-edit"
+                    @click="handelClick('修改', row)"
+                  >
+                    修改
+                  </el-button>
                   <el-button
                     key="删除"
                     size="mini"
@@ -189,30 +221,104 @@
         <el-button type="primary" @click="handleSave"> 确认 </el-button>
       </div>
     </el-dialog>
+    <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
+      <el-form
+        ref="ruleForm"
+        :model="ruleForm"
+        :rules="rulesPeople"
+        label-width="100px"
+        class="client-ruleForm"
+      >
+        <el-row :gutter="20">
+          <el-col :span="11">
+            <el-form-item label="姓名" prop="userName">
+              <el-input v-model="ruleForm.userName" placeholder="请输入姓名" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="11">
+            <el-form-item label="手机号" prop="phone">
+              <el-input
+                v-model="ruleForm.phone"
+                placeholder="请输入手机号"
+                :disabled="dialogTitle === '修改人员'"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <!-- <el-col :span="11">
+            <el-form-item label="部门">
+              {{ ruleForm.deptId }}
+              <el-select-tree
+                v-model="ruleForm.deptId"
+                :popper-append-to-body="false"
+                placeholder="请选择部门"
+                :data="selectTreeData"
+                :props="props"
+              />
+            </el-form-item>
+          </el-col> -->
+          <el-col :span="11">
+            <el-form-item label="角色" prop="roleId">
+              <el-select v-model="ruleForm.roleId" placeholder="请选择角色">
+                <el-option
+                  v-for="item in roleOption"
+                  :key="item.id"
+                  :label="item.roleName"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false"> 取消 </el-button>
+        <el-button type="primary" @click="handleSavePeople()"> 确认 </el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { Message } from 'element-ui'
 import {
+  getRoleList,
   getDeportList,
   addDeport,
   editDeport,
   delDeport,
+  addPeople,
+  editPeople,
   delPeople
 } from '@/api/people'
 import { mapGetters } from 'vuex'
 import { getPeopleList } from '../../api/people'
+// import ElSelectTree from 'el-select-tree'
 export default {
+  components: {
+    // ElSelectTree
+  },
   data() {
     return {
+      dialogFormVisible: false,
+      dialogTitle: '新增人员',
       dialogDepartTitle: '新增部门',
-      currentParent: null,
+      currentDept: null,
       dialogDepart: false,
       name: '',
       listLoading: false,
       departLoading: false,
       list: [],
+      roleValue: '',
+      roleOption: [],
+      selectTreeValue: '',
+      // selectTreeData: [],
+      // props: {
+      //   value: 'id',
+      //   label: 'name',
+      //   children: 'd'
+      // },
       deportForm: {
         name: ''
       },
@@ -220,6 +326,18 @@ export default {
       page: 1,
       pageSize: 10,
       total: 0,
+      ruleForm: {
+        userName: null,
+        phone: null,
+        deptId: '',
+        roleId: ''
+      },
+      rulesPeople: {
+        userName: [{ required: true, message: '请输入名称', trigger: 'blur' }],
+        phone: [{ required: true, message: '请输入手机号', trigger: 'blur' }],
+        deptId: [{ required: true, message: '请选择部门', trigger: 'change' }],
+        roleId: [{ required: true, message: '请选择角色', trigger: 'change' }]
+      },
       rules: {
         name: [{ required: true, message: '请输入服务名称', trigger: 'blur' }],
         companyId: [
@@ -234,20 +352,29 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['companyId', 'deptId'])
+    ...mapGetters(['companyId', 'deptId', 'roleType'])
   },
   created() {
     this.getDeportList()
+    this.getRoleList()
   },
   methods: {
+    openNew() {
+      this.dialogFormVisible = true
+      this.dialogTitle = '新增人员'
+      for (const k of Object.keys(this.ruleForm)) {
+        this.ruleForm[k] = null
+      }
+      this.ruleForm.deptId = this.currentDept.id
+    },
     addDepartClick() {
       // 新增子部门
       this.dialogDepartTitle = '新增部门'
       this.dialogDepart = true
-      // this.currentParent = data
     },
     handleNodeClick(data) {
       // 加载当前部门得人员
+      this.currentDept = data
       this.loadPeople(data.id)
     },
     loadPeople(deptId) {
@@ -275,20 +402,35 @@ export default {
         .then((response) => {
           const data = response.d
           this.departData = data
+          this.currentDept = data
           this.loadPeople(this.deptId)
         })
         .catch((error) => error)
     },
-
+    getRoleList() {
+      getRoleList({
+        pageSize: 9999,
+        page: 1, // 1 y 10
+        deptId: this.deptId,
+        companyId: this.companyId
+      })
+        .then((response) => {
+          const data = response.d
+          this.roleOption = data
+          // this.selectTreeData = data
+        })
+        .catch((error) => error)
+    },
     handleCurrentChange(page) {
       this.page = page
       this.listLoading = true
-      this.loadPeople(this.currentParent.id)
+      this.loadPeople(this.currentDept.id)
     },
     editDepart(node, data) {
       this.dialogDepartTitle = '修改部门'
       this.dialogDepart = true
-      this.currentParent = data
+      this.currentDept = data
+      this.deportForm.name = data.name
     },
     remove(node, data) {
       this.$confirm('确认删除吗？')
@@ -314,7 +456,26 @@ export default {
           console.log(_, '取消删除了')
         })
     },
-
+    handleSavePeople(type) {
+      this.ruleForm.deptId = this.currentDept.id
+      this.$refs['ruleForm'].validate((valid) => {
+        if (valid) {
+          switch (this.dialogTitle) {
+            case '新增人员':
+              this.addPeople()
+              break
+            case '修改人员':
+              this.editPeople()
+              break
+            default:
+              break
+          }
+        } else {
+          console.log('验证出错')
+          return false
+        }
+      })
+    },
     handleSave() {
       this.$refs['deportForm'].validate((valid) => {
         if (valid) {
@@ -346,7 +507,7 @@ export default {
             case '修改部门':
               editDeport({
                 ...this.deportForm,
-                id: this.currentParent.id
+                id: this.currentDept.id
               })
                 .then((response) => {
                   Message({
@@ -374,26 +535,76 @@ export default {
       })
     },
 
+    addPeople() {
+      this.listLoading = true
+      addPeople({
+        ...this.ruleForm,
+        password: '123456',
+        companyId: this.companyId
+      })
+        .then((response) => {
+          Message({
+            message: response.m || '添加成功',
+            type: 'success',
+            duration: 2 * 1000
+          })
+          this.listLoading = false
+          this.dialogFormVisible = false
+          this.loadPeople(this.currentDept.id)
+        })
+        .catch((error) => error)
+    },
+    editPeople() {
+      this.listLoading = true
+      editPeople({
+        ...this.ruleForm,
+        companyId: this.companyId
+      })
+        .then((response) => {
+          Message({
+            message: response.m || '修改成功',
+            type: 'success',
+            duration: 2 * 1000
+          })
+          this.dialogFormVisible = false
+          this.listLoading = false
+          this.loadPeople(this.currentDept.id)
+        })
+        .catch((error) => error)
+    },
     handelClick(item, row) {
-      this.$confirm('确认删除吗？')
-        .then((_) => {
-          delPeople({ userId: row.userId })
-            .then((response) => {
-              Message({
-                message: response.m || '删除成功',
-                type: 'success',
-                duration: 2 * 1000
-              })
+      this.ruleForm.deptId = this.currentDept.id
+      switch (item) {
+        case '修改':
+          this.dialogTitle = '修改人员'
 
-              this.loadPeople(row.deptId)
+          this.dialogFormVisible = true
+          this.ruleForm = { ...row }
+          break
+        case '删除':
+          this.$confirm('确认删除吗？')
+            .then((_) => {
+              delPeople({ userId: row.userId })
+                .then((response) => {
+                  Message({
+                    message: response.m || '删除成功',
+                    type: 'success',
+                    duration: 2 * 1000
+                  })
+                  this.loadPeople(this.currentDept.id)
+                })
+                .catch((error) => {
+                  console.log(error, 'eee')
+                })
             })
-            .catch((error) => {
-              console.log(error, 'eee')
+            .catch((_) => {
+              console.log(_, '取消删除了')
             })
-        })
-        .catch((_) => {
-          console.log(_, '取消删除了')
-        })
+          break
+
+        default:
+          break
+      }
     }
   }
 }

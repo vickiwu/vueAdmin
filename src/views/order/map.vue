@@ -112,11 +112,6 @@ export default {
       lineData: 'carLog/lineData'
     }),
     allTime() {
-      console.log(
-        '%c 🥪 this.currentCarData: ',
-        'font-size:20px;background-color: #FCA650;color:#fff;',
-        this.currentCarData
-      )
       if (this.currentCarData && this.currentCarData.f === 2) {
         return '当前设备已离线'
       }
@@ -177,11 +172,6 @@ export default {
   },
   created() {
     this.orderDetail = getOrderDetail()
-    console.log(
-      '%c 🍠 this.orderDetail: ',
-      'font-size:20px;background-color: #33A5FF;color:#fff;',
-      this.orderDetail
-    )
   },
   mounted() {
     this.initMap()
@@ -311,12 +301,6 @@ export default {
       })
     },
     loadCarLine(lnglat, endA) {
-      console.log(
-        '%c 🍜 lnglat, endA: ',
-        'font-size:20px;background-color: #E41A6A;color:#fff;',
-        lnglat,
-        endA
-      )
       const ring = [lnglat, endA]
       const line = AMap.GeometryUtil.distanceOfLine(ring) / 1000
       return Math.round(line)
