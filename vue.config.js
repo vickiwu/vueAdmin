@@ -34,7 +34,24 @@ module.exports = {
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''
         }
+      },
+      '/file': {
+        // target: "http://120.48.19.218:6070", //开发
+        target: 'http://120.48.162.194', // 测试
+        changeOrigin: true, // 是否跨域
+        pathRewrite: {
+          '^/file': '/file' // 重写接口
+        }
+      },
+      '/sybdfile': {
+        // target: "http://120.48.19.218:6070", //开发
+        target: 'http://120.48.162.194', // 测试
+        changeOrigin: true, // 是否跨域
+        pathRewrite: {
+          '^/sybdfile': '/sybdfile' // 重写接口
+        }
       }
+
     }
 
   },

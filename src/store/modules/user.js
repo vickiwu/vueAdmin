@@ -11,6 +11,7 @@ const getDefaultState = () => {
     roleType: getBaseData() ? getBaseData().roleType : '',
     userId: getBaseData() ? getBaseData().userId : '',
     userName: getBaseData() ? getBaseData().userName : '',
+    phone: getBaseData() ? getBaseData().phone : '',
     name: '',
     avatar: '',
     path: '',
@@ -32,7 +33,7 @@ const mutations = {
     state.companyId = baseData.companyId
     state.deptId = baseData.deptId
     state.roleType = baseData.roleType
-
+    state.phone = baseData.phone
     state.userId = baseData.userId
     state.userName = baseData.userName
   },

@@ -373,6 +373,16 @@ export const asyncRoutes = [
       },
       'name': 'OrderDetail',
       hidden: true
+    }, {
+      'path': '/order/map',
+      component: () => import('@/views/order/map'),
+      'meta': {
+        'icon': 'el-icon-menu',
+        'affix': false,
+        'title': '轨迹监控'
+      },
+      'name': 'orderMap',
+      hidden: true
     }
     ],
     'meta': {
@@ -382,31 +392,6 @@ export const asyncRoutes = [
     },
     'name': '61',
     'id': 61
-  },
-
-  {
-    'redirect': '/map/index',
-    'path': '/map',
-    component: Layout,
-    'children': [{
-      'path': '/map/index',
-      component: () => import('@/views/map/index'),
-      'meta': {
-        'icon': 'el-icon-menu',
-        'affix': false,
-        'title': '轨迹监控'
-      },
-      'name': '122',
-      'id': 122
-    }],
-    'meta': {
-      'icon': 'el-icon-menu',
-      'affix': false,
-      'title': '轨迹监控',
-      hideLeftMenu: true
-    },
-    'name': '121',
-    'id': 121
   },
 
   // 404 page must be placed at the end !!!

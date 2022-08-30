@@ -593,18 +593,23 @@ export default {
         this.orderForm.loadOne = currentAddress[0].addrOne
         this.orderForm.loadTwo = currentAddress[0].addrTwo
         this.orderForm.loadThree = currentAddress[0].addrThree
+        this.orderForm.loadJd = currentAddress[0].jd
+        this.orderForm.loadWd = currentAddress[0].wd
       }
     },
     unLoadAddressChange(val) {
       const currentAddress = this.addressList.filter((item) => {
         return item.id === val
       })
+
       if (currentAddress && currentAddress.length > 0) {
         this.unLoadAddressObj = currentAddress[0]
         this.orderForm.unLoadAddress = currentAddress[0].address
         this.orderForm.unLoadOne = currentAddress[0].addrOne
         this.orderForm.unLoadTwo = currentAddress[0].addrTwo
         this.orderForm.unLoadThree = currentAddress[0].addrThree
+        this.orderForm.unLoadJd = currentAddress[0].jd
+        this.orderForm.unLoadWd = currentAddress[0].wd
       }
     },
     transportIdChange(val) {
@@ -669,6 +674,12 @@ export default {
         this.orderForm
       )
       paramsData.price = paramsData.price * 1000
+
+      for (const k of Object.keys(paramsData)) {
+        if (!paramsData[k]) {
+          paramsData[k] = undefined
+        }
+      }
       publishOrder(paramsData)
         .then((response) => {
           Message({

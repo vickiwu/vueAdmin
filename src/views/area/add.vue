@@ -60,7 +60,7 @@
       </el-row>
       <el-row>
         <el-col :span="22">
-          <div id="address-map" />
+          <div id="address-map-add" />
         </el-col>
       </el-row>
       <el-row>
@@ -156,7 +156,7 @@ export default {
         }
       })
         .then((AMap) => {
-          this.mapInstance = new AMap.Map('address-map')
+          this.mapInstance = new AMap.Map('address-map-add')
           this.geocoder = new AMap.Geocoder()
           this.marker = new AMap.Marker()
           this.AMap = AMap
@@ -221,7 +221,7 @@ export default {
 }
 </script>
  <style lang="scss" scoped>
-#address-map {
+#address-map-add {
   height: 350px;
   margin-left: 100px;
 }
