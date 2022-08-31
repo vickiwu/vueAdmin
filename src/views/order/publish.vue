@@ -89,15 +89,15 @@
       </el-card>
       <el-card>
         <div slot="header">
-          <span>托运方信息</span>
+          <span>货主信息</span>
         </div>
         <div>
           <el-row :gutter="20" type="flex" justify="center">
             <el-col :span="12">
-              <el-form-item label="托运方" prop="customerId">
+              <el-form-item label="货主" prop="customerId">
                 <el-select
                   v-model="orderForm.customerId"
-                  placeholder="请选择托运方"
+                  placeholder="请选择货主"
                   @change="customerIdChange"
                 >
                   <el-option
@@ -110,11 +110,11 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="托运方手机号">
+              <el-form-item label="货主手机号">
                 <el-input
                   v-model="orderForm.customerPhone"
                   :disabled="true"
-                  placeholder="托运方手机号"
+                  placeholder="货主手机号"
                 />
               </el-form-item>
             </el-col>
@@ -143,15 +143,15 @@
       </el-card>
       <el-card>
         <div slot="header">
-          <span>承运方信息</span>
+          <span>收货方信息</span>
         </div>
         <div>
           <el-row :gutter="20" type="flex" justify="center">
             <el-col :span="12">
-              <el-form-item label="承运方" prop="transportId">
+              <el-form-item label="收货方" prop="transportId">
                 <el-select
                   v-model="orderForm.transportId"
-                  placeholder="请选择承运方"
+                  placeholder="请选择收货方"
                   @change="transportIdChange"
                 >
                   <el-option
@@ -164,11 +164,11 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="承运方手机号">
+              <el-form-item label="收货方手机号">
                 <el-input
                   v-model="orderForm.transportPhone"
                   :disabled="true"
-                  placeholder="托运方手机号"
+                  placeholder="货主手机号"
                 />
               </el-form-item>
             </el-col>
@@ -490,10 +490,10 @@ export default {
       },
       rules: {
         customerId: [
-          { required: true, message: '请选择托运方', trigger: 'change' }
+          { required: true, message: '请选择货主', trigger: 'change' }
         ],
         transportId: [
-          { required: true, message: '请选择承运方', trigger: 'change' }
+          { required: true, message: '请选择收货方', trigger: 'change' }
         ],
         price: [
           { required: true, message: '请输入产品价格(元)', trigger: 'blur' }
@@ -540,7 +540,7 @@ export default {
           this.customers = res.d
         } else {
           Message({
-            message: res.m || '获取托运方列表报错',
+            message: res.m || '获取货主列表报错',
             type: 'error',
             duration: 2 * 1000
           })
@@ -557,7 +557,7 @@ export default {
           this.transports = res.d
         } else {
           Message({
-            message: res.m || '获取承运方列表报错',
+            message: res.m || '获取收货方列表报错',
             type: 'error',
             duration: 2 * 1000
           })

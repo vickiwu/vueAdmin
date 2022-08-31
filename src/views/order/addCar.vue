@@ -57,11 +57,11 @@
           </el-row>
           <el-row :gutter="20" type="flex" justify="center">
             <el-col :span="12">
-              <el-form-item label="托运方">
+              <el-form-item label="货主">
                 <el-input
                   v-model="orderDetail.customerName"
                   :disabled="true"
-                  placeholder="托运方"
+                  placeholder="货主"
                 />
               </el-form-item>
             </el-col>
@@ -78,11 +78,11 @@
 
           <el-row :gutter="20" type="flex" justify="center">
             <el-col :span="12">
-              <el-form-item label="承运方">
+              <el-form-item label="收货方">
                 <el-input
                   v-model="orderDetail.transportName"
                   :disabled="true"
-                  placeholder="承运方"
+                  placeholder="收货方"
                 />
               </el-form-item>
             </el-col>
@@ -311,7 +311,8 @@ export default {
         ],
         deviceId: [{ required: true, message: '请选择设备', trigger: 'blur' }]
       },
-      formLoading: false
+      formLoading: false,
+      paramsType: undefined
     }
   },
   computed: {
@@ -324,13 +325,20 @@ export default {
     this.getCarListApi()
     this.getDeviceApi()
   },
-  mounted() {},
+  mounted() {
+    this.paramsType = this.$route.query.type
+      ? this.$route.query.type
+      : undefined
+  },
   methods: {
     setOrderDetail() {},
     goBack() {
       this.$store.dispatch('tagsView/delView', this.$route)
       removeOrderDetail()
-      this.$router.push('/order/list')
+      this.$router.push({
+        path: '/order/list',
+        query: { type: this.paramsType }
+      })
       // 清空表
     },
     getDeviceApi() {

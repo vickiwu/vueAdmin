@@ -96,7 +96,7 @@
         <div>
           <el-row :gutter="20" type="flex" justify="center">
             <el-col :span="12">
-              <el-form-item label="托运方" prop="customerId">
+              <el-form-item label="货主" prop="customerId">
                 <el-select
                   v-model="orderForm.customerId"
                   placeholder="请选择托运方"
@@ -150,7 +150,7 @@
         <div>
           <el-row :gutter="20" type="flex" justify="center">
             <el-col :span="12">
-              <el-form-item label="承运方" prop="transportId">
+              <el-form-item label="收货方" prop="transportId">
                 <el-select
                   v-model="orderForm.transportId"
                   placeholder="请选择承运方"
@@ -508,7 +508,8 @@ export default {
           { required: true, message: '请选择提货排班时间', trigger: 'blur' }
         ]
       },
-      formLoading: false
+      formLoading: false,
+      paramsType: undefined
     }
   },
   computed: {
@@ -521,11 +522,19 @@ export default {
     const orderDetail = getOrderDetail()
     this.orderForm = { ...orderDetail }
   },
-  mounted() {},
+  mounted() {
+    this.paramsType = this.$route.query.type
+      ? this.$route.query.type
+      : undefined
+  },
   methods: {
     goBack() {
       this.$store.dispatch('tagsView/delView', this.$route)
-      this.$router.push('/order/list')
+      this.$router.push({
+        path: '/order/list',
+        query: { type: this.paramsType }
+      })
+
       removeOrderDetail()
     },
     getCustomers() {

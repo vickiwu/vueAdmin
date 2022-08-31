@@ -91,7 +91,7 @@
       </el-table-column>
       <el-table-column
         show-overflow-tooltip
-        label="托运方"
+        label="货主"
         align="left"
         header-align="center"
       >
@@ -122,7 +122,7 @@
       </el-table-column>
       <el-table-column
         show-overflow-tooltip
-        label="承运方"
+        label="收货方"
         width="120"
         align="left"
         header-align="center"
@@ -313,7 +313,12 @@
     </el-dialog>
     <el-dialog :visible.sync="imgShow" width="30%" title="查看回单">
       <div class="img-wrap">
-        <el-image style="width: 100%; height: 260px" :src="currentImg" />
+        <el-image
+          v-loading="imgLoading"
+          style="width: 100%; height: 100%"
+          :preview-src-list="srcList"
+          :src="currentImg"
+        />
       </div>
     </el-dialog>
   </div>
@@ -341,6 +346,8 @@ export default {
   },
   data() {
     return {
+      imgLoading: true,
+      srcList: [],
       upDisabled: false,
       fileList: [],
       upImgShow: false,
@@ -362,7 +369,7 @@ export default {
     ...mapGetters(['companyId', 'deptId', 'userId', 'roleType', 'phone'])
   },
   created() {
-    this.loadTable()
+    // this.loadTable()
     switch (this.orderType) {
       case 3:
       case 4:
@@ -422,7 +429,7 @@ export default {
         page: this.page, // 1 y 10
         deptId: this.deptId,
         companyId: this.companyId,
-        status: +this.orderType
+        status: this.orderType ? +this.orderType : undefined
       })
         .then((response) => {
           const data = response.d
@@ -464,12 +471,17 @@ export default {
     },
 
     openNew() {
-      this.$router.push('/order/publish')
+      this.$router.push({
+        path: '/order/publish'
+      })
     },
     handelClick(item, row) {
       switch (item) {
         case '编辑':
-          this.$router.push('/order/detail')
+          this.$router.push({
+            path: '/order/detail',
+            query: { type: this.orderType }
+          })
           setOrderDetail(row)
           break
         case '删除':
@@ -494,7 +506,10 @@ export default {
             })
           break
         case '派车': // 弹框
-          this.$router.push('/order/addCar')
+          this.$router.push({
+            path: '/order/addCar',
+            query: { type: this.orderType }
+          })
           setOrderDetail(row)
           break
         case '上传回单': // 弹框
@@ -512,13 +527,19 @@ export default {
         case '查看回单': // 弹框
           this.currentOrder = { ...row }
           // 获取车单id
+
           this.getCarOrder().then((res) => {
             this.currentImg = HIGH_IMG_URL + res.d[0].fileId
+            this.srcList = [this.currentImg]
             this.imgShow = true
+            this.imgLoading = false
           })
           break
         case '轨迹':
-          this.$router.push('/order/map')
+          this.$router.push({
+            path: '/order/map',
+            query: { type: this.orderType }
+          })
           setOrderDetail(row)
           break
         case '完成':

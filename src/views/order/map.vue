@@ -71,8 +71,20 @@
         </el-col>
         <el-col v-loading="mapLoading" :span="18">
           <div class="detail-top">
-            距离目标地： {{ allDistence }}公里（{{ allTime }}）
+            <div class="detail-top-dis">
+              距离目标地： {{ allDistence }}公里（{{ allTime }}）
+            </div>
+            <el-date-picker
+              v-model="value1"
+              type="datetimerange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              value-format="timestamp"
+              @change="timeChange"
+            />
           </div>
+
           <el-card class="card-bg card-bg-right map_container">
             <div id="log-map" />
           </el-card>
@@ -94,6 +106,7 @@ export default {
   },
   data() {
     return {
+      value1: [1661809246000, 1661830846000],
       hasDetail: false,
       AMap: null,
       mapInstance: null,
@@ -102,7 +115,11 @@ export default {
       orderDetail: {},
       carMap: new Map(),
       carMarkerMap: new Map(),
-      allCarList: []
+      allCarList: [],
+      paramsType: undefined,
+      linePolyline: null,
+      lastPoint: null,
+      firstPoint: null
     }
   },
   computed: {
@@ -191,6 +208,9 @@ export default {
     }
   },
   mounted() {
+    this.paramsType = this.$route.query.type
+      ? this.$route.query.type
+      : undefined
     this.hasDetail && this.initMap()
   },
   destroyed() {
@@ -199,8 +219,37 @@ export default {
   methods: {
     goBack() {
       this.$store.dispatch('tagsView/delView', this.$route)
-      this.$router.push('/order/list')
+
+      this.$router.push({
+        path: '/order/list',
+        query: { type: this.paramsType }
+      })
       removeOrderDetail()
+    },
+    timeChange(value) {
+      if (value[0] && value[1]) {
+        if (value[1] - value[0] > 24 * 60 * 60 * 1000) {
+          this.$alert('所选时间区间不能大于24小时，请重新选择', {
+            confirmButtonText: '确定'
+          })
+        } else {
+          this.mapInstance.remove([
+            this.linePolyline,
+            this.lastPoint,
+            this.firstPoint
+          ])
+          const deviceObj = {
+            a: this.orderDetail.deviceNo,
+            b: value[0], // kais
+            c: value[1] // 结束时间
+          }
+          // 清空当前线路 重新画
+          this.$store.dispatch('carLog/SOCKET_SEND', {
+            msg: deviceObj,
+            type: [0, 0x0a, 0]
+          })
+        }
+      }
     },
     initMap() {
       AMapLoader.load({
@@ -276,17 +325,17 @@ export default {
       const PolylineList = lnglatList.map((item) => {
         return item.lnglat.split(',')
       })
-      new AMap.Polyline({
+      this.linePolyline = new AMap.Polyline({
         map: this.mapInstance,
         path: PolylineList,
         showDir: true,
         strokeColor: '#00BD02', // 线颜色
         strokeWeight: 6 // 线宽
       })
-      const lastPoint = lnglatList[lnglatList.length - 1].lnglat
-      const firstPoint = lnglatList[0].lnglat
-      this.drawMarker({ lnglat: firstPoint }, 1)
-      this.drawMarker({ lnglat: lastPoint }, 2)
+      this.lastPoint = lnglatList[lnglatList.length - 1].lnglat
+      this.firstPoint = lnglatList[0].lnglat
+      this.drawMarker({ lnglat: this.firstPoint }, 1)
+      this.drawMarker({ lnglat: this.lastPoint }, 2)
       this.mapInstance.setFitView()
     },
     carMoving(mark, text, carLngLat, speed) {
@@ -296,17 +345,19 @@ export default {
     },
     sendSocketCarLine(device) {
       // 结束时间：当前时间，开始时间往前8小时
-      const currentTime = new Date().getTime()
-      const startTime = currentTime - 24 * 60 * 60 * 1000
-      const deviceObj = {
-        a: device,
-        b: 1661809246000, // kais
-        c: 1661830846000 // 结束时间
+      // const currentTime = new Date().getTime()
+      // const startTime = currentTime - 24 * 60 * 60 * 1000
+      if (this.value1[0] && this.value1[1]) {
+        const deviceObj = {
+          a: device,
+          b: this.value1[0], // kais
+          c: this.value1[1] // 结束时间
+        }
+        this.$store.dispatch('carLog/SOCKET_SEND', {
+          msg: deviceObj,
+          type: [0, 0x0a, 0]
+        })
       }
-      this.$store.dispatch('carLog/SOCKET_SEND', {
-        msg: deviceObj,
-        type: [0, 0x0a, 0]
-      })
     },
     sendSocketCar(device) {
       const deviceObj = {
@@ -382,7 +433,7 @@ export default {
     height: 100%;
   }
   .card-bg-right {
-    height: calc(100% - 35px);
+    height: calc(100% - 40px);
   }
   .card-bg-left {
     ::v-deep.el-card__body {
@@ -401,11 +452,16 @@ export default {
   font-size: 14px;
 }
 .detail-top {
-  height: 35px;
-  line-height: 35px;
+  display: flex;
+  height: 40px;
+  line-height: 40px;
   margin-left: 10px;
+}
+.detail-top-dis {
   color: #5a6073;
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: bold;
+  margin-right: 20px;
 }
 .map_container {
   ::v-deep {

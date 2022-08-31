@@ -90,7 +90,8 @@ const actions = {
         removeToken() // 必须先删除token
         removeBaseData()
         resetRouter()
-        router.push(`/login?redirect=${router.currentRoute.fullPath}`)
+        // router.push(`/login?redirect=${router.currentRoute.fullPath}`)
+        router.push(`/login`)
         commit('RESET_STATE')
         resolve()
       } catch (error) {
