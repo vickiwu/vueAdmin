@@ -75,6 +75,7 @@
               距离目标地： {{ allDistence }}公里（{{ allTime }}）
             </div>
             <el-date-picker
+              v-if="[8, 10].includes(orderDetail.status)"
               v-model="value1"
               type="datetimerange"
               range-separator="至"
@@ -156,7 +157,7 @@ export default {
   },
   watch: {
     lineData(data) {
-      if ([4, 8, 10].includes(this.orderDetail.status)) {
+      if ([8, 10].includes(this.orderDetail.status)) {
         data && this.drawCarLine(data)
       }
     },
@@ -289,7 +290,7 @@ export default {
             type: [0, 1, 0]
           })
           this.sendSocketCar([this.orderDetail.deviceNo])
-          if ([4, 8, 10].includes(this.orderDetail.status)) {
+          if ([8, 10].includes(this.orderDetail.status)) {
             this.sendSocketCarLine(this.orderDetail.deviceNo)
           }
           // let myView = toView(obj, 0, 0x0a, 0); // 发送给websocket

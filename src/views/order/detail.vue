@@ -515,12 +515,13 @@ export default {
   computed: {
     ...mapGetters(['companyId', 'deptId', 'userId', 'userName'])
   },
-  created() {
-    this.getCustomers()
-    this.getTransports()
-    this.getAddressList()
+  async created() {
+    await this.getCustomers()
+    await this.getTransports()
+    await this.getAddressList()
     const orderDetail = getOrderDetail()
     this.orderForm = { ...orderDetail }
+    this.orderForm.price = Math.floor((this.orderForm.price / 1000) * 100) / 100
   },
   mounted() {
     this.paramsType = this.$route.query.type
@@ -545,6 +546,8 @@ export default {
       }).then((res) => {
         if (+res.a === 200) {
           this.customers = res.d
+
+          this.customerIdChange(this.orderForm.customerId)
         } else {
           Message({
             message: res.m || '获取托运方列表报错',
@@ -562,6 +565,8 @@ export default {
       }).then((res) => {
         if (+res.a === 200) {
           this.transports = res.d
+
+          this.transportIdChange(this.orderForm.transportId)
         } else {
           Message({
             message: res.m || '获取承运方列表报错',
@@ -580,6 +585,8 @@ export default {
       }).then((res) => {
         if (+res.a === 200) {
           this.addressList = res.d
+          this.unLoadAddressChange(this.orderForm.unLoadAddressId)
+          this.loadAddressIdChange(this.orderForm.loadAddressId)
         } else {
           Message({
             message: res.m || '获取区域列表报错',
@@ -632,9 +639,9 @@ export default {
       })
       if (currentData && currentData.length > 0) {
         this.customerObj = currentData[0]
-        this.orderForm.customerPhone = currentData[0].contactPhone
-        this.orderForm.customerName = currentData[0].name
-        this.orderForm.customerContactName = currentData[0].contactName
+        this.orderForm.customerPhone = this.customerObj.contactPhone
+        this.orderForm.customerName = this.customerObj.name
+        this.orderForm.customerContactName = this.customerObj.contactName
       }
     },
     onSubmit() {
