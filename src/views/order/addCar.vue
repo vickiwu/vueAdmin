@@ -123,13 +123,34 @@
             <el-col :span="12">
               <el-form-item label="司机手机号">
                 <el-input
-                  v-model="orderDetail.phone"
+                  v-model="orderDetail.driverPhone"
                   :disabled="true"
                   placeholder="司机手机号"
                 />
               </el-form-item>
             </el-col>
           </el-row>
+          <el-row :gutter="20" type="flex" justify="center">
+            <el-col :span="12">
+              <el-form-item label="规则">
+                <el-input
+                  v-model="driverObj.rules"
+                  :disabled="true"
+                  placeholder="规则"
+                />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="司机身份证">
+                <el-input
+                  v-model="driverObj.idcard"
+                  :disabled="true"
+                  placeholder="司机身份证"
+                />
+              </el-form-item>
+            </el-col>
+          </el-row>
+
           <el-row :gutter="20" type="flex" justify="center">
             <el-col :span="12">
               <el-form-item label="车辆" prop="transportId">
@@ -150,7 +171,7 @@
             <el-col :span="12">
               <el-form-item label="车辆类型">
                 <el-input
-                  v-model="carObj.type"
+                  v-model="carObj.typeStr"
                   :disabled="true"
                   placeholder="车辆类型"
                 />
@@ -221,6 +242,7 @@ export default {
   data() {
     return {
       carObj: {
+        typeStr: null,
         addrOne: null,
         addrThree: null,
         addrTwo: null,
@@ -236,19 +258,21 @@ export default {
         wd: null
       },
       driverObj: {
-        addrOne: null,
-        addrThree: null,
-        addrTwo: null,
-        address: null,
-        companyId: 1,
-        contactName: null,
-        contactPhone: null,
-        createTime: null,
+        birthday: null,
+        classify: null,
+        companyId: null,
         deptId: null,
+        deptName: null,
+        icon: null,
         id: null,
-        jd: null,
-        userId: null,
-        wd: null
+        idcard: null,
+        isDriver: null,
+        isEscort: null,
+        license: null,
+        name: null,
+        phone: null,
+        remark: null,
+        rule: null
       },
       deviceList: [],
       driveList: [],
@@ -377,15 +401,17 @@ export default {
       })
       if (currentAddress && currentAddress.length > 0) {
         this.carObj = currentAddress[0]
+        this.carObj.typeStr = this.carObj.type === 1 ? '车头' : '挂车'
         this.orderDetail.carNo = this.carObj.carNo
       }
     },
     driverChange(val) {
-      const currentAddress = this.carList.filter((item) => {
+      const currentDriver = this.driveList.filter((item) => {
         return item.id === val
       })
-      if (currentAddress && currentAddress.length > 0) {
-        this.driverObj = currentAddress[0]
+      if (currentDriver && currentDriver.length > 0) {
+        this.driverObj = currentDriver[0]
+
         this.orderDetail.driverName = this.driverObj.name
         this.orderDetail.driverPhone = this.driverObj.phone
       }
