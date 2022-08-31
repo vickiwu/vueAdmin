@@ -48,7 +48,7 @@ const mutations = {
     }
   },
   CLOSE_SOCKED(state) {
-    state.socket.close()
+    state.socket && state.socket.close()
   },
   ERROR_STACK(state, data) {
     state.errorStack.push(data)

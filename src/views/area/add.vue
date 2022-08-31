@@ -59,7 +59,7 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="22">
+        <el-col v-loading="mapLoading" :span="22">
           <div id="address-map-add" />
         </el-col>
       </el-row>
@@ -84,6 +84,7 @@ export default {
   components: {},
   data() {
     return {
+      mapLoading: true,
       mapInstance: null,
       geocoder: null,
       marker: null,
@@ -139,6 +140,7 @@ export default {
       this.ruleForm.addrOne = areaValue[0] + ''
       this.ruleForm.addrTwo = areaValue[1] + ''
       this.ruleForm.addrThree = areaValue[2] + ''
+      this.mapInstance.setCity(areaValue[2])
     },
     initMap() {
       AMapLoader.load({
@@ -163,6 +165,7 @@ export default {
           this.mapInstance.on('click', (e) => {
             this.handleMapClick(e.lnglat)
           })
+          this.mapLoading = false
         })
         .catch((e) => {
           console.log(e)
@@ -172,6 +175,8 @@ export default {
       this.geocoder.getAddress(lnglat, (status, result) => {
         if (status === 'complete' && result.regeocode) {
           var address = result.regeocode.formattedAddress
+          const { province, city, district } = result.regeocode.addressComponent
+          this.selected = [province, city, district]
           this.ruleForm.address = address
           this.ruleForm.jd = lnglat.lng + ''
           this.ruleForm.wd = lnglat.lat + ''
@@ -180,7 +185,7 @@ export default {
         }
         this.marker.setPosition(lnglat)
         this.mapInstance.add(this.marker)
-        this.mapInstance.setFitView(this.marker, 12)
+        this.mapInstance.setFitView(this.marker, false, null, 14)
       })
     },
 

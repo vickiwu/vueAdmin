@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-page-header content="轨迹" class="page-header" @back="goBack" />
-    <div class="main-cont">
+    <div v-loading="!hasDetail" class="main-cont">
       <el-row type="flex" :gutter="20" class="map-cont">
         <el-col :span="6">
           <el-card class="card-bg card-bg-left">
@@ -94,6 +94,7 @@ export default {
   },
   data() {
     return {
+      hasDetail: false,
       AMap: null,
       mapInstance: null,
       mapLoading: true,
@@ -170,14 +171,30 @@ export default {
       this.carMap.set(data.a, data)
     }
   },
+
   created() {
-    this.orderDetail = getOrderDetail()
+    const that = this
+    const currentDetail = getOrderDetail()
+    if (!currentDetail) {
+      this.hasDetail = false
+      this.$alert('请先前往订单列表选择订单', {
+        confirmButtonText: '确定',
+        callback: (action) => {
+          that.goBack()
+        }
+      })
+
+      // this.goBack()
+    } else {
+      this.hasDetail = true
+      this.orderDetail = currentDetail
+    }
   },
   mounted() {
-    this.initMap()
+    this.hasDetail && this.initMap()
   },
   destroyed() {
-    this.$store.dispatch('carLog/CLOSE_SOCKED')
+    this.hasDetail && this.$store.dispatch('carLog/CLOSE_SOCKED')
   },
   methods: {
     goBack() {
@@ -280,11 +297,11 @@ export default {
     sendSocketCarLine(device) {
       // 结束时间：当前时间，开始时间往前8小时
       const currentTime = new Date().getTime()
-      const startTime = currentTime - 10 * 60 * 60 * 1000
+      const startTime = currentTime - 24 * 60 * 60 * 1000
       const deviceObj = {
         a: device,
-        b: startTime, // kais
-        c: currentTime // 结束时间
+        b: 1661809246000, // kais
+        c: 1661830846000 // 结束时间
       }
       this.$store.dispatch('carLog/SOCKET_SEND', {
         msg: deviceObj,

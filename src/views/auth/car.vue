@@ -487,11 +487,6 @@ export default {
       }
     },
     handelClick(item, row) {
-      console.log(
-        '%c 🍢 row: ',
-        'font-size:20px;background-color: #7F2B82;color:#fff;',
-        row
-      )
       if (item === '修改') {
         this.CarFromVisible = true
         this.dialogTitle = '修改车辆'

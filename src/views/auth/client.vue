@@ -234,7 +234,8 @@ export default {
         ],
         address: [
           { required: true, message: '请输入联系人地址', trigger: 'blur' }
-        ]
+        ],
+        type: [{ required: true, message: '请选择客户类型', trigger: 'change' }]
       }
     }
   },

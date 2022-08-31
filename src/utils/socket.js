@@ -20,13 +20,11 @@ const wsConnection = {
         this.$ws.onerror = this.wsError
         resolve(true)
       } catch (err) {
-        console.log('%c 🍥 err: ', 'font-size:20px;background-color: #6EC1C2;color:#fff;', err)
         reject(err)
       }
     })
   },
   wsOpen: function(e) {
-    console.log('%c 🍐 e: ', 'font-size:20px;background-color: #3F7CFF;color:#fff;', e)
     // 开始websocket心跳
     wsConnection.startWsHeartbeat()
     console.log('ws success')
