@@ -480,6 +480,7 @@ export default {
 }
 .btn-bottom {
   margin-top: 20px;
+  padding-bottom: 20px;
   text-align: right;
 }
 .input-row {
