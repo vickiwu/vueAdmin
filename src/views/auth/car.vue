@@ -37,35 +37,24 @@
       style="width: 100%; margin: 10px 0"
     >
       <el-table-column
-        show-overflow-tooltip
         label="序号"
         type="index"
         align="center"
         header-align="center"
         width="80"
       />
-      <el-table-column
-        show-overflow-tooltip
-        label="车牌号"
-        align="left"
-        header-align="center"
-      >
+      <el-table-column label="车牌号" align="left" header-align="center">
         <template slot-scope="{ row }">
           <span>{{ row.type === 1 ? row.carNo : row.guaNo }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="车辆类型"
-        align="left"
-        header-align="center"
-      >
+      <el-table-column label="车辆类型" align="left" header-align="center">
         <template slot-scope="{ row }">
           <span>{{ row.type === 1 ? '车头' : '挂车' }}</span>
         </template>
       </el-table-column>
       <!-- <el-table-column
-        show-overflow-tooltip
+
         label="车型"
         align="left"
         header-align="center"
@@ -76,7 +65,7 @@
       </el-table-column> -->
 
       <!-- <el-table-column
-        show-overflow-tooltip
+
         label="类别"
         align="left"
         header-align="center"
@@ -85,68 +74,38 @@
           <span>{{ row.classify }}</span>
         </template>
       </el-table-column> -->
-      <el-table-column
-        show-overflow-tooltip
-        label="荷载吨数"
-        align="left"
-        header-align="center"
-      >
+      <el-table-column label="荷载吨数" align="left" header-align="center">
         <template slot-scope="{ row }">
           <span>{{ row.maxLoad }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="总重量（kg）"
-        align="left"
-        header-align="center"
-      >
+      <el-table-column label="总重量（kg）" align="left" header-align="center">
         <template slot-scope="{ row }">
           <span>{{ row.carWeight }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="长（m）"
-        align="left"
-        header-align="center"
-      >
+      <el-table-column label="长（m）" align="left" header-align="center">
         <template slot-scope="{ row }">
           <span>{{ row.carLength }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="宽（m）"
-        align="left"
-        header-align="center"
-      >
+      <el-table-column label="宽（m）" align="left" header-align="center">
         <template slot-scope="{ row }">
           <span>{{ row.carWide }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="高（m）"
-        align="left"
-        header-align="center"
-      >
+      <el-table-column label="高（m）" align="left" header-align="center">
         <template slot-scope="{ row }">
           <span>{{ row.carHeight }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="备注"
-        align="left"
-        header-align="center"
-      >
+      <el-table-column label="备注" align="left" header-align="center">
         <template slot-scope="{ row }">
           <span>{{ row.remark }}</span>
         </template>
       </el-table-column>
       <!-- <el-table-column
-        show-overflow-tooltip
+
         label="规则"
         align="left"
         header-align="center"

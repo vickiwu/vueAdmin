@@ -1,6 +1,5 @@
 <template>
   <div class="app-container">
-    <el-page-header content="修改" class="page-header" @back="goBack" />
     <el-form
       ref="ruleForm"
       :model="ruleForm"
@@ -8,16 +7,6 @@
       label-width="100px"
       class="add-area-ruleForm"
     >
-      <el-row>
-        <el-col :span="22">
-          <el-form-item label="类型" prop="type">
-            <el-radio-group v-model="ruleForm.type">
-              <el-radio :label="2">卸货</el-radio>
-              <el-radio :label="1">装货</el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-      </el-row>
       <el-row>
         <el-col :span="22">
           <el-form-item label="省/市/区" prop="addrOne">
@@ -33,17 +22,17 @@
       </el-row>
       <el-row>
         <el-col :span="11">
-          <el-form-item label="联系人名称" prop="contactName">
+          <el-form-item label="联系人名称">
             <el-input
-              v-model="ruleForm.contactName"
+              v-model="ruleForm.unLoadAddressContactName"
               placeholder="请输入联系人名称"
             />
           </el-form-item>
         </el-col>
         <el-col :span="11">
-          <el-form-item label="手机号" prop="contactPhone">
+          <el-form-item label="手机号">
             <el-input
-              v-model="ruleForm.contactPhone"
+              v-model="ruleForm.unLoadAddressContactPhone"
               placeholder="请输入联系人手机号"
             />
           </el-form-item>
@@ -51,8 +40,11 @@
       </el-row>
       <el-row>
         <el-col :span="22">
-          <el-form-item label="详细地址" prop="address">
-            <el-input v-model="ruleForm.address" placeholder="请输入详细地址" />
+          <el-form-item label="详细地址">
+            <el-input
+              v-model="ruleForm.unLoadAddress"
+              placeholder="请输入详细地址"
+            />
           </el-form-item>
         </el-col>
       </el-row>
@@ -70,13 +62,13 @@
       </el-row>
       <el-row>
         <el-col v-loading="mapLoading" :span="22">
-          <div id="address-map" />
+          <div id="unLoadAddress-map-add" />
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="22">
           <div class="form-btn">
-            <el-button type="primary" @click="handleSave()"> 提交 </el-button>
+            <el-button type="primary" @click="handleSave()"> 保存 </el-button>
           </div>
         </el-col>
       </el-row>
@@ -85,11 +77,8 @@
 </template>
 
 <script>
-import { getAreaDetail, removeAreaDetail } from '@/utils/auth'
 import { pca, pcaa } from 'area-data' // v5 or higher
-import { editArea } from '@/api/people'
 import AMapLoader from '@amap/amap-jsapi-loader'
-import { Message } from 'element-ui'
 import { mapGetters } from 'vuex'
 export default {
   components: {},
@@ -107,27 +96,27 @@ export default {
         addrOne: null,
         addrTwo: null,
         addrThree: null,
-        address: '',
+        unLoadAddress: '',
         jd: '',
         wd: '',
-        contactName: '',
-        contactPhone: '',
-        type: 1
+        unLoadAddressContactName: '',
+        unLoadAddressContactPhone: ''
       },
       rules: {
         addrOne: [{ required: true, message: '请选择省', trigger: 'change' }],
         addrTwo: [{ required: true, message: '请选择市', trigger: 'change' }],
         addrThree: [{ required: true, message: '请选择区', trigger: 'change' }],
-        address: [
+        unLoadAddress: [
           { required: true, message: '请输入详细地址', trigger: 'blur' }
         ],
         jd: [{ required: true, message: '请输入经度', trigger: 'blur' }],
         wd: [{ required: true, message: '请输入纬度', trigger: 'blur' }],
-        contactName: [
-          { required: true, message: '请选择联系人名称', trigger: 'blur' }
+        unLoadAddressContactName: [
+          { required: true, message: '请输入联系人名称', trigger: 'blur' }
         ],
-        contactPhone: [
-          { required: true, message: '请选择联系人电话', trigger: 'blur' }
+
+        unLoadAddressContactPhone: [
+          { required: true, message: '请输入联系人电话', trigger: 'blur' }
         ]
       }
     }
@@ -136,24 +125,12 @@ export default {
     ...mapGetters(['companyId', 'deptId', 'userId'])
   },
   created() {
-    const areaDetail = getAreaDetail()
-    this.ruleForm = { ...areaDetail }
+    this.openNew()
   },
   mounted() {
     this.initMap()
   },
   methods: {
-    goBack() {
-      this.$store.dispatch('tagsView/delView', this.$route)
-      this.$router.push('/area/address')
-      // 清空cookie中areaDetail
-      removeAreaDetail()
-    },
-    formReset() {
-      for (const k of Object.keys(this.ruleForm)) {
-        this.ruleForm[k] = null
-      }
-    },
     areaChange(areaValue) {
       this.ruleForm.addrOne = areaValue[0] + ''
       this.ruleForm.addrTwo = areaValue[1] + ''
@@ -176,25 +153,13 @@ export default {
         }
       })
         .then((AMap) => {
-          this.mapInstance = new AMap.Map('address-map')
-          // var bounds = this.mapInstance.getBounds()
-          // this.mapInstance.setLimitBounds(bounds)
+          this.mapInstance = new AMap.Map('unLoadAddress-map-add')
           this.geocoder = new AMap.Geocoder()
           this.marker = new AMap.Marker()
           this.AMap = AMap
           this.mapInstance.on('click', (e) => {
             this.handleMapClick(e.lnglat)
           })
-          // 地图加点
-          this.selected = [
-            this.ruleForm.addrOne,
-            this.ruleForm.addrTwo,
-            this.ruleForm.addrThree
-          ]
-
-          const lnglat = [this.ruleForm.jd, this.ruleForm.wd]
-          this.marker.setPosition(lnglat)
-          this.mapInstance.add(this.marker)
           this.mapLoading = false
         })
         .catch((e) => {
@@ -204,12 +169,10 @@ export default {
     handleMapClick(lnglat) {
       this.geocoder.getAddress(lnglat, (status, result) => {
         if (status === 'complete' && result.regeocode) {
-          var address = result.regeocode.formattedAddress
+          var unLoadAddress = result.regeocode.formattedAddress
           const { province, city, district } = result.regeocode.addressComponent
-
-          // 地图加点
           this.selected = [province, city, district]
-          this.ruleForm.address = address
+          this.ruleForm.unLoadAddress = unLoadAddress
           this.ruleForm.jd = lnglat.lng + ''
           this.ruleForm.wd = lnglat.lat + ''
         } else {
@@ -224,7 +187,8 @@ export default {
     handleSave() {
       this.$refs['ruleForm'].validate((valid) => {
         if (valid) {
-          this.editArea()
+          // this.addArea()
+          this.$emit('inputunload', this.ruleForm)
         } else {
           console.log('验证出错')
           return false
@@ -232,28 +196,16 @@ export default {
       })
     },
 
-    editArea() {
-      editArea({
-        ...this.ruleForm,
-        userId: this.userId,
-        companyId: this.companyId,
-        deptId: this.deptId
-      })
-        .then((response) => {
-          Message({
-            message: response.m || '修改成功',
-            type: 'success',
-            duration: 2 * 1000
-          })
-          this.goBack()
-        })
-        .catch((error) => error)
+    openNew() {
+      for (const k of Object.keys(this.ruleForm)) {
+        this.ruleForm[k] = null
+      }
     }
   }
 }
 </script>
  <style lang="scss" scoped>
-#address-map {
+#unLoadAddress-map-add {
   height: 350px;
   margin-left: 100px;
 }

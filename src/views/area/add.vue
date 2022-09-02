@@ -10,6 +10,16 @@
     >
       <el-row>
         <el-col :span="22">
+          <el-form-item label="类型" prop="type">
+            <el-radio-group v-model="ruleForm.type">
+              <el-radio :label="2">卸货</el-radio>
+              <el-radio :label="1">装货</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="22">
           <el-form-item label="省/市/区" prop="addrOne">
             <area-select
               v-model="selected"
@@ -23,7 +33,7 @@
       </el-row>
       <el-row>
         <el-col :span="11">
-          <el-form-item label="联系人名称" prop="contactName">
+          <el-form-item label="联系人名称">
             <el-input
               v-model="ruleForm.contactName"
               placeholder="请输入联系人名称"
@@ -31,7 +41,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="11">
-          <el-form-item label="手机号" prop="contactPhone">
+          <el-form-item label="手机号">
             <el-input
               v-model="ruleForm.contactPhone"
               placeholder="请输入联系人手机号"
@@ -41,7 +51,7 @@
       </el-row>
       <el-row>
         <el-col :span="22">
-          <el-form-item label="详细地址" prop="address">
+          <el-form-item label="详细地址">
             <el-input v-model="ruleForm.address" placeholder="请输入详细地址" />
           </el-form-item>
         </el-col>
@@ -100,7 +110,8 @@ export default {
         jd: '',
         wd: '',
         contactName: '',
-        contactPhone: ''
+        contactPhone: '',
+        type: 1
       },
       rules: {
         addrOne: [{ required: true, message: '请选择省', trigger: 'change' }],
@@ -112,10 +123,13 @@ export default {
         jd: [{ required: true, message: '请输入经度', trigger: 'blur' }],
         wd: [{ required: true, message: '请输入纬度', trigger: 'blur' }],
         contactName: [
-          { required: true, message: '请选择联系人名称', trigger: 'blur' }
+          { required: true, message: '请输入联系人名称', trigger: 'blur' }
+        ],
+        type: [
+          { required: true, message: '请选择客户类型', trigger: 'change' }
         ],
         contactPhone: [
-          { required: true, message: '请选择联系人电话', trigger: 'blur' }
+          { required: true, message: '请输入联系人电话', trigger: 'blur' }
         ]
       }
     }
@@ -221,6 +235,7 @@ export default {
       for (const k of Object.keys(this.ruleForm)) {
         this.ruleForm[k] = null
       }
+      this.ruleForm.type = 1
     }
   }
 }

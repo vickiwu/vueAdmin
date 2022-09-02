@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-page-header
-      content="派车"
+      content="绑定设备"
       class="page-header"
       @back="goBack(paramsType)"
     />
@@ -79,27 +79,6 @@
               </el-form-item>
             </el-col>
           </el-row>
-
-          <el-row :gutter="20" type="flex" justify="center">
-            <el-col :span="12">
-              <el-form-item label="收货方">
-                <el-input
-                  v-model="orderDetail.transportName"
-                  :disabled="true"
-                  placeholder="收货方"
-                />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="收货方电话">
-                <el-input
-                  v-model="orderDetail.transportPhone"
-                  :disabled="true"
-                  placeholder="联系人电话"
-                />
-              </el-form-item>
-            </el-col>
-          </el-row>
         </div>
       </el-card>
       <el-card>
@@ -109,12 +88,52 @@
         <div>
           <el-row :gutter="20" type="flex" justify="center">
             <el-col :span="12">
+              <el-form-item label="设备" prop="transportId">
+                <el-select
+                  v-model="orderDetail.deviceId"
+                  placeholder="请选择设备"
+                  filterable
+                  clearable
+                  @change="deviceChange"
+                >
+                  <el-option
+                    v-for="item in deviceList"
+                    :key="item.id"
+                    :label="item.deviceNo"
+                    :value="item.id"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="车辆" prop="transportId">
+                <el-select
+                  v-model="orderDetail.carId"
+                  placeholder="请选择车辆"
+                  filterable
+                  clearable
+                  disabled
+                  @change="carChange"
+                >
+                  <el-option
+                    v-for="item in carList"
+                    :key="item.id"
+                    :label="item.carNo"
+                    :value="item.id"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="center">
+            <el-col :span="12">
               <el-form-item label="司机姓名" prop="customerId">
                 <el-select
                   v-model="orderDetail.driverId"
                   filterable
-                  clearable
                   placeholder="请选择司机"
+                  clearable
+                  disabled
                   @change="driverChange"
                 >
                   <el-option
@@ -136,114 +155,22 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row :gutter="20" type="flex" justify="center">
-            <el-col :span="12">
-              <el-form-item label="规则">
-                <el-input
-                  v-model="driverObj.rules"
-                  :disabled="true"
-                  placeholder="规则"
-                />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="司机身份证">
-                <el-input
-                  v-model="driverObj.idcard"
-                  :disabled="true"
-                  placeholder="司机身份证"
-                />
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-          <el-row :gutter="20" type="flex" justify="center">
-            <el-col :span="12">
-              <el-form-item label="车辆" prop="transportId">
-                <el-select
-                  v-model="orderDetail.carId"
-                  placeholder="请选择车辆"
-                  filterable
-                  clearable
-                  @change="carChange"
-                >
-                  <el-option
-                    v-for="item in carList"
-                    :key="item.id"
-                    :label="item.carNo"
-                    :value="item.id"
-                  />
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="车辆类型">
-                <el-input
-                  v-model="carObj.typeStr"
-                  :disabled="true"
-                  placeholder="车辆类型"
-                />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20" type="flex" justify="center">
-            <el-col :span="12">
-              <el-form-item label="设备" prop="transportId">
-                <el-select
-                  v-model="orderDetail.deviceId"
-                  placeholder="请选择设备"
-                  filterable
-                  clearable
-                >
-                  <el-option
-                    v-for="item in deviceList"
-                    :key="item.id"
-                    :label="item.deviceNo"
-                    :value="item.id"
-                  />
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="费用总额">
-                <el-input
-                  v-model.number="orderDetail.costTotal"
-                  placeholder="请输入费用总额"
-                />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20" type="flex" justify="center">
-            <el-col :span="12">
-              <el-form-item label="计划卸货吨数">
-                <el-input
-                  v-model.number="orderDetail.planUnLoadTotal"
-                  placeholder="请输入计划卸货吨数"
-                />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="计划装货吨数">
-                <el-input
-                  v-model.number="orderDetail.planLoadTotal"
-                  placeholder="请输入计划装货吨数"
-                />
-              </el-form-item>
-            </el-col>
-          </el-row>
         </div>
       </el-card>
 
       <el-form-item class="btn-bottom">
-        <el-button type="primary" @click="onSubmit">派车</el-button>
+        <el-button type="primary" @click="onSubmit">绑定设备</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 <script>
 import { Message } from 'element-ui'
-import { addCarOrder, getDevice } from '@/api/carOrder'
-import { getPcarOrderDetail, removePcarOrderDetail } from '@/utils/auth'
+import { editCarOrder, getDevice } from '@/api/carOrder'
+import {
+  getBindDeviceOrderDetail,
+  removeBindDeviceOrderDetail
+} from '@/utils/auth'
 import { getCarList, getDriveList } from '@/api/people'
 import { mapGetters } from 'vuex'
 export default {
@@ -328,12 +255,14 @@ export default {
     ...mapGetters(['companyId', 'deptId', 'userId', 'userName'])
   },
   created() {
-    this.orderDetail = getPcarOrderDetail()
-    console.log('%c 🍆 this.orderDetail', 'color:#b03734', this.orderDetail)
+    this.orderDetail = getBindDeviceOrderDetail()
+    console.log('%c 🍯 orderDetail', 'color:#2eafb0', this.orderDetail)
 
     this.getDriveListApi()
     this.getCarListApi()
     this.getDeviceApi()
+    this.driverChange(this.orderDetail.driverId)
+    this.carChange(this.orderDetail.carId)
   },
   mounted() {
     this.paramsType = this.$route.query.type
@@ -343,7 +272,7 @@ export default {
   methods: {
     goBack(type) {
       this.$store.dispatch('tagsView/delView', this.$route)
-      removePcarOrderDetail()
+      removeBindDeviceOrderDetail()
       this.$router.push({
         path: '/order/list',
         query: { type }
@@ -466,22 +395,18 @@ export default {
       paramsData.costTotal = paramsData.costTotal * 1000
       paramsData.orderId = paramsData.id
       delete paramsData.id
-      addCarOrder(paramsData)
+      editCarOrder(paramsData)
         .then((response) => {
           Message({
-            message: response.m || '派车成功',
+            message: response.m || '绑定设备成功',
             type: 'success',
             duration: 2 * 1000
           })
-          if (paramsData.deviceId) {
-            this.goBack(4)
-          } else {
-            this.goBack(3)
-          }
+          this.goBack(4)
         })
         .catch((error) => {
           Message({
-            message: '派车失败：' + error,
+            message: '绑定设备失败：' + error,
             type: 'error',
             duration: 2 * 1000
           })

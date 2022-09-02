@@ -352,7 +352,26 @@ export const asyncRoutes = [
       'name': 'addCar',
       hidden: true
     },
-
+    {
+      'path': '/order/bindDevice',
+      component: () => import('@/views/order/bindDevice'),
+      'meta': {
+        roles: [1, 2, 3],
+        'icon': 'el-icon-menu',
+        'affix': false,
+        'permission': [
+          'order:org:dept',
+          'order:org:user',
+          'order:org:add',
+          'order:org:insert',
+          'order:org:update',
+          'order:org:del'
+        ],
+        'title': '绑定设备'
+      },
+      'name': 'bindDevice',
+      hidden: true
+    },
     {
       'path': '/order/detail',
       component: () => import('@/views/order/detail'),

@@ -99,11 +99,9 @@
               type="index"
               align="center"
               header-align="center"
-              show-overflow-tooltip
               width="80"
             />
             <el-table-column
-              show-overflow-tooltip
               label="姓名"
               align="left"
               width="120"
@@ -114,7 +112,6 @@
               </template>
             </el-table-column>
             <el-table-column
-              show-overflow-tooltip
               label="手机号"
               align="left"
               width="280"
@@ -126,7 +123,6 @@
             </el-table-column>
 
             <el-table-column
-              show-overflow-tooltip
               label="部门名称"
               align="left"
               header-align="center"
@@ -136,7 +132,6 @@
               </template>
             </el-table-column>
             <el-table-column
-              show-overflow-tooltip
               label="角色类型"
               align="left"
               header-align="center"
@@ -146,7 +141,6 @@
               </template>
             </el-table-column>
             <el-table-column
-              show-overflow-tooltip
               label="角色名称"
               align="left"
               header-align="center"

@@ -42,57 +42,44 @@
         type="index"
         align="center"
         header-align="center"
-        show-overflow-tooltip
         width="80"
       />
       <el-table-column
-        show-overflow-tooltip
-        label="省"
+        label="类型"
         align="left"
         width="80"
         header-align="center"
       >
         <template slot-scope="{ row }">
+          <span>{{
+            row.type === 1 ? '装货地' : row.type === 2 ? '卸货地' : '--'
+          }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="省" align="left" width="80" header-align="center">
+        <template slot-scope="{ row }">
           <span>{{ row.addrOne }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="市"
-        width="80"
-        align="left"
-        header-align="center"
-      >
+      <el-table-column label="市" width="80" align="left" header-align="center">
         <template slot-scope="{ row }">
           <span>{{ row.addrTwo }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column
-        show-overflow-tooltip
-        label="区"
-        width="80"
-        align="left"
-        header-align="center"
-      >
+      <el-table-column label="区" width="80" align="left" header-align="center">
         <template slot-scope="{ row }">
           <span>{{ row.addrThree }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="详细地址"
-        align="left"
-        width="180"
-        header-align="center"
-      >
+      <el-table-column label="详细地址" align="left" header-align="center">
         <template slot-scope="{ row }">
           <span>{{ row.address }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        show-overflow-tooltip
         label="联系人名称"
+        width="150"
         align="left"
         header-align="center"
       >
@@ -101,8 +88,8 @@
         </template>
       </el-table-column>
       <el-table-column
-        show-overflow-tooltip
         label="联系人手机号"
+        width="110"
         align="left"
         header-align="center"
       >
@@ -111,8 +98,8 @@
         </template>
       </el-table-column>
       <el-table-column
-        show-overflow-tooltip
         label="经度"
+        width="110"
         align="left"
         header-align="center"
       >
@@ -121,8 +108,8 @@
         </template>
       </el-table-column>
       <el-table-column
-        show-overflow-tooltip
         label="纬度"
+        width="110"
         align="left"
         header-align="center"
       >

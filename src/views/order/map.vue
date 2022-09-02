@@ -10,14 +10,16 @@
             </div>
             <div>
               <div class="detail-list">
-                订单编码： {{ orderDetail.orderNo || '-' }}
+                订单编码：
+                {{ orderDetail.orderNo }}
               </div>
 
               <div class="detail-list">
-                订单状态： {{ orderDetail.status || '-' }}
+                订单状态： {{ orderDetail.statusStr || '-' }}
               </div>
               <div class="detail-list">
-                创建时间： {{ orderDetail.createTime || '-' }}
+                创建时间：
+                {{ orderDetail.createTime | parseTime('{y}-{m}-{d}  {h}:{i}') }}
               </div>
               <div class="detail-list">
                 产品名称： {{ orderDetail.msdsName || '-' }}
@@ -33,7 +35,11 @@
                 车牌号： {{ orderDetail.carNo || '-' }}
               </div>
               <div class="detail-list">
-                提货排班时间： {{ orderDetail.planGetMsdsTime || '-' }}
+                提货排班时间：
+                {{
+                  orderDetail.planGetMsdsTime
+                    | parseTime('{y}-{m}-{d}  {h}:{i}')
+                }}
               </div>
               <div class="detail-list">
                 备注： {{ orderDetail.remark || '-' }}
@@ -52,13 +58,13 @@
                 托运方电话： {{ orderDetail.customerName || '-' }}
               </div>
               <div class="detail-list">
-                承运方：{{ orderDetail.transportName || '-' }}
+                收货方：{{ orderDetail.transportName || '-' }}
               </div>
               <div class="detail-list">
-                承运方联系人： {{ orderDetail.transportContactName || '-' }}
+                收货方联系人： {{ orderDetail.transportContactName || '-' }}
               </div>
               <div class="detail-list">
-                承运方电话： {{ orderDetail.transportPhone || '-' }}
+                收货方电话： {{ orderDetail.transportPhone || '-' }}
               </div>
               <div class="detail-list">
                 装货地： {{ orderDetail.loadAddress || '-' }}
@@ -71,7 +77,10 @@
         </el-col>
         <el-col v-loading="mapLoading" :span="18">
           <div class="detail-top">
-            <div class="detail-top-dis">
+            <div
+              v-if="![8, 10].includes(orderDetail.status)"
+              class="detail-top-dis"
+            >
               距离目标地： {{ allDistence }}公里（{{ allTime }}）
             </div>
             <el-date-picker
@@ -95,7 +104,7 @@
   </div>
 </template>
 <script>
-import { getOrderDetail, removeOrderDetail } from '@/utils/auth'
+import { getMapOrderDetail, removeMapOrderDetail } from '@/utils/auth'
 import AMapLoader from '@amap/amap-jsapi-loader'
 const wsUrl = 'ws://120.48.162.194/ws'
 import { parseTime } from '@/utils'
@@ -131,9 +140,13 @@ export default {
       lineData: 'carLog/lineData'
     }),
     allTime() {
+      if (!this.orderDetail.deviceNo) {
+        return '未绑定设备'
+      }
       if (this.currentCarData && this.currentCarData.f === 2) {
         return '当前设备已离线'
       }
+
       if (this.allDistence === '--') {
         return '--'
       } else {
@@ -192,7 +205,8 @@ export default {
 
   created() {
     const that = this
-    const currentDetail = getOrderDetail()
+    const currentDetail = getMapOrderDetail()
+
     if (!currentDetail) {
       this.hasDetail = false
       this.$alert('请先前往订单列表选择订单', {
@@ -206,6 +220,28 @@ export default {
     } else {
       this.hasDetail = true
       this.orderDetail = currentDetail
+      switch (this.orderDetail.status) {
+        case 1:
+          this.orderDetail.statusStr = '待调配'
+          break
+        case 3:
+          this.orderDetail.statusStr = '待提货'
+          break
+        case 4:
+          this.orderDetail.statusStr = '运输中'
+          break
+        case 8:
+          this.orderDetail.statusStr = '已送达'
+          break
+        case 10:
+          this.orderDetail.statusStr = '已完结'
+          break
+        default:
+          this.orderDetail.statusStr = '--'
+          break
+      }
+      this.orderDetail.price =
+        Math.floor((this.orderDetail.price / 1000) * 100) / 100
     }
   },
   mounted() {
@@ -225,7 +261,7 @@ export default {
         path: '/order/list',
         query: { type: this.paramsType }
       })
-      removeOrderDetail()
+      removeMapOrderDetail()
     },
     timeChange(value) {
       if (value[0] && value[1]) {
@@ -239,16 +275,18 @@ export default {
             this.lastPoint,
             this.firstPoint
           ])
-          const deviceObj = {
-            a: this.orderDetail.deviceNo,
-            b: value[0], // kais
-            c: value[1] // 结束时间
+          if (this.orderDetail.deviceNo) {
+            const deviceObj = {
+              a: this.orderDetail.deviceNo,
+              b: value[0], // kais
+              c: value[1] // 结束时间
+            }
+            // 清空当前线路 重新画
+            this.$store.dispatch('carLog/SOCKET_SEND', {
+              msg: deviceObj,
+              type: [0, 0x0a, 0]
+            })
           }
-          // 清空当前线路 重新画
-          this.$store.dispatch('carLog/SOCKET_SEND', {
-            msg: deviceObj,
-            type: [0, 0x0a, 0]
-          })
         }
       }
     },
@@ -289,10 +327,13 @@ export default {
             msg: 'login',
             type: [0, 1, 0]
           })
-          this.sendSocketCar([this.orderDetail.deviceNo])
-          if ([8, 10].includes(this.orderDetail.status)) {
-            this.sendSocketCarLine(this.orderDetail.deviceNo)
+          if (this.orderDetail.deviceNo) {
+            this.sendSocketCar([this.orderDetail.deviceNo])
+            if ([8, 10].includes(this.orderDetail.status)) {
+              this.sendSocketCarLine(this.orderDetail.deviceNo)
+            }
           }
+
           // let myView = toView(obj, 0, 0x0a, 0); // 发送给websocket
         })
     },

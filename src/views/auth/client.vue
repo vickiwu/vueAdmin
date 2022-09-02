@@ -37,65 +37,38 @@
       style="width: 100%; margin: 10px 0"
     >
       <el-table-column
-        show-overflow-tooltip
         label="序号"
         type="index"
         align="center"
         header-align="center"
         width="80"
       />
-      <el-table-column
-        show-overflow-tooltip
-        label="客户名称"
-        align="left"
-        header-align="center"
-      >
+      <el-table-column label="客户名称" align="left" header-align="center">
         <template slot-scope="{ row }">
           <span>{{ row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="客户类型"
-        align="left"
-        header-align="center"
-      >
+      <el-table-column label="客户类型" align="left" header-align="center">
         <template slot-scope="{ row }">
-          <span>{{ row.type === 1 ? '托运商' : '承运商' }}</span>
+          <span>{{ row.type === 1 ? '托运方' : '收货方' }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="联系人姓名"
-        align="left"
-        header-align="center"
-      >
+      <el-table-column label="联系人姓名" align="left" header-align="center">
         <template slot-scope="{ row }">
           <span>{{ row.contactName }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="联系人手机号"
-        align="left"
-        header-align="center"
-      >
+      <el-table-column label="联系人手机号" align="left" header-align="center">
         <template slot-scope="{ row }">
           <span>{{ row.contactPhone }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="联系人地址"
-        align="left"
-        header-align="center"
-      >
+      <el-table-column label="联系人地址" align="left" header-align="center">
         <template slot-scope="{ row }">
           <span>{{ row.address }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        show-overflow-tooltip
         label="操作"
         width="180"
         align="right"
@@ -173,7 +146,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="21">
-            <el-form-item label="联系人地址" prop="address">
+            <el-form-item label="联系人地址">
               <el-input
                 v-model="clientForm.address"
                 placeholder="请输入联系人地址"
@@ -185,8 +158,8 @@
           <el-col :span="21">
             <el-form-item label="客户类型" prop="type">
               <el-radio-group v-model="clientForm.type">
-                <el-radio :label="1">托运商</el-radio>
-                <el-radio :label="2">承运商</el-radio>
+                <el-radio :label="1">托运方</el-radio>
+                <el-radio :label="2">收货方</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -335,6 +308,7 @@ export default {
       for (const k of Object.keys(this.clientForm)) {
         this.clientForm[k] = ''
       }
+      this.clientForm.type = 1
     },
     handelClick(item, row) {
       if (item === '修改') {

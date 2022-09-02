@@ -37,7 +37,6 @@
       style="width: 100%; margin: 10px 0"
     >
       <el-table-column
-        show-overflow-tooltip
         label="序号"
         type="index"
         align="center"
@@ -45,7 +44,6 @@
         width="80"
       />
       <el-table-column
-        show-overflow-tooltip
         label="司机姓名"
         align="left"
         header-align="center"
@@ -55,70 +53,39 @@
           <span>{{ row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="部门名称"
-        align="left"
-        header-align="center"
-      >
+      <el-table-column label="部门名称" align="left" header-align="center">
         <template slot-scope="{ row }">
           <span>{{ row.deptName }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="身份证号"
-        align="left"
-        header-align="center"
-      >
+      <el-table-column label="身份证号" align="left" header-align="center">
         <template slot-scope="{ row }">
           <span>{{ row.idcard }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="手机号"
-        align="left"
-        header-align="center"
-      >
+      <el-table-column label="手机号" align="left" header-align="center">
         <template slot-scope="{ row }">
           <span>{{ row.phone }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column
-        show-overflow-tooltip
-        label="出生日期"
-        align="left"
-        header-align="center"
-      >
+      <el-table-column label="出生日期" align="left" header-align="center">
         <template slot-scope="{ row }">
           <span>{{ row.birthDay }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column
-        show-overflow-tooltip
-        label="备注"
-        align="left"
-        header-align="center"
-      >
+      <el-table-column label="备注" align="left" header-align="center">
         <template slot-scope="{ row }">
           <span>{{ row.remark }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="规则"
-        align="left"
-        header-align="center"
-      >
+      <el-table-column label="规则" align="left" header-align="center">
         <template slot-scope="{ row }">
           <span>{{ row.rule }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        show-overflow-tooltip
         label="操作"
         width="200"
         align="right"
@@ -180,7 +147,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="11">
-            <el-form-item label="身份证号" prop="idcard">
+            <el-form-item label="身份证号">
               <el-input
                 v-model="driveFrom.idcard"
                 placeholder="请输入身份证号"

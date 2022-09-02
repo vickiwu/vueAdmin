@@ -41,16 +41,54 @@ export function removeAreaDetail() {
   return Cookies.remove(AreaDetailKey)
 }
 
-export function getOrderDetail() {
+export function getEditOrderDetail() {
   const OrderDetail = Cookies.get(OrderDetailKey)
   return OrderDetail ? JSON.parse(OrderDetail) : undefined
 }
 
-export function setOrderDetail(OrderDetail) {
+export function setEditOrderDetail(OrderDetail) {
   return Cookies.set(OrderDetailKey, OrderDetail)
 }
 
-export function removeOrderDetail() {
+export function removeEditOrderDetail() {
   return Cookies.remove(OrderDetailKey)
 }
 
+export function getPcarOrderDetail() {
+  const OrderDetail = Cookies.get(OrderDetailKey)
+  return OrderDetail ? JSON.parse(OrderDetail) : undefined
+}
+
+export function setPcarOrderDetail(OrderDetail) {
+  return Cookies.set(OrderDetailKey, OrderDetail)
+}
+
+export function removePcarOrderDetail() {
+  return Cookies.remove(OrderDetailKey)
+}
+
+export function getMapOrderDetail() {
+  const OrderDetail = Cookies.get(OrderDetailKey)
+  return OrderDetail ? JSON.parse(OrderDetail) : undefined
+}
+
+export function setMapOrderDetail(OrderDetail) {
+  return Cookies.set(OrderDetailKey, OrderDetail)
+}
+
+export function removeMapOrderDetail() {
+  return Cookies.remove(OrderDetailKey)
+}
+
+export function getBindDeviceOrderDetail() {
+  const OrderDetail = Cookies.get(OrderDetailKey)
+  return OrderDetail ? JSON.parse(OrderDetail) : undefined
+}
+
+export function setBindDeviceOrderDetail(OrderDetail) {
+  return Cookies.set(OrderDetailKey, OrderDetail)
+}
+
+export function removeBindDeviceOrderDetail() {
+  return Cookies.remove(OrderDetailKey)
+}

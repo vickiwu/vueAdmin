@@ -42,7 +42,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="11">
-              <el-form-item label="产品价格" prop="price">
+              <el-form-item label="产品价格">
                 <el-input
                   v-model.number="orderForm.price"
                   placeholder="请输入产品价格（元）"
@@ -61,7 +61,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="11">
-              <el-form-item label="车型要求" prop="carNeed">
+              <el-form-item label="车型要求">
                 <el-input
                   v-model="orderForm.carNeed"
                   placeholder="请输入车型要求"
@@ -89,15 +89,17 @@
       </el-card>
       <el-card>
         <div slot="header">
-          <span>货主信息</span>
+          <span>托运方信息</span>
         </div>
         <div>
           <el-row :gutter="20" type="flex" justify="center">
             <el-col :span="12">
-              <el-form-item label="货主" prop="customerId">
+              <el-form-item label="托运方" prop="customerId">
                 <el-select
                   v-model="orderForm.customerId"
-                  placeholder="请选择货主"
+                  filterable
+                  placeholder="请选择托运方"
+                  clearable
                   @change="customerIdChange"
                 >
                   <el-option
@@ -110,11 +112,11 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="货主手机号">
+              <el-form-item label="托运方手机号">
                 <el-input
                   v-model="orderForm.customerPhone"
                   :disabled="true"
-                  placeholder="货主手机号"
+                  placeholder="托运方手机号"
                 />
               </el-form-item>
             </el-col>
@@ -141,7 +143,7 @@
           </el-row>
         </div>
       </el-card>
-      <el-card>
+      <!-- <el-card >
         <div slot="header">
           <span>收货方信息</span>
         </div>
@@ -168,7 +170,7 @@
                 <el-input
                   v-model="orderForm.transportPhone"
                   :disabled="true"
-                  placeholder="货主手机号"
+                  placeholder="托运方手机号"
                 />
               </el-form-item>
             </el-col>
@@ -195,117 +197,40 @@
             </el-col>
           </el-row>
         </div>
-      </el-card>
-      <el-card>
-        <div slot="header">
-          <span>卸货地信息</span>
-        </div>
-        <div>
-          <el-row :gutter="20" type="flex" justify="center">
-            <el-col :span="12">
-              <el-form-item label="卸货地" prop="unLoadAddressId">
-                <el-select
-                  v-model="orderForm.unLoadAddressId"
-                  placeholder="请选择卸货地"
-                  @change="unLoadAddressChange"
-                >
-                  <el-option
-                    v-for="item in addressList"
-                    :key="item.id"
-                    :label="item.address"
-                    :value="item.id"
-                  />
-                </el-select>
-              </el-form-item>
-            </el-col>
+      </el-card> -->
 
-            <el-col :span="12">
-              <el-form-item label="省/市/区" class="input-row">
-                <div class="input-row">
-                  <el-input
-                    v-model="unLoadAddressObj.addrOne"
-                    class="input-col"
-                    :disabled="true"
-                    placeholder="省"
-                  />
-                  <el-input
-                    v-model="unLoadAddressObj.addrTwo"
-                    class="input-col"
-                    :disabled="true"
-                    placeholder="市"
-                  />
-                  <el-input
-                    v-model="unLoadAddressObj.addrThree"
-                    class="input-col"
-                    :disabled="true"
-                    placeholder="区"
-                  />
-                </div>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20" type="flex" justify="center">
-            <el-col :span="12">
-              <el-form-item label="联系人">
-                <el-input
-                  v-model="unLoadAddressObj.contactName"
-                  :disabled="true"
-                  placeholder="联系人姓名"
-                />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="联系人电话">
-                <el-input
-                  v-model="unLoadAddressObj.contactPhone"
-                  :disabled="true"
-                  placeholder="联系人电话"
-                />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20" type="flex" justify="center">
-            <el-col :span="12">
-              <el-form-item label="经度">
-                <el-input
-                  v-model="unLoadAddressObj.jd"
-                  :disabled="true"
-                  placeholder="经度"
-                />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="纬度">
-                <el-input
-                  v-model="unLoadAddressObj.wd"
-                  :disabled="true"
-                  placeholder="纬度"
-                />
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </div>
-      </el-card>
       <el-card>
         <div slot="header">
           <span>装货地信息</span>
         </div>
         <div>
-          <el-row :gutter="20" type="flex" justify="center">
-            <el-col :span="12">
+          <el-row :gutter="20" type="flex" justify="left">
+            <el-col :span="18">
               <el-form-item label="装货地" prop="loadAddressId">
                 <el-select
                   v-model="orderForm.loadAddressId"
+                  filterable
                   placeholder="请选择装货地"
+                  clearable
                   @change="loadAddressIdChange"
                 >
                   <el-option
-                    v-for="item in addressList"
+                    v-for="item in addressList1"
                     :key="item.id"
                     :label="item.address"
                     :value="item.id"
                   />
                 </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="center">
+            <el-col :span="12">
+              <el-form-item label="详细地址" prop="loadAddress">
+                <el-input
+                  v-model="orderForm.loadAddress"
+                  placeholder="请输入装货地详细地址"
+                />
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -337,18 +262,16 @@
             <el-col :span="12">
               <el-form-item label="联系人">
                 <el-input
-                  v-model="loadAddressObj.contactName"
-                  :disabled="true"
-                  placeholder="联系人姓名"
+                  v-model="orderForm.loadAddressContactName"
+                  placeholder="请输入联系人姓名"
                 />
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="联系人电话">
                 <el-input
-                  v-model="loadAddressObj.contactPhone"
-                  :disabled="true"
-                  placeholder="联系人电话"
+                  v-model="orderForm.loadAddressContactPhone"
+                  placeholder="请输入联系人电话"
                 />
               </el-form-item>
             </el-col>
@@ -375,6 +298,113 @@
           </el-row>
         </div>
       </el-card>
+      <el-card class="unload-card">
+        <div slot="header">
+          <span>卸货地信息</span>
+        </div>
+        <el-tabs type="border-card">
+          <el-tab-pane label="选择">
+            <div>
+              <el-row :gutter="20" type="flex" justify="left">
+                <el-col :span="18">
+                  <el-form-item label="卸货地">
+                    <el-select
+                      v-model="orderForm.unLoadAddressId"
+                      filterable
+                      clearable
+                      placeholder="请选择卸货地"
+                      @change="unLoadAddressChange"
+                    >
+                      <el-option
+                        v-for="item in addressList2"
+                        :key="item.id"
+                        :label="item.address"
+                        :value="item.id"
+                      />
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20" type="flex" justify="center">
+                <el-col :span="12">
+                  <el-form-item label="详细地址" prop="unLoadAddress">
+                    <el-input
+                      v-model="orderForm.unLoadAddress"
+                      placeholder="请输入卸货地详细地址"
+                    />
+                  </el-form-item>
+                </el-col>
+
+                <el-col :span="12">
+                  <el-form-item label="省/市/区" class="input-row">
+                    <div class="input-row">
+                      <el-input
+                        v-model="unLoadAddressObj.addrOne"
+                        class="input-col"
+                        :disabled="true"
+                        placeholder="省"
+                      />
+                      <el-input
+                        v-model="unLoadAddressObj.addrTwo"
+                        class="input-col"
+                        :disabled="true"
+                        placeholder="市"
+                      />
+                      <el-input
+                        v-model="unLoadAddressObj.addrThree"
+                        class="input-col"
+                        :disabled="true"
+                        placeholder="区"
+                      />
+                    </div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20" type="flex" justify="center">
+                <el-col :span="12">
+                  <el-form-item label="联系人">
+                    <el-input
+                      v-model="orderForm.unLoadAddressContactName"
+                      placeholder="请输入联系人姓名"
+                    />
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="联系人电话">
+                    <el-input
+                      v-model="orderForm.unLoadAddressContactPhone"
+                      placeholder="请输入联系人电话"
+                    />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20" type="flex" justify="center">
+                <el-col :span="12">
+                  <el-form-item label="经度">
+                    <el-input
+                      v-model="unLoadAddressObj.jd"
+                      :disabled="true"
+                      placeholder="经度"
+                    />
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="纬度">
+                    <el-input
+                      v-model="unLoadAddressObj.wd"
+                      :disabled="true"
+                      placeholder="纬度"
+                    />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="全部录入">
+            <addArea @inputunload="inputunload" />
+          </el-tab-pane>
+        </el-tabs>
+      </el-card>
 
       <el-form-item class="btn-bottom">
         <el-button type="primary" @click="onSubmit">发布订单</el-button>
@@ -387,8 +417,9 @@ import { Message } from 'element-ui'
 import { publishOrder } from '@/api/order'
 import { getAreaList, getClientList } from '@/api/people'
 import { mapGetters } from 'vuex'
+import addArea from './addArea.vue'
 export default {
-  components: {},
+  components: { addArea },
   data() {
     return {
       loadAddressObj: {
@@ -459,7 +490,8 @@ export default {
       },
       customers: [],
       transports: [],
-      addressList: [],
+      addressList1: [], // 1：装货地、2：卸货地
+      addressList2: [],
       orderForm: {
         orderNo: '',
         customerId: '',
@@ -486,11 +518,15 @@ export default {
         unLoadTwo: '',
         unLoadThree: '',
         customerContactName: '',
-        transportContactName: ''
+        transportContactName: '',
+        loadAddressContactName: '',
+        loadAddressContactPhone: '',
+        unLoadAddressContactName: '',
+        unLoadAddressContactPhone: ''
       },
       rules: {
         customerId: [
-          { required: true, message: '请选择货主', trigger: 'change' }
+          { required: true, message: '请选择托运方', trigger: 'change' }
         ],
         transportId: [
           { required: true, message: '请选择收货方', trigger: 'change' }
@@ -501,11 +537,17 @@ export default {
         msdsName: [
           { required: true, message: '请输入产品名称', trigger: 'blur' }
         ],
+        loadAddress: [
+          { required: true, message: '请输入装货地详细地址', trigger: 'change' }
+        ],
         loadAddressId: [
           { required: true, message: '请选择装货地', trigger: 'change' }
         ],
         unLoadAddressId: [
           { required: true, message: '请选择卸货地', trigger: 'change' }
+        ],
+        unLoadAddress: [
+          { required: true, message: '请输入卸货地详细地址', trigger: 'blur' }
         ],
         loadNum: [
           { required: true, message: '请输入装货吨数', trigger: 'blur' }
@@ -526,10 +568,20 @@ export default {
   created() {
     this.getCustomers()
     this.getTransports()
-    this.getAddressList()
+    this.getAddressList1() // 装货地
+    this.getAddressList2() // 卸货地
   },
   mounted() {},
   methods: {
+    inputunload(data) {
+      // this.$router.push('/area/add')
+      this.orderForm.addrOne = data.addrOne
+      this.orderForm.addrThree = data.addrThree
+      this.orderForm.addrTwo = data.addrTwo
+      this.orderForm.unLoadAddress = data.unLoadAddress
+      this.orderForm.unLoadAddressContactName = data.unLoadAddressContactName
+      this.orderForm.unLoadAddressContactPhone = data.unLoadAddressContactPhone
+    },
     getCustomers() {
       getClientList({
         pageSize: 9999,
@@ -540,7 +592,7 @@ export default {
           this.customers = res.d
         } else {
           Message({
-            message: res.m || '获取货主列表报错',
+            message: res.m || '获取托运方列表报错',
             type: 'error',
             duration: 2 * 1000
           })
@@ -564,18 +616,38 @@ export default {
         }
       })
     },
-    getAddressList() {
+    getAddressList1() {
       getAreaList({
         pageSize: 9999,
         page: 1, // 1 y 10
         deptId: this.deptId,
-        companyId: this.companyId
+        companyId: this.companyId,
+        type: 1 // 1装货 2
       }).then((res) => {
         if (+res.a === 200) {
-          this.addressList = res.d
+          this.addressList1 = res.d
         } else {
           Message({
-            message: res.m || '获取区域列表报错',
+            message: res.m || '获取装货区域列表报错',
+            type: 'error',
+            duration: 2 * 1000
+          })
+        }
+      })
+    },
+    getAddressList2() {
+      getAreaList({
+        pageSize: 9999,
+        page: 1, // 1 y 10
+        deptId: this.deptId,
+        companyId: this.companyId,
+        type: 2 // 1装货 2 卸货
+      }).then((res) => {
+        if (+res.a === 200) {
+          this.addressList2 = res.d
+        } else {
+          Message({
+            message: res.m || '获取卸货区域列表报错',
             type: 'error',
             duration: 2 * 1000
           })
@@ -583,7 +655,7 @@ export default {
       })
     },
     loadAddressIdChange(val) {
-      const currentAddress = this.addressList.filter((item) => {
+      const currentAddress = this.addressList1.filter((item) => {
         return item.id === val
       })
 
@@ -595,10 +667,12 @@ export default {
         this.orderForm.loadThree = currentAddress[0].addrThree
         this.orderForm.loadJd = currentAddress[0].jd
         this.orderForm.loadWd = currentAddress[0].wd
+        this.orderForm.loadAddressContactName = currentAddress[0].contactName
+        this.orderForm.loadAddressContactPhone = currentAddress[0].contactPhone
       }
     },
     unLoadAddressChange(val) {
-      const currentAddress = this.addressList.filter((item) => {
+      const currentAddress = this.addressList2.filter((item) => {
         return item.id === val
       })
 
@@ -610,6 +684,9 @@ export default {
         this.orderForm.unLoadThree = currentAddress[0].addrThree
         this.orderForm.unLoadJd = currentAddress[0].jd
         this.orderForm.unLoadWd = currentAddress[0].wd
+        this.orderForm.unLoadAddressContactName = currentAddress[0].contactName
+        this.orderForm.unLoadAddressContactPhone =
+          currentAddress[0].contactPhone
       }
     },
     transportIdChange(val) {
@@ -705,6 +782,19 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.unload-card {
+  ::v-deep {
+    .el-card__body {
+      padding: 0;
+      padding-top: 20px;
+    }
+    .el-tabs--border-card {
+      border-left: 0;
+      border-right: 0;
+      border-bottom: 0;
+    }
+  }
+}
 .app-container {
   width: 95%;
   margin: 0 auto;

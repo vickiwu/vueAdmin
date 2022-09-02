@@ -42,11 +42,9 @@
         type="index"
         align="center"
         header-align="center"
-        show-overflow-tooltip
         width="80"
       />
       <el-table-column
-        show-overflow-tooltip
         label="姓名"
         align="left"
         width="120"
@@ -57,7 +55,6 @@
         </template>
       </el-table-column>
       <el-table-column
-        show-overflow-tooltip
         label="手机号"
         align="left"
         width="280"
@@ -68,32 +65,17 @@
         </template>
       </el-table-column>
 
-      <el-table-column
-        show-overflow-tooltip
-        label="部门名称"
-        align="left"
-        header-align="center"
-      >
+      <el-table-column label="部门名称" align="left" header-align="center">
         <template slot-scope="{ row }">
           <span>{{ row.deptName }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="角色类型"
-        align="left"
-        header-align="center"
-      >
+      <el-table-column label="角色类型" align="left" header-align="center">
         <template slot-scope="{ row }">
           <span>{{ row.roleType }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="角色名称"
-        align="left"
-        header-align="center"
-      >
+      <el-table-column label="角色名称" align="left" header-align="center">
         <template slot-scope="{ row }">
           <span>{{ row.roleName }}</span>
         </template>
@@ -172,7 +154,12 @@
           </el-col>
           <el-col :span="11">
             <el-form-item label="角色">
-              <el-select v-model="ruleForm.roleId" placeholder="请选择角色">
+              <el-select
+                v-model="ruleForm.roleId"
+                filterable
+                clearable
+                placeholder="请选择角色s"
+              >
                 <el-option
                   v-for="item in roleOption"
                   :key="item.id"

@@ -1,14 +1,32 @@
 <template>
   <div class="list-card">
     <div class="filter-container">
-      <el-input
-        v-model="searchStr"
-        placeholder="请输入关键字"
-        style="width: 200px; margin-right: 10px"
-        class="filter-item"
+      <el-select
+        v-model="customerName"
+        placeholder="请选择托运方"
+        filterable
+        class="custom-input"
+        clearable
+        @change="customerIdChange"
+      >
+        <el-option
+          v-for="item in customers"
+          :key="item.id"
+          :label="item.name"
+          :value="item.name"
+        />
+      </el-select>
+      <el-date-picker
+        v-model="timeArea"
+        class="custom-input"
+        type="datetimerange"
+        value-format="timestamp"
+        range-separator="至"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期"
+        @change="timeChange"
       />
       <el-button
-        class=""
         size="small"
         type="success"
         icon="el-icon-search"
@@ -42,13 +60,11 @@
         type="index"
         align="center"
         header-align="center"
-        show-overflow-tooltip
         width="50"
       />
       <el-table-column
-        show-overflow-tooltip
         label="订单编号"
-        width="120"
+        width="130"
         align="left"
         header-align="center"
       >
@@ -57,9 +73,8 @@
         </template>
       </el-table-column>
       <el-table-column
-        show-overflow-tooltip
         label="产品牌号"
-        width="120"
+        width="100"
         align="left"
         header-align="center"
       >
@@ -68,18 +83,16 @@
         </template>
       </el-table-column>
       <el-table-column
-        show-overflow-tooltip
         label="提货时间"
         width="120"
         align="left"
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span>{{ row.planGetMsdsTime | parseTime('{y}-{m}-{d}') }}</span>
+          <span>{{ row.planGetMsdsTime | parseTime('{y}-{m}-{d} ') }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        show-overflow-tooltip
         label="装货吨数"
         width="120"
         align="left"
@@ -89,28 +102,17 @@
           <span>{{ row.loadNum }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="货主"
-        align="left"
-        header-align="center"
-      >
+      <el-table-column label="托运方" align="left" header-align="center">
         <template slot-scope="{ row }">
           <span>{{ row.customerName }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="客户"
-        align="left"
-        header-align="center"
-      >
+      <el-table-column label="客户" align="left" header-align="center">
         <template slot-scope="{ row }">
           <span>{{ row.customerContactName }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        show-overflow-tooltip
         label="客户电话"
         width="120"
         align="left"
@@ -120,29 +122,13 @@
           <span>{{ row.customerPhone }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="收货方"
-        width="120"
-        align="left"
-        header-align="center"
-      >
-        <template slot-scope="{ row }">
-          <span>{{ row.transportName }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="起运市"
-        align="left"
-        header-align="center"
-      >
+
+      <el-table-column label="起运市" align="left" header-align="center">
         <template slot-scope="{ row }">
           <span>{{ row.loadTwo }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        show-overflow-tooltip
         label="起运详细地址"
         width="130"
         align="left"
@@ -152,18 +138,12 @@
           <span>{{ row.loadAddress }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="送达城市"
-        align="left"
-        header-align="center"
-      >
+      <el-table-column label="送达城市" align="left" header-align="center">
         <template slot-scope="{ row }">
           <span>{{ row.unLoadTwo }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        show-overflow-tooltip
         label="送货详细地址"
         width="130"
         align="left"
@@ -173,29 +153,34 @@
           <span>{{ row.unLoadAddress }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="车型要求"
-        align="left"
-        header-align="center"
-      >
+      <el-table-column label="车型要求" align="left" header-align="center">
         <template slot-scope="{ row }">
           <span>{{ row.carNeed }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        show-overflow-tooltip
-        label="备注"
+        v-if="![1].includes(orderType)"
+        label="司机"
         align="left"
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span>{{ row.remark }}</span>
+          <span>{{ row.driverName }}</span>
         </template>
       </el-table-column>
       <el-table-column
         v-if="![1].includes(orderType)"
-        show-overflow-tooltip
+        label="司机手机号"
+        width="120"
+        align="left"
+        header-align="center"
+      >
+        <template slot-scope="{ row }">
+          <span>{{ row.driverPhone }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        v-if="![1].includes(orderType)"
         label="车牌号"
         align="left"
         header-align="center"
@@ -204,17 +189,9 @@
           <span>{{ row.carNo }}</span>
         </template>
       </el-table-column>
+
       <el-table-column
-        show-overflow-tooltip
-        label="东华备注"
-        align="left"
-        header-align="center"
-      >
-        <template slot-scope="{ row }">
-          <span>{{ row.dhRemark }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
+        v-if="![0].includes(orderType)"
         label="操作"
         fixed="right"
         :width="width"
@@ -240,7 +217,15 @@
               派车
             </el-button>
             <el-button
-              v-if="[3, 4, 8, 10].includes(orderType)"
+              v-if="[3].includes(orderType) && ![10, 11].includes(roleType)"
+              size="mini"
+              @click="handelClick('绑定设备', row)"
+            >
+              绑定设备
+            </el-button>
+
+            <el-button
+              v-if="[3, 4, 8].includes(orderType)"
               size="mini"
               @click="handelClick('轨迹', row)"
             >
@@ -248,7 +233,7 @@
             </el-button>
 
             <el-button
-              v-if="[8].includes(orderType)"
+              v-if="[8, 10].includes(orderType)"
               size="mini"
               @click="handelClick('查看回单', row)"
             >
@@ -327,8 +312,14 @@
 import { getOrderList, getOrderListCustom, delOrder } from '@/api/order'
 
 import { getCarOrderList, shangCarOrder, finishOrder } from '@/api/carOrder'
+import { getClientList } from '@/api/people'
 import { parseTime } from '@/utils'
-import { setOrderDetail } from '@/utils/auth'
+import {
+  setEditOrderDetail,
+  setPcarOrderDetail,
+  setBindDeviceOrderDetail,
+  setMapOrderDetail
+} from '@/utils/auth'
 import { Message } from 'element-ui'
 import { mapGetters } from 'vuex'
 import { HIGH_IMG_URL, FILE_UPLOAD } from '@/settings'
@@ -346,6 +337,7 @@ export default {
   },
   data() {
     return {
+      timeArea: [],
       imgLoading: true,
       srcList: [],
       upDisabled: false,
@@ -353,7 +345,6 @@ export default {
       upImgShow: false,
       imgShow: false,
       currentImg: '',
-      searchStr: '',
       listLoading: false,
       list: [],
       page: 1,
@@ -362,7 +353,11 @@ export default {
       currentOrder: null,
       HIGH_IMG_URL,
       FILE_UPLOAD,
-      currentCarOrderId: null
+      currentCarOrderId: null,
+      customers: [],
+      customerName: null,
+      beginTime: null,
+      endTime: null
     }
   },
   computed: {
@@ -370,10 +365,11 @@ export default {
   },
   created() {
     // this.loadTable()
+    this.getCustomers()
     switch (this.orderType) {
       case 3:
       case 4:
-        this.width = 260 // 4个
+        this.width = 280 // 4个
         break
       case 1:
         this.width = 180 // 3个
@@ -382,6 +378,9 @@ export default {
         this.width = 200 // 3个
         // this.width = 150 // 2个
         break
+      case 10:
+        this.width = 100 // 1个
+        break
       default:
         this.width = 70
         break
@@ -389,6 +388,32 @@ export default {
   },
   mounted() {},
   methods: {
+    timeChange(value) {
+      if (value[0] && value[1]) {
+        this.beginTime = value[0]
+        this.endTime = value[1]
+      }
+    },
+    getCustomers() {
+      getClientList({
+        pageSize: 9999,
+        page: 1,
+        type: 1
+      }).then((res) => {
+        if (+res.a === 200) {
+          this.customers = res.d
+        } else {
+          Message({
+            message: res.m || '获取托运方列表报错',
+            type: 'error',
+            duration: 2 * 1000
+          })
+        }
+      })
+    },
+    customerIdChange(val) {
+      this.customerName = val
+    },
     handlePreview(file, fileList) {
       console.log(file, fileList)
     },
@@ -407,6 +432,7 @@ export default {
             type: 'success',
             duration: 2 * 1000
           })
+
           this.upImgShow = false
           this.loadTable()
         }
@@ -429,7 +455,10 @@ export default {
         page: this.page, // 1 y 10
         deptId: this.deptId,
         companyId: this.companyId,
-        status: this.orderType ? +this.orderType : undefined
+        status: this.orderType ? +this.orderType : undefined,
+        customerName: this.customerName ? this.customerName : undefined,
+        beginTime: this.beginTime ? this.beginTime : undefined,
+        endTime: this.endTime ? this.endTime : undefined
       })
         .then((response) => {
           const data = response.d
@@ -446,7 +475,10 @@ export default {
         deptId: this.deptId,
         companyId: this.companyId,
         status: +this.orderType,
-        phone: this.phone
+        phone: this.phone,
+        customerName: this.customerName ? this.customerName : undefined,
+        beginTime: this.beginTime ? this.beginTime : undefined,
+        endTime: this.endTime ? this.endTime : undefined
       })
         .then((response) => {
           const data = response.d
@@ -482,7 +514,7 @@ export default {
             path: '/order/detail',
             query: { type: this.orderType }
           })
-          setOrderDetail(row)
+          setEditOrderDetail(row)
           break
         case '删除':
           this.$confirm('确认删除吗？')
@@ -510,7 +542,14 @@ export default {
             path: '/order/addCar',
             query: { type: this.orderType }
           })
-          setOrderDetail(row)
+          setPcarOrderDetail(row)
+          break
+        case '绑定设备':
+          this.$router.push({
+            path: '/order/bindDevice',
+            query: { type: this.orderType }
+          })
+          setBindDeviceOrderDetail(row)
           break
         case '上传回单': // 弹框
           this.currentOrder = { ...row }
@@ -540,7 +579,7 @@ export default {
             path: '/order/map',
             query: { type: this.orderType }
           })
-          setOrderDetail(row)
+          setMapOrderDetail(row)
           break
         case '完成':
           this.currentOrder = { ...row }
@@ -580,9 +619,20 @@ export default {
 }
 </script>
  <style lang="scss" scoped>
+.filter-container {
+  height: 40px;
+  line-height: 40px;
+  display: flex;
+  align-items: center;
+}
+.custom-input {
+  margin-right: 10px;
+}
 .img-wrap {
   display: flex;
   justify-content: center;
+  width: 100%;
+  height: 300px;
 }
 .order-table {
   .el-button--mini,
