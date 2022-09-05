@@ -2,8 +2,8 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input
-        v-model="appId"
-        placeholder="请输入关键字"
+        v-model="name"
+        placeholder="请输入客户名称"
         style="width: 200px; margin-right: 10px"
         class="filter-item"
       />
@@ -181,7 +181,7 @@ import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      appId: '',
+      name: '',
       listLoading: false,
       dialogFormVisible: false,
       dialogTitle: '新增客户',
@@ -223,7 +223,8 @@ export default {
       this.listLoading = true
       getClientList({
         pageSize: this.pageSize,
-        page: this.page // 1 y 10
+        page: this.page, // 1 y 10
+        name: this.name ? this.name : undefined
       })
         .then((response) => {
           const data = response.d

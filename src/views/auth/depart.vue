@@ -59,8 +59,8 @@
         <el-card class="left-bg">
           <div slot="header" class="filter-container">
             <el-input
-              v-model="name"
-              placeholder="请输入关键字"
+              v-model="userName"
+              placeholder="请输入人员姓名"
               style="width: 200px; margin-right: 10px"
               class="filter-item"
             />
@@ -300,7 +300,7 @@ export default {
       dialogDepartTitle: '新增部门',
       currentDept: null,
       dialogDepart: false,
-      name: '',
+      userName: '',
       listLoading: false,
       departLoading: false,
       list: [],
@@ -376,7 +376,8 @@ export default {
         pageSize: this.pageSize,
         page: this.page, // 1 y 10
         deptId: deptId,
-        companyId: this.companyId
+        companyId: this.companyId,
+        userName: this.userName ? this.userName : undefined
       })
         .then((response) => {
           const data = response.d
@@ -394,10 +395,12 @@ export default {
         companyId: this.companyId
       })
         .then((response) => {
-          const data = response.d
-          this.departData = data
-          this.currentDept = data
-          this.loadPeople(this.deptId)
+          if (response.d && response.d.length > 0) {
+            const data = response.d
+            this.departData = data
+            this.currentDept = data[0]
+            this.loadPeople(this.deptId)
+          }
         })
         .catch((error) => error)
     },

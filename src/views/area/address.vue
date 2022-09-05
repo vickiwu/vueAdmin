@@ -2,14 +2,18 @@
   <div class="app-container">
     <!-- <small>认证中心-应用管理页面</small> -->
     <div class="filter-container">
+      <el-select v-model="type" placeholder="请选择区域类型">
+        <el-option label="装货地" :value="1" />
+        <el-option label="卸货地" :value="2" />
+      </el-select>
       <el-input
-        v-model="searchStr"
-        placeholder="请输入关键字"
-        style="width: 200px; margin-right: 10px"
+        v-model="address"
+        placeholder="请输入地址"
+        style="width: 200px"
         class="filter-item"
       />
       <el-button
-        class=""
+        class="filter-item"
         size="small"
         type="success"
         icon="el-icon-search"
@@ -165,12 +169,13 @@ export default {
   components: {},
   data() {
     return {
-      searchStr: '',
+      address: '',
       listLoading: false,
       list: [],
       page: 1,
       pageSize: 10,
-      total: 0
+      total: 0,
+      type: undefined
     }
   },
   computed: {
@@ -186,7 +191,9 @@ export default {
         pageSize: this.pageSize,
         page: this.page, // 1 y 10
         deptId: this.deptId,
-        companyId: this.companyId
+        companyId: this.companyId,
+        type: this.type ? this.type : undefined,
+        address: this.address ? this.address : undefined
       })
         .then((response) => {
           const data = response.d
@@ -243,6 +250,9 @@ export default {
 }
 </script>
  <style lang="scss" scoped>
+.filter-item {
+  margin-left: 10px;
+}
 .auth-table {
   .el-button--mini,
   .el-button--mini.is-round {

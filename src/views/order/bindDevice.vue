@@ -88,7 +88,7 @@
         <div>
           <el-row :gutter="20" type="flex" justify="center">
             <el-col :span="12">
-              <el-form-item label="设备" prop="transportId">
+              <el-form-item label="设备">
                 <el-select
                   v-model="orderDetail.deviceId"
                   placeholder="请选择设备"
@@ -106,7 +106,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="车辆" prop="transportId">
+              <el-form-item label="车辆" prop="carId">
                 <el-select
                   v-model="orderDetail.carId"
                   placeholder="请选择车辆"
@@ -127,7 +127,7 @@
           </el-row>
           <el-row :gutter="20" type="flex" justify="center">
             <el-col :span="12">
-              <el-form-item label="司机姓名" prop="customerId">
+              <el-form-item label="司机姓名" prop="driverId">
                 <el-select
                   v-model="orderDetail.driverId"
                   filterable
@@ -256,7 +256,6 @@ export default {
   },
   created() {
     this.orderDetail = getBindDeviceOrderDetail()
-    console.log('%c 🍯 orderDetail', 'color:#2eafb0', this.orderDetail)
 
     this.getDriveListApi()
     this.getCarListApi()

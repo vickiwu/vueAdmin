@@ -3,8 +3,8 @@
     <!-- <small>认证中心-应用管理页面</small> -->
     <div class="filter-container">
       <el-input
-        v-model="userName"
-        placeholder="请输入关键字"
+        v-model="name"
+        placeholder="请输入司机姓名"
         style="width: 200px; margin-right: 10px"
         class="filter-item"
       />
@@ -207,7 +207,7 @@ import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      userName: '',
+      name: '',
       dialogTitle: '新增司机',
       listLoading: false,
       driveFromVisible: false,
@@ -315,7 +315,8 @@ export default {
         pageSize: this.pageSize,
         page: this.page, // 1 y 10
         deptId: this.deptId,
-        companyId: this.companyId
+        companyId: this.companyId,
+        name: this.name ? this.name : undefined
       })
         .then((response) => {
           const data = response.d

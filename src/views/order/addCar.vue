@@ -109,7 +109,7 @@
         <div>
           <el-row :gutter="20" type="flex" justify="center">
             <el-col :span="12">
-              <el-form-item label="司机姓名" prop="customerId">
+              <el-form-item label="司机姓名" prop="driverId">
                 <el-select
                   v-model="orderDetail.driverId"
                   filterable
@@ -159,7 +159,7 @@
 
           <el-row :gutter="20" type="flex" justify="center">
             <el-col :span="12">
-              <el-form-item label="车辆" prop="transportId">
+              <el-form-item label="车辆" prop="carId">
                 <el-select
                   v-model="orderDetail.carId"
                   placeholder="请选择车辆"
@@ -188,7 +188,7 @@
           </el-row>
           <el-row :gutter="20" type="flex" justify="center">
             <el-col :span="12">
-              <el-form-item label="设备" prop="transportId">
+              <el-form-item label="设备">
                 <el-select
                   v-model="orderDetail.deviceId"
                   placeholder="请选择设备"
@@ -307,6 +307,7 @@ export default {
       rules: {
         carId: [{ required: true, message: '请选择车辆', trigger: 'change' }],
         driverId: [
+          // customerId
           { required: true, message: '请选择司机', trigger: 'change' }
         ],
         planLoadTotal: [
@@ -329,8 +330,6 @@ export default {
   },
   created() {
     this.orderDetail = getPcarOrderDetail()
-    console.log('%c 🍆 this.orderDetail', 'color:#b03734', this.orderDetail)
-
     this.getDriveListApi()
     this.getCarListApi()
     this.getDeviceApi()

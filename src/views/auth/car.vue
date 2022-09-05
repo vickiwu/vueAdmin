@@ -3,8 +3,8 @@
     <!-- <small>认证中心-应用管理页面</small> -->
     <div class="filter-container">
       <el-input
-        v-model="userName"
-        placeholder="请输入关键字"
+        v-model="carNo"
+        placeholder="请输入车牌号"
         style="width: 200px; margin-right: 10px"
         class="filter-item"
       />
@@ -192,7 +192,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="11">
-            <el-form-item label="荷载吨数" prop="maxLoad">
+            <el-form-item label="荷载吨数">
               <el-input
                 v-model.number="CarFrom.maxLoad"
                 placeholder="请输入荷载吨数"
@@ -202,7 +202,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="11">
-            <el-form-item label="总重量（kg）" prop="carWeight">
+            <el-form-item label="总重量（kg）">
               <el-input
                 v-model.number="CarFrom.carWeight"
                 placeholder="请输入总重量（kg）"
@@ -210,7 +210,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="11">
-            <el-form-item label="长（m）" prop="carLength">
+            <el-form-item label="长（m）">
               <el-input
                 v-model.number="CarFrom.carLength"
                 placeholder="请输入长（m）"
@@ -220,7 +220,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="11">
-            <el-form-item label="宽（m）" prop="carWide">
+            <el-form-item label="宽（m）">
               <el-input
                 v-model.number="CarFrom.carWide"
                 placeholder="请输入宽（m）"
@@ -228,7 +228,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="11">
-            <el-form-item label="高（m）" prop="carHeight">
+            <el-form-item label="高（m）">
               <el-input
                 v-model.number="CarFrom.carHeight"
                 placeholder="请输入高（m）"
@@ -239,7 +239,7 @@
 
         <el-row :gutter="20">
           <el-col :span="22">
-            <el-form-item label="备注" prop="remark">
+            <el-form-item label="备注">
               <el-input
                 v-model="CarFrom.remark"
                 type="textarea"
@@ -266,7 +266,7 @@ import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      userName: '',
+      carNo: '',
       dialogTitle: '新增车辆',
       listLoading: false,
       CarFromVisible: false,
@@ -410,7 +410,8 @@ export default {
         pageSize: this.pageSize,
         page: this.page, // 1 y 10
         deptId: this.deptId,
-        companyId: this.companyId
+        companyId: this.companyId,
+        carNo: this.carNo ? this.carNo : undefined
       })
         .then((response) => {
           const data = response.d
