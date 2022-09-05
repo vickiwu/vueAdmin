@@ -233,7 +233,7 @@ export default {
 
     openNew() {
       for (const k of Object.keys(this.ruleForm)) {
-        this.ruleForm[k] = null
+        this.ruleForm[k] = undefined
       }
       this.ruleForm.type = 1
     }

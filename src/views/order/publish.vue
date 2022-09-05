@@ -714,19 +714,19 @@ export default {
     },
     resetFrom() {
       for (const k of Object.keys(this.orderForm)) {
-        this.orderForm[k] = null
+        this.orderForm[k] = undefined
       }
       for (const k of Object.keys(this.transportObj)) {
-        this.transportObj[k] = null
+        this.transportObj[k] = undefined
       }
       for (const k of Object.keys(this.customerObj)) {
-        this.customerObj[k] = null
+        this.customerObj[k] = undefined
       }
       for (const k of Object.keys(this.loadAddressObj)) {
-        this.loadAddressObj[k] = null
+        this.loadAddressObj[k] = undefined
       }
       for (const k of Object.keys(this.unLoadAddressObj)) {
-        this.unLoadAddressObj[k] = null
+        this.unLoadAddressObj[k] = undefined
       }
     },
     onSubmit() {

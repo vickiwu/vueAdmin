@@ -188,7 +188,7 @@ export default {
       dialogApply: false,
       list: [{}],
       page: 1,
-      pageSize: 5,
+      pageSize: 10,
       total: 0,
       clientForm: {
         name: '',
@@ -306,8 +306,9 @@ export default {
     },
     openNew() {
       this.dialogFormVisible = true
+      this.dialogTitle = '新增客户'
       for (const k of Object.keys(this.clientForm)) {
-        this.clientForm[k] = ''
+        this.clientForm[k] = undefined
       }
       this.clientForm.type = 1
     },

@@ -434,19 +434,19 @@ export default {
     },
     resetFrom() {
       for (const k of Object.keys(this.orderDetail)) {
-        this.orderDetail[k] = null
+        this.orderDetail[k] = undefined
       }
       for (const k of Object.keys(this.transportObj)) {
-        this.transportObj[k] = null
+        this.transportObj[k] = undefined
       }
       for (const k of Object.keys(this.orderDetail)) {
-        this.orderDetail[k] = null
+        this.orderDetail[k] = undefined
       }
       for (const k of Object.keys(this.carObj)) {
-        this.carObj[k] = null
+        this.carObj[k] = undefined
       }
       for (const k of Object.keys(this.driverObj)) {
-        this.driverObj[k] = null
+        this.driverObj[k] = undefined
       }
     },
     onSubmit() {

@@ -151,7 +151,7 @@ export default {
     },
     formReset() {
       for (const k of Object.keys(this.ruleForm)) {
-        this.ruleForm[k] = null
+        this.ruleForm[k] = undefined
       }
     },
     areaChange(areaValue) {

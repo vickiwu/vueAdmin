@@ -352,7 +352,7 @@ export default {
       this.dialogFormVisible = true
       this.dialogTitle = '新增人员'
       for (const k of Object.keys(this.ruleForm)) {
-        this.ruleForm[k] = null
+        this.ruleForm[k] = undefined
       }
     },
     handelClick(item, row) {
