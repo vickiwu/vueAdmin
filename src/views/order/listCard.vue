@@ -225,7 +225,7 @@
             </el-button>
 
             <el-button
-              v-if="[3, 4, 8].includes(orderType)"
+              v-if="[4, 8].includes(orderType)"
               size="mini"
               @click="handelClick('轨迹', row)"
             >
@@ -241,7 +241,7 @@
             </el-button>
 
             <el-button
-              v-if="[3, 4].includes(orderType) && ![10, 11].includes(roleType)"
+              v-if="[4].includes(orderType) && ![10, 11].includes(roleType)"
               size="mini"
               @click="handelClick('上传回单', row)"
             >
@@ -367,14 +367,14 @@ export default {
     // this.loadTable()
     this.getCustomers()
     switch (this.orderType) {
-      case 3:
       case 4:
-        this.width = 280 // 4个
+        this.width = 260 // 4个
         break
       case 1:
         this.width = 180 // 3个
         break
       case 8:
+      case 3:
         this.width = 200 // 3个
         // this.width = 150 // 2个
         break
@@ -391,7 +391,8 @@ export default {
     timeChange(value) {
       if (value[0] && value[1]) {
         this.beginTime = value[0]
-        this.endTime = value[1]
+        this.endTime = value[1] - 1000
+        this.timeArea = [this.beginTime, this.endTime]
       }
     },
     getCustomers() {

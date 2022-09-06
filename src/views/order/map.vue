@@ -83,7 +83,7 @@
             >
               距离目标地： {{ allDistence }}公里（{{ allTime }}）
             </div>
-            <el-date-picker
+            <!-- <el-date-picker
               v-if="[8, 10].includes(orderDetail.status)"
               v-model="value1"
               type="datetimerange"
@@ -92,7 +92,7 @@
               end-placeholder="结束日期"
               value-format="timestamp"
               @change="timeChange"
-            />
+            /> -->
           </div>
 
           <el-card class="card-bg card-bg-right map_container">
@@ -117,6 +117,8 @@ export default {
   data() {
     return {
       value1: [1661809246000, 1661830846000],
+      startTime: undefined,
+      endTime: undefined,
       hasDetail: false,
       AMap: null,
       mapInstance: null,
@@ -170,7 +172,7 @@ export default {
   },
   watch: {
     lineData(data) {
-      if ([8, 10].includes(this.orderDetail.status)) {
+      if ([4, 8, 10].includes(this.orderDetail.status)) {
         data && this.drawCarLine(data)
       }
     },
@@ -220,6 +222,7 @@ export default {
     } else {
       this.hasDetail = true
       this.orderDetail = currentDetail
+      console.log('%c 🥖 this.orderDetail', 'color:#465975', this.orderDetail)
       switch (this.orderDetail.status) {
         case 1:
           this.orderDetail.statusStr = '待调配'
@@ -229,12 +232,18 @@ export default {
           break
         case 4:
           this.orderDetail.statusStr = '运输中'
+          this.startTime = this.orderDetail.transportTime
+          this.endTime = new Date().getTime()
           break
         case 8:
           this.orderDetail.statusStr = '已送达'
+          this.startTime = this.orderDetail.transportTime
+          this.endTime = this.orderDetail.finishTime
           break
         case 10:
           this.orderDetail.statusStr = '已完结'
+          this.startTime = this.orderDetail.transportTime
+          this.endTime = this.orderDetail.finishTime
           break
         default:
           this.orderDetail.statusStr = '--'
@@ -263,33 +272,33 @@ export default {
       })
       removeMapOrderDetail()
     },
-    timeChange(value) {
-      if (value[0] && value[1]) {
-        if (value[1] - value[0] > 24 * 60 * 60 * 1000) {
-          this.$alert('所选时间区间不能大于24小时，请重新选择', {
-            confirmButtonText: '确定'
-          })
-        } else {
-          this.mapInstance.remove([
-            this.linePolyline,
-            this.lastPoint,
-            this.firstPoint
-          ])
-          if (this.orderDetail.deviceNo) {
-            const deviceObj = {
-              a: this.orderDetail.deviceNo,
-              b: value[0], // kais
-              c: value[1] // 结束时间
-            }
-            // 清空当前线路 重新画
-            this.$store.dispatch('carLog/SOCKET_SEND', {
-              msg: deviceObj,
-              type: [0, 0x0a, 0]
-            })
-          }
-        }
-      }
-    },
+    // timeChange(value) {
+    //   if (value[0] && value[1]) {
+    //     if (value[1] - value[0] > 24 * 60 * 60 * 1000) {
+    //       this.$alert('所选时间区间不能大于24小时，请重新选择', {
+    //         confirmButtonText: '确定'
+    //       })
+    //     } else {
+    //       this.mapInstance.remove([
+    //         this.linePolyline,
+    //         this.lastPoint,
+    //         this.firstPoint
+    //       ])
+    //       if (this.orderDetail.deviceNo) {
+    //         const deviceObj = {
+    //           a: this.orderDetail.deviceNo,
+    //           b: value[0], // kais
+    //           c: value[1] // 结束时间
+    //         }
+    //         // 清空当前线路 重新画
+    //         this.$store.dispatch('carLog/SOCKET_SEND', {
+    //           msg: deviceObj,
+    //           type: [0, 0x0a, 0]
+    //         })
+    //       }
+    //     }
+    //   }
+    // },
     initMap() {
       AMapLoader.load({
         key: '499cf0c29e7adba17f559a42b305d58c', // 申请好的Web端开发者Key，首次调用 load 时必填
@@ -329,7 +338,7 @@ export default {
           })
           if (this.orderDetail.deviceNo) {
             this.sendSocketCar([this.orderDetail.deviceNo])
-            if ([8, 10].includes(this.orderDetail.status)) {
+            if ([4, 8, 10].includes(this.orderDetail.status)) {
               this.sendSocketCarLine(this.orderDetail.deviceNo)
             }
           }
@@ -389,11 +398,11 @@ export default {
       // 结束时间：当前时间，开始时间往前8小时
       // const currentTime = new Date().getTime()
       // const startTime = currentTime - 24 * 60 * 60 * 1000
-      if (this.value1[0] && this.value1[1]) {
+      if (this.startTime && this.endTime) {
         const deviceObj = {
           a: device,
-          b: this.value1[0], // kais
-          c: this.value1[1] // 结束时间
+          b: this.startTime, // kais
+          c: this.endTime // 结束时间
         }
         this.$store.dispatch('carLog/SOCKET_SEND', {
           msg: deviceObj,
