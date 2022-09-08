@@ -222,7 +222,6 @@ export default {
     } else {
       this.hasDetail = true
       this.orderDetail = currentDetail
-      console.log('%c 🥖 this.orderDetail', 'color:#465975', this.orderDetail)
       switch (this.orderDetail.status) {
         case 1:
           this.orderDetail.statusStr = '待调配'

@@ -394,6 +394,7 @@ export default {
       paramsData.costTotal = paramsData.costTotal * 1000
       paramsData.orderId = paramsData.id
       delete paramsData.id
+      paramsData.id = paramsData.carOrderId
       editCarOrder(paramsData)
         .then((response) => {
           Message({
