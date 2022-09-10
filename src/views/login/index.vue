@@ -1,9 +1,9 @@
 <template>
   <div class="login-container">
-    <div class="title-container">
-      <h3 class="title">顺越网络科技</h3>
-    </div>
     <div class="login-form2">
+      <div class="title-container">
+        <h3 class="title">顺越网络科技</h3>
+      </div>
       <el-card class="login-card animation-right">
         <el-form
           ref="loginForm"
@@ -268,14 +268,14 @@ $light_gray: #333333;
   }
 
   .title-container {
-    height: 40px;
-    padding: 5px 20px;
-    margin-bottom: 15px;
-    position: absolute;
-    top: 17%;
-    left: calc(50% - 150px);
-    font-size: 36px;
-    // line-height: 40px;
+    .title {
+      font-size: 36px;
+      margin: 0;
+    }
+    height: 82px;
+    line-height: 82px;
+    // margin-left: 55px;
+    text-align: center;
     .active-line {
       width: 80px;
       height: 3px;
