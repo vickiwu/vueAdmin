@@ -85,7 +85,7 @@ export default {
     return {
       // checked: true,
       loginForm: {
-        phone: '13182811030',
+        phone: '',
         password: undefined
       },
       loginRules: {
