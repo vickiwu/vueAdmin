@@ -24,12 +24,12 @@
               <div class="detail-list">
                 产品名称： {{ orderDetail.msdsName || '-' }}
               </div>
-              <div class="detail-list">
-                产品价格： {{ orderDetail.price || '-' }}
+              <div v-if="orderDetail.price" class="detail-list">
+                产品价格： {{ orderDetail.price }}
               </div>
 
-              <div class="detail-list">
-                车型要求： {{ orderDetail.carNeed || '-' }}
+              <div v-if="orderDetail.carNeed" class="detail-list">
+                车型要求： {{ orderDetail.carNeed }}
               </div>
               <div class="detail-list">
                 车牌号： {{ orderDetail.carNo || '-' }}
@@ -57,14 +57,14 @@
               <div class="detail-list">
                 托运方电话： {{ orderDetail.customerName || '-' }}
               </div>
-              <div class="detail-list">
-                收货方：{{ orderDetail.transportName || '-' }}
+              <div v-if="orderDetail.transportName" class="detail-list">
+                收货方：{{ orderDetail.transportName }}
               </div>
-              <div class="detail-list">
-                收货方联系人： {{ orderDetail.transportContactName || '-' }}
+              <div v-if="orderDetail.transportContactName" class="detail-list">
+                收货方联系人： {{ orderDetail.transportContactName }}
               </div>
-              <div class="detail-list">
-                收货方电话： {{ orderDetail.transportPhone || '-' }}
+              <div v-if="orderDetail.transportPhone" class="detail-list">
+                收货方电话： {{ orderDetail.transportPhone }}
               </div>
               <div class="detail-list">
                 装货地： {{ orderDetail.loadAddress || '-' }}

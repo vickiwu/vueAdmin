@@ -1,66 +1,70 @@
 <template>
   <div class="login-container">
-    <el-card class="login-card animation-right">
-      <div>顺越网络科技</div>
-      <el-form
-        ref="loginForm"
-        :model="loginForm"
-        :rules="loginRules"
-        class="login-form"
-        auto-complete="on"
-        label-position="top"
-        label-width="80px"
-      >
-        <el-form-item prop="phone" label="手机号：">
-          <span class="svg-container">
-            <svg-icon icon-class="user" />
-          </span>
-          <el-input
-            ref="phone"
-            v-model="loginForm.phone"
-            placeholder="请输入手机号"
-            name="phone"
-            type="text"
-            tabindex="1"
-            auto-complete="on"
-          />
-        </el-form-item>
-
-        <el-form-item prop="password" label="密码：">
-          <span class="svg-container">
-            <svg-icon icon-class="password" />
-          </span>
-          <el-input
-            :key="passwordType"
-            ref="password"
-            v-model="loginForm.password"
-            :type="passwordType"
-            placeholder="请输入密码"
-            name="password"
-            tabindex="2"
-            auto-complete="on"
-            @keyup.enter.native="handleLogin"
-          />
-          <span class="show-pwd" @click="showPwd">
-            <svg-icon
-              :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
+    <div class="title-container">
+      <h3 class="title">顺越网络科技</h3>
+    </div>
+    <div class="login-form2">
+      <el-card class="login-card animation-right">
+        <el-form
+          ref="loginForm"
+          :model="loginForm"
+          :rules="loginRules"
+          class="login-form"
+          auto-complete="on"
+          label-position="top"
+          label-width="80px"
+        >
+          <el-form-item prop="phone" label="手机号：">
+            <span class="svg-container">
+              <svg-icon icon-class="user" />
+            </span>
+            <el-input
+              ref="phone"
+              v-model="loginForm.phone"
+              placeholder="请输入手机号"
+              name="phone"
+              type="text"
+              tabindex="1"
+              auto-complete="on"
             />
-          </span>
-        </el-form-item>
+          </el-form-item>
 
-        <!-- <div class="remember-pwd">
+          <el-form-item prop="password" label="密码：">
+            <span class="svg-container">
+              <svg-icon icon-class="password" />
+            </span>
+            <el-input
+              :key="passwordType"
+              ref="password"
+              v-model="loginForm.password"
+              :type="passwordType"
+              placeholder="请输入密码"
+              name="password"
+              tabindex="2"
+              auto-complete="on"
+              @keyup.enter.native="handleLogin"
+            />
+            <span class="show-pwd" @click="showPwd">
+              <svg-icon
+                :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
+              />
+            </span>
+          </el-form-item>
+
+          <!-- <div class="remember-pwd">
           <el-checkbox v-model="checked">记住密码</el-checkbox>
         </div> -->
-        <el-button
-          :loading="loading"
-          type="primary"
-          style="width: 100%; margin: 10px 0 10px 0"
-          @click.native.prevent="handleLogin"
-        >
-          登录
-        </el-button>
-      </el-form>
-    </el-card>
+          <el-button
+            :loading="loading"
+            type="primary"
+            style="width: 100%; margin: 10px 0 10px 0"
+            @click.native.prevent="handleLogin"
+          >
+            登录
+          </el-button>
+        </el-form>
+      </el-card>
+    </div>
   </div>
 </template>
 
@@ -209,7 +213,6 @@ $light_gray: #333333;
   display: flex;
   align-items: center;
   justify-content: center;
-
   .el-form-item__label {
     padding: 0;
   }
@@ -222,6 +225,7 @@ $light_gray: #333333;
       padding: 5px 0px;
       margin: 0 auto;
       overflow: hidden;
+
       .el-row .el-form-item {
         margin-bottom: 10px;
       }
@@ -267,6 +271,10 @@ $light_gray: #333333;
     height: 40px;
     padding: 5px 20px;
     margin-bottom: 15px;
+    position: absolute;
+    top: 17%;
+    left: calc(50% - 150px);
+    font-size: 36px;
     // line-height: 40px;
     .active-line {
       width: 80px;

@@ -107,12 +107,18 @@
           <span>{{ row.customerName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="客户" align="left" header-align="center">
+      <el-table-column
+        v-if="![10, 11].includes(roleType)"
+        label="客户"
+        align="left"
+        header-align="center"
+      >
         <template slot-scope="{ row }">
           <span>{{ row.customerContactName }}</span>
         </template>
       </el-table-column>
       <el-table-column
+        v-if="![10, 11].includes(roleType)"
         label="客户电话"
         width="120"
         align="left"
@@ -153,7 +159,12 @@
           <span>{{ row.unLoadAddress }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="车型要求" align="left" header-align="center">
+      <el-table-column
+        v-if="![10, 11].includes(roleType)"
+        label="车型要求"
+        align="left"
+        header-align="center"
+      >
         <template slot-scope="{ row }">
           <span>{{ row.carNeed }}</span>
         </template>
