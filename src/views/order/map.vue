@@ -172,7 +172,7 @@ export default {
   },
   watch: {
     lineData(data) {
-      if ([4, 8, 10].includes(this.orderDetail.status)) {
+      if ([8, 10].includes(this.orderDetail.status)) {
         data && this.drawCarLine(data)
       }
     },
@@ -238,11 +238,17 @@ export default {
           this.orderDetail.statusStr = '已送达'
           this.startTime = this.orderDetail.transportTime
           this.endTime = this.orderDetail.finishTime
+            ? this.orderDetail.finishTime
+            : new Date().getTime()
+
           break
         case 10:
           this.orderDetail.statusStr = '已完结'
           this.startTime = this.orderDetail.transportTime
+          // this.endTime = this.orderDetail.finishTime
           this.endTime = this.orderDetail.finishTime
+            ? this.orderDetail.finishTime
+            : new Date().getTime()
           break
         default:
           this.orderDetail.statusStr = '--'
@@ -337,7 +343,7 @@ export default {
           })
           if (this.orderDetail.deviceNo) {
             this.sendSocketCar([this.orderDetail.deviceNo])
-            if ([4, 8, 10].includes(this.orderDetail.status)) {
+            if ([8, 10].includes(this.orderDetail.status)) {
               this.sendSocketCarLine(this.orderDetail.deviceNo)
             }
           }
