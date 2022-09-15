@@ -81,7 +81,8 @@
               v-if="![8, 10].includes(orderDetail.status)"
               class="detail-top-dis"
             >
-              距离目标地： {{ allDistence }}公里（{{ allTime }}）
+              距离目标地： {{ allDistence }}公里（{{ allTime }}） 当前速度：
+              {{ speed }}
             </div>
             <!-- <el-date-picker
               v-if="[8, 10].includes(orderDetail.status)"
@@ -141,11 +142,18 @@ export default {
       carEventData: 'carLog/carEventData',
       lineData: 'carLog/lineData'
     }),
+    speed() {
+      if (this.currentCarData) {
+        return this.currentCarData.d + '公里/小时'
+      } else {
+        return 0 + '公里/小时'
+      }
+    },
     allTime() {
       if (!this.orderDetail.deviceNo) {
         return '未绑定设备'
       }
-      if (this.currentCarData && this.currentCarData.f === 2) {
+      if (this.currentCarData && this.currentCarData.g === 2) {
         return '当前设备已离线'
       }
 
@@ -153,7 +161,8 @@ export default {
         return '--'
       } else {
         // 速度按60算
-        const time = (this.allDistence / 60).toFixed(2)
+        const currentSpeed = this.currentCarData.d ? this.currentCarData.d : 60
+        const time = (this.allDistence / currentSpeed).toFixed(2)
         if (parseInt(time) === 0) {
           return (
             Math.round((Number(time.substring(time.length - 2)) / 100) * 60) +
@@ -470,7 +479,7 @@ export default {
       //   content: markHtml, //设置文本标注内容
       //   direction: "top", //设置文本标注方位
       // });
-      // this.mapInstance.setFitView();
+      this.mapInstance.setFitView()
       return [marker, text]
     }
   }
