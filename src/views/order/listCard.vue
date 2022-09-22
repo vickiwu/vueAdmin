@@ -252,7 +252,7 @@
             </el-button>
 
             <el-button
-              v-if="[4].includes(orderType) && ![10, 11].includes(roleType)"
+              v-if="[4, 8].includes(orderType) && ![10, 11].includes(roleType)"
               size="mini"
               @click="handelClick('上传回单', row)"
             >
@@ -384,13 +384,15 @@ export default {
       case 1:
         this.width = 180 // 3个
         break
-      case 8:
       case 3:
         this.width = 200 // 3个
         // this.width = 150 // 2个
         break
       case 10:
         this.width = 100 // 1个
+        break
+      case 8:
+        this.width = 280 // 4个
         break
       default:
         this.width = 70

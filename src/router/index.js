@@ -53,7 +53,7 @@ export const constantRoutes = [{
   children: [{
     'path': '/index',
     name: 'Dashboard',
-    component: () => import('@/views/dashboard/indexBg'), // 父级 router-view ,
+    component: () => import('@/views/dashboard/map'), // 父级 router-view ,
     'meta': {
       'affix': true,
       'title': '首页'

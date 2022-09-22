@@ -366,13 +366,13 @@ export default {
       if (+type === 1) {
         const startIcon = new AMap.Icon({
           size: new AMap.Size(24, 24),
-          image: require('./img/chu.png')
+          image: require('@/assets/mapImg/chu.png')
         })
         marker.setIcon(startIcon)
       } else if (+type === 2) {
         const endIcon = new AMap.Icon({
           size: new AMap.Size(24, 24),
-          image: require('./img/shou.png'),
+          image: require('@/assets/mapImg/shou.png'),
           imageSize: new AMap.Size(24, 24)
         })
         marker.setIcon(endIcon)
@@ -440,7 +440,7 @@ export default {
     },
     drawCarMark(drivceId, carLngLat, angle) {
       const markHtml2 = `<div class="bg-car2" >${this.orderDetail.carNo}</div>`
-      const img = require('./img/carPng2.png')
+      const img = require('@/assets/mapImg/carPng2.png')
       // 创建一个 Icon
       var startIcon = new this.AMap.Icon({
         // 图标尺寸
@@ -558,7 +558,7 @@ export default {
   line-height: 23px;
   // background: #0d1b36;
   // background: #4385ff;
-  background: url('./img/carBg2.png') no-repeat;
+  background: url('../../assets/mapImg/carBg2.png') no-repeat;
   background-size: 100% 100%;
   border-radius: 2px;
 }
