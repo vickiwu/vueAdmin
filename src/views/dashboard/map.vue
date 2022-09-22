@@ -19,7 +19,6 @@ export default {
     return {
       startTime: undefined,
       endTime: undefined,
-      hasDetail: false,
       AMap: null,
       mapInstance: null,
       mapLoading: true,
@@ -29,7 +28,6 @@ export default {
       carMap: new Map(),
       carMarkerMap: new Map(),
       allOrderList: [],
-      paramsType: undefined,
       linePolyline: null,
       lastPoint: null,
       firstPoint: null
@@ -87,15 +85,13 @@ export default {
     }
   },
 
-  created() {
-    // 获取运输中的设备
-    this.loadTable()
-  },
+  created() {},
   mounted() {
+    this.mapLoading = true
     this.initMap()
   },
   destroyed() {
-    this.hasDetail && this.$store.dispatch('carLog/CLOSE_SOCKED')
+    this.$store.dispatch('carLog/CLOSE_SOCKED')
   },
   methods: {
     loadTable() {
@@ -126,6 +122,11 @@ export default {
           this.deviceList = data.map((item) => {
             return item.deviceNo
           })
+          if (this.deviceList.length > 0) {
+            this.sendSocketCar(this.deviceList)
+            // 行车日志
+            //   this.sendSocketCarLine(this.orderDetail.deviceNo)
+          }
           this.mapLoading = false
         })
         .catch((error) => error)
@@ -148,6 +149,11 @@ export default {
           this.deviceList = data.map((item) => {
             return item.deviceNo
           })
+          if (this.deviceList.length > 0) {
+            this.sendSocketCar(this.deviceList)
+            // 行车日志
+            //   this.sendSocketCarLine(this.orderDetail.deviceNo)
+          }
           this.mapLoading = false
         })
         .catch((error) => error)
@@ -195,12 +201,8 @@ export default {
             msg: 'login',
             type: [0, 1, 0]
           })
-          if (this.deviceList) {
-            this.sendSocketCar(this.deviceList)
-            // 行车日志
-            //   this.sendSocketCarLine(this.orderDetail.deviceNo)
-          }
-
+          // 获取运输中的设备
+          this.loadTable()
           // let myView = toView(obj, 0, 0x0a, 0); // 发送给websocket
         })
     },
