@@ -289,11 +289,19 @@ import {
 import { mapGetters } from 'vuex'
 import { getPeopleList } from '../../api/people'
 // import ElSelectTree from 'el-select-tree'
+import { isPhone } from '@/utils/validate.js'
 export default {
   components: {
     // ElSelectTree
   },
   data() {
+    const validatePhone = (rule, value, callback) => {
+      if (!isPhone(value)) {
+        callback(new Error('手机号码格式不正确'))
+      } else {
+        callback()
+      }
+    }
     return {
       dialogFormVisible: false,
       dialogTitle: '新增人员',
@@ -328,7 +336,14 @@ export default {
       },
       rulesPeople: {
         userName: [{ required: true, message: '请输入名称', trigger: 'blur' }],
-        phone: [{ required: true, message: '请输入手机号', trigger: 'blur' }],
+        phone: [
+          {
+            required: true,
+            message: '请输入正确手机号',
+            trigger: 'change',
+            validator: validatePhone
+          }
+        ],
         deptId: [{ required: true, message: '请选择部门', trigger: 'change' }],
         roleId: [{ required: true, message: '请选择角色', trigger: 'change' }]
       },

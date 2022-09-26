@@ -30,7 +30,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="11">
-          <el-form-item label="手机号">
+          <el-form-item label="手机号" prop="unLoadAddressContactPhone">
             <el-input
               v-model="ruleForm.unLoadAddressContactPhone"
               placeholder="请输入联系人手机号"
@@ -80,9 +80,17 @@
 import { pca, pcaa } from 'area-data' // v5 or higher
 import AMapLoader from '@amap/amap-jsapi-loader'
 import { mapGetters } from 'vuex'
+import { isPhone } from '@/utils/validate.js'
 export default {
   components: {},
   data() {
+    const validatePhone = (rule, value, callback) => {
+      if (!isPhone(value)) {
+        callback(new Error('手机号码格式不正确'))
+      } else {
+        callback()
+      }
+    }
     return {
       mapLoading: true,
       mapInstance: null,
@@ -116,7 +124,12 @@ export default {
         ],
 
         unLoadAddressContactPhone: [
-          { required: true, message: '请输入联系人电话', trigger: 'blur' }
+          {
+            required: false,
+            message: '请输入正确的手机号',
+            trigger: 'change',
+            validator: validatePhone
+          }
         ]
       }
     }

@@ -127,7 +127,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="司机手机号">
+              <el-form-item label="司机手机号" prop="driverPhone">
                 <el-input
                   v-model="orderDetail.driverPhone"
                   :disabled="true"
@@ -246,9 +246,17 @@ import { addCarOrder, getDevice } from '@/api/carOrder'
 import { getPcarOrderDetail, removePcarOrderDetail } from '@/utils/auth'
 import { getCarList, getDriveList } from '@/api/people'
 import { mapGetters } from 'vuex'
+import { isPhone } from '@/utils/validate.js'
 export default {
   components: {},
   data() {
+    const validatePhone = (rule, value, callback) => {
+      if (!isPhone(value)) {
+        callback(new Error('手机号码格式不正确'))
+      } else {
+        callback()
+      }
+    }
     return {
       carObj: {
         typeStr: null,
@@ -309,6 +317,30 @@ export default {
         driverId: [
           // customerId
           { required: true, message: '请选择司机', trigger: 'change' }
+        ],
+        customerPhone: [
+          {
+            required: false,
+            message: '请输入正确手机号',
+            trigger: 'change',
+            validator: validatePhone
+          }
+        ],
+        transportPhone: [
+          {
+            required: false,
+            message: '请输入正确手机号',
+            trigger: 'change',
+            validator: validatePhone
+          }
+        ],
+        driverPhone: [
+          {
+            required: false,
+            message: '请输入正确手机号',
+            trigger: 'change',
+            validator: validatePhone
+          }
         ],
         planLoadTotal: [
           { required: true, message: '请输入计划装货吨数', trigger: 'blur' }

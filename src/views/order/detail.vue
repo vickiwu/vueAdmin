@@ -114,7 +114,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="托运方手机号">
+              <el-form-item label="托运方手机号" prop="customerPhone">
                 <el-input
                   v-model="orderForm.customerPhone"
                   :disabled="true"
@@ -271,7 +271,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="联系人电话">
+              <el-form-item label="联系人电话" prop="loadAddressContactPhone">
                 <el-input
                   v-model="orderForm.loadAddressContactPhone"
                   placeholder="请输入联系人电话"
@@ -370,7 +370,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="联系人电话">
+              <el-form-item label="联系人电话" prop="unLoadAddressContactPhone">
                 <el-input
                   v-model="orderForm.unLoadAddressContactPhone"
                   placeholder="联系人电话"
@@ -414,9 +414,17 @@ import { getAreaList, getClientList } from '@/api/people'
 import { getEditOrderDetail, removeEditOrderDetail } from '@/utils/auth'
 import { Message } from 'element-ui'
 import { mapGetters } from 'vuex'
+import { isPhone } from '@/utils/validate.js'
 export default {
   components: {},
   data() {
+    const validatePhone = (rule, value, callback) => {
+      if (!isPhone(value)) {
+        callback(new Error('手机号码格式不正确'))
+      } else {
+        callback()
+      }
+    }
     return {
       loadAddressObj: {
         addrOne: null,
@@ -516,6 +524,30 @@ export default {
         unLoadAddressContactPhone: ''
       },
       rules: {
+        loadAddressContactPhone: [
+          {
+            required: false,
+            message: '请输入正确的手机号',
+            trigger: 'change',
+            validator: validatePhone
+          }
+        ],
+        unLoadAddressContactPhone: [
+          {
+            required: false,
+            message: '请输入正确的手机号',
+            trigger: 'change',
+            validator: validatePhone
+          }
+        ],
+        customerPhone: [
+          {
+            required: false,
+            message: '请输入正确的手机号',
+            trigger: 'change',
+            validator: validatePhone
+          }
+        ],
         customerId: [
           { required: true, message: '请选择托运方', trigger: 'change' }
         ],

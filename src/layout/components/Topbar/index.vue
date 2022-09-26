@@ -144,7 +144,9 @@ export default {
         newPassword2: ''
       },
       rulesPwd: {
-        phone: [{ required: true, trigger: 'blur', validator: validatePhone }],
+        phone: [
+          { required: true, trigger: 'change', validator: validatePhone }
+        ],
         password: [
           { required: true, trigger: 'blur', validator: validatePassword }
         ],

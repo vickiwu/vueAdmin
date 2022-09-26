@@ -69,16 +69,18 @@
 </template>
 
 <script>
+import { isPhone } from '@/utils/validate.js'
 export default {
   name: 'Login',
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (value.length < 1) {
-        callback(new Error('手机号不能为空'))
+    const validatePhone = (rule, value, callback) => {
+      if (!isPhone(value)) {
+        callback(new Error('手机号码格式不正确'))
       } else {
         callback()
       }
     }
+
     const validatePassword = (rule, value, callback) => {
       if (value.length < 1) {
         callback(new Error('密码不能为空'))
@@ -95,7 +97,7 @@ export default {
       },
       loginRules: {
         phone: [
-          { required: true, trigger: 'blur', validator: validateUsername }
+          { required: true, trigger: 'change', validator: validatePhone }
         ],
         password: [
           { required: true, trigger: 'blur', validator: validatePassword }

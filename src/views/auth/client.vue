@@ -177,9 +177,16 @@
 import { getClientList, addClient, editClient, delClient } from '@/api/people'
 import { Message } from 'element-ui'
 import { mapGetters } from 'vuex'
-
+import { isPhone } from '@/utils/validate.js'
 export default {
   data() {
+    const validatePhone = (rule, value, callback) => {
+      if (!isPhone(value)) {
+        callback(new Error('手机号码格式不正确'))
+      } else {
+        callback()
+      }
+    }
     return {
       name: '',
       listLoading: false,
@@ -203,7 +210,12 @@ export default {
           { required: true, message: '请输入联系人姓名', trigger: 'blur' }
         ],
         contactPhone: [
-          { required: true, message: '请输入联系人手机号', trigger: 'blur' }
+          {
+            required: true,
+            message: '请输入正确的手机号',
+            trigger: 'change',
+            validator: validatePhone
+          }
         ],
         address: [
           { required: true, message: '请输入联系人地址', trigger: 'blur' }

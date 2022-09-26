@@ -204,8 +204,16 @@
 import { getDriveList, addDriver, editDriver, delDriver } from '@/api/people'
 import { Message } from 'element-ui'
 import { mapGetters } from 'vuex'
+import { isPhone } from '@/utils/validate.js'
 export default {
   data() {
+    const validatePhone = (rule, value, callback) => {
+      if (!isPhone(value)) {
+        callback(new Error('手机号码格式不正确'))
+      } else {
+        callback()
+      }
+    }
     return {
       name: '',
       dialogTitle: '新增司机',
@@ -227,7 +235,14 @@ export default {
       },
       rules: {
         name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
-        phone: [{ required: true, message: '请输入手机号', trigger: 'blur' }],
+        phone: [
+          {
+            required: true,
+            message: '请输入手机号',
+            trigger: 'change',
+            validator: validatePhone
+          }
+        ],
         idcard: [{ required: true, message: '请输入身份证', trigger: 'blur' }]
       }
     }
