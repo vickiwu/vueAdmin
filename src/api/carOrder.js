@@ -61,3 +61,11 @@ export function getDevice(data) {
     data
   })
 }
+// 订单删除(仅限唯一超管)
+export function delOrderByOrderNo(data) {
+  return request({
+    url: '/wl/?md=081&cmd=045',
+    method: 'post',
+    data
+  })
+}

@@ -205,7 +205,7 @@
         v-if="![0].includes(orderType)"
         label="操作"
         fixed="right"
-        :width="width"
+        :width="width + 40"
         align="right"
         header-align="center"
       >
@@ -276,6 +276,14 @@
             >
               删除
             </el-button>
+            <el-button
+              v-if="[1].includes(roleType)"
+              size="mini"
+              type="danger"
+              @click="handelClick('删除订单', row)"
+            >
+              删除订单
+            </el-button>
           </div>
         </template>
       </el-table-column>
@@ -322,7 +330,12 @@
 <script>
 import { getOrderList, getOrderListCustom, delOrder } from '@/api/order'
 
-import { getCarOrderList, shangCarOrder, finishOrder } from '@/api/carOrder'
+import {
+  getCarOrderList,
+  shangCarOrder,
+  finishOrder,
+  delOrderByOrderNo
+} from '@/api/carOrder'
 import { getClientList } from '@/api/people'
 import { parseTime } from '@/utils'
 import {
@@ -379,23 +392,23 @@ export default {
     this.getCustomers()
     switch (this.orderType) {
       case 4:
-        this.width = 260 // 4个
+        this.width = 300 // 4个
         break
       case 1:
-        this.width = 180 // 3个
+        this.width = 220 // 3个
         break
       case 3:
-        this.width = 200 // 3个
+        this.width = 240 // 3个
         // this.width = 150 // 2个
         break
       case 10:
-        this.width = 100 // 1个
+        this.width = 140 // 1个
         break
       case 8:
-        this.width = 280 // 4个
+        this.width = 320 // 4个
         break
       default:
-        this.width = 70
+        this.width = 110
         break
     }
   },
@@ -534,6 +547,27 @@ export default {
           this.$confirm('确认删除吗？')
             .then((_) => {
               delOrder({ id: row.id })
+                .then((response) => {
+                  Message({
+                    message: response.m || '删除成功',
+                    type: 'success',
+                    duration: 2 * 1000
+                  })
+
+                  this.loadTable()
+                })
+                .catch((error) => {
+                  console.log(error, 'eee')
+                })
+            })
+            .catch((_) => {
+              console.log(_, '取消删除了')
+            })
+          break
+        case '删除订单':
+          this.$confirm('确认删除吗？')
+            .then((_) => {
+              delOrderByOrderNo({ orderNo: row.orderNo, userId: this.userId })
                 .then((response) => {
                   Message({
                     message: response.m || '删除成功',

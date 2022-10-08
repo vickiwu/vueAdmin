@@ -419,7 +419,7 @@ export default {
   components: {},
   data() {
     const validatePhone = (rule, value, callback) => {
-      if (!isPhone(value)) {
+      if (value && !isPhone(value)) {
         callback(new Error('手机号码格式不正确'))
       } else {
         callback()
