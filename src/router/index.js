@@ -298,7 +298,7 @@ export const asyncRoutes = [
       'path': '/order/publish',
       component: () => import('@/views/order/publish'),
       'meta': {
-        roles: [1, 2, 3],
+        roles: [1, 2, 3, 10, 11],
         'icon': 'el-icon-menu',
         'affix': false,
         'permission': [

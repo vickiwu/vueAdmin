@@ -1,6 +1,12 @@
 <template>
   <div class="list-card">
     <div class="filter-container">
+      <el-input
+        v-model="orderNo"
+        placeholder="请输入订单编号"
+        clearable
+        @clear="loadTable()"
+      />
       <el-select
         v-model="customerName"
         placeholder="请选择托运方"
@@ -8,6 +14,7 @@
         class="custom-input"
         clearable
         @change="customerIdChange"
+        @clear="loadTable()"
       >
         <el-option
           v-for="item in customers"
@@ -380,7 +387,8 @@ export default {
       customers: [],
       customerName: null,
       beginTime: null,
-      endTime: null
+      endTime: null,
+      orderNo: null
     }
   },
   computed: {
@@ -414,10 +422,14 @@ export default {
   mounted() {},
   methods: {
     timeChange(value) {
-      if (value[0] && value[1]) {
+      if (value && value[0] && value[1]) {
         this.beginTime = value[0]
         this.endTime = value[1] - 1000
         this.timeArea = [this.beginTime, this.endTime]
+      } else {
+        this.beginTime = undefined
+        this.endTime = undefined
+        this.timeArea = []
       }
     },
     getCustomers() {
@@ -470,6 +482,7 @@ export default {
 
     loadCustomTable() {
       getOrderListCustomPublish({
+        orderNo: this.orderNo ? this.orderNo : undefined,
         pageSize: this.pageSize,
         page: this.page, // 1 y 10
         deptId: this.deptId,
@@ -645,6 +658,10 @@ export default {
   line-height: 40px;
   display: flex;
   align-items: center;
+  .el-input {
+    width: 220px;
+    margin-right: 10px;
+  }
 }
 .custom-input {
   margin-right: 10px;
