@@ -598,7 +598,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['companyId', 'deptId', 'userId', 'userName'])
+    ...mapGetters(['companyId', 'deptId', 'userId', 'userName', 'roleType'])
   },
   created() {
     this.getCustomers()
@@ -781,7 +781,8 @@ export default {
           userId: this.userId,
           companyId: this.companyId,
           deptId: this.deptId,
-          userName: this.userName
+          userName: this.userName,
+          publishUserType: [10, 11].includes(this.roleType) ? 2 : 1
         },
         this.orderForm
       )

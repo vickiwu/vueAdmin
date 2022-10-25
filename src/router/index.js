@@ -333,6 +333,25 @@ export const asyncRoutes = [
       'id': 63
     },
     {
+      'path': '/order/listCustom',
+      component: () => import('@/views/order/listCustom'),
+      'meta': {
+        'icon': 'el-icon-menu',
+        'affix': false,
+        roles: [1, 10, 11, 2, 3],
+        'permission': [
+          'order:org:dept',
+          'order:org:user',
+          'order:org:add',
+          'order:org:insert',
+          'order:org:update',
+          'order:org:del'
+        ],
+        'title': '客户发布订单'
+      },
+      'name': 'listCustom'
+    },
+    {
       'path': '/order/addCar',
       component: () => import('@/views/order/addCar'),
       'meta': {

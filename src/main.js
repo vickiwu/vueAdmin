@@ -20,7 +20,11 @@ Vue.config.silent = true
 
 import '@/icons'
 import '@/permission'
-import axios from 'axios'
+// import axios from 'axios'
+const axios = require('axios')
+
+// 使用前设置
+axios.defaults.adapter = require('axios/lib/adapters/http')
 Vue.prototype.$http = axios
 // 挂载vue原型链
 Vue.prototype.$setWs = wsConnection

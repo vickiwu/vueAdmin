@@ -365,15 +365,28 @@ export default {
       const marker = new AMap.Marker()
       if (+type === 1) {
         const startIcon = new AMap.Icon({
-          size: new AMap.Size(24, 24),
-          image: require('@/assets/mapImg/chu.png')
+          // size: new AMap.Size(24, 24),
+          // image: require('@/assets/mapImg/chu.png')
+          size: new AMap.Size(25, 34),
+          // 图标的取图地址
+          image:
+            '//a.amap.com/jsapi_demos/static/demo-center/icons/dir-marker.png',
+          // 图标所用图片大小
+          imageSize: new AMap.Size(135, 40),
+          // 图标取图偏移量
+          imageOffset: new AMap.Pixel(-9, -3)
         })
         marker.setIcon(startIcon)
       } else if (+type === 2) {
         const endIcon = new AMap.Icon({
-          size: new AMap.Size(24, 24),
-          image: require('@/assets/mapImg/shou.png'),
-          imageSize: new AMap.Size(24, 24)
+          // size: new AMap.Size(24, 24),
+          // image: require('@/assets/mapImg/shou.png'),
+          // imageSize: new AMap.Size(24, 24)
+          size: new AMap.Size(25, 34),
+          image:
+            '//a.amap.com/jsapi_demos/static/demo-center/icons/dir-marker.png',
+          imageSize: new AMap.Size(135, 40),
+          imageOffset: new AMap.Pixel(-95, -3)
         })
         marker.setIcon(endIcon)
       }
@@ -440,22 +453,22 @@ export default {
     },
     drawCarMark(drivceId, carLngLat, angle) {
       const markHtml2 = `<div class="bg-car2" >${this.orderDetail.carNo}</div>`
-      const img = require('@/assets/mapImg/carPng2.png')
+      const img = require('@/assets/mapImg/car.png')
       // 创建一个 Icon
       var startIcon = new this.AMap.Icon({
         // 图标尺寸
-        size: new AMap.Size(24, 24),
+        size: new AMap.Size(26, 52),
         // 图标的取图地址
         image: img,
         // 图标所用图片大小
-        imageSize: new AMap.Size(24, 24)
+        imageSize: new AMap.Size(26, 52)
         // 图标取图偏移量
       })
       const marker = new AMap.Marker({
         position: new AMap.LngLat(...carLngLat.split(',')),
         icon: startIcon, // 添加 Icon 图标 URL
         title: `${this.orderDetail.carNo}`,
-        offset: new AMap.Pixel(-9, -9),
+        offset: new AMap.Pixel(-13, -26),
         angle,
         autoRotation: true
       })
@@ -472,6 +485,7 @@ export default {
         text: markHtml2,
         position: new AMap.LngLat(...carLngLat.split(',')),
         anchor: 'top-left'
+        // offset: new AMap.Pixel(-10, -20)
       })
       this.mapInstance.add(text)
       // 设置label标签

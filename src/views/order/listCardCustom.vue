@@ -2,22 +2,6 @@
   <div class="list-card">
     <div class="filter-container">
       <el-select
-        v-if="![10, 11].includes(orderType)"
-        v-model="publishUserType"
-        placeholder="请选择订单来源"
-        filterable
-        class="custom-input"
-        clearable
-        @change="publishUserTypeChange"
-      >
-        <el-option
-          v-for="item in publishUserTypes"
-          :key="item.id"
-          :label="item.name"
-          :value="item.id"
-        />
-      </el-select>
-      <el-select
         v-model="customerName"
         placeholder="请选择托运方"
         filterable
@@ -343,7 +327,7 @@
   </div>
 </template>
 <script>
-import { getOrderList, getOrderListCustom, delOrder } from '@/api/order'
+import { getOrderListCustomPublish, delOrder } from '@/api/order'
 
 import {
   getCarOrderList,
@@ -363,7 +347,7 @@ import { Message } from 'element-ui'
 import { mapGetters } from 'vuex'
 import { HIGH_IMG_URL, FILE_UPLOAD } from '@/settings'
 export default {
-  name: 'ListCard',
+  name: 'ListCardCustom',
   components: {},
   filters: {
     parseTime
@@ -394,22 +378,7 @@ export default {
       FILE_UPLOAD,
       currentCarOrderId: null,
       customers: [],
-      publishUserTypes: [
-        {
-          name: '全部',
-          id: 0
-        },
-        {
-          name: '部门发单',
-          id: 1
-        },
-        {
-          name: '客户发单',
-          id: 2
-        }
-      ],
       customerName: null,
-      publishUserType: null,
       beginTime: null,
       endTime: null
     }
@@ -468,9 +437,6 @@ export default {
         }
       })
     },
-    publishUserTypeChange(val) {
-      this.publishUserType = val
-    },
     customerIdChange(val) {
       this.customerName = val
     },
@@ -499,40 +465,11 @@ export default {
       })
     },
     loadTable() {
-      switch (this.roleType) {
-        case 10:
-        case 11:
-          this.loadCustomTable()
-          break
-        default:
-          this.loadOrderTable()
-          break
-      }
+      this.loadCustomTable()
     },
-    loadOrderTable() {
-      getOrderList({
-        pageSize: this.pageSize,
-        page: this.page, // 1 y 10
-        deptId: this.deptId,
-        companyId: this.companyId,
-        status: this.orderType ? +this.orderType : undefined,
-        customerName: this.customerName ? this.customerName : undefined,
-        publishUserType: this.publishUserType
-          ? this.publishUserType
-          : undefined,
-        beginTime: this.beginTime ? this.beginTime : undefined,
-        endTime: this.endTime ? this.endTime : undefined
-      })
-        .then((response) => {
-          const data = response.d
-          this.list = data
-          this.total = response.z
-          this.listLoading = false
-        })
-        .catch((error) => error)
-    },
+
     loadCustomTable() {
-      getOrderListCustom({
+      getOrderListCustomPublish({
         pageSize: this.pageSize,
         page: this.page, // 1 y 10
         deptId: this.deptId,

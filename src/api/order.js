@@ -21,6 +21,13 @@ export function getOrderListCustom(data) {
     data
   })
 }
+export function getOrderListCustomPublish(data) {
+  return request({
+    url: '/wl/?md=081&cmd=046',
+    method: 'post',
+    data
+  })
+}
 export function delOrder(data) {
   return request({
     url: '/wl/?md=081&cmd=033',

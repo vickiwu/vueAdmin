@@ -2,7 +2,7 @@
   <div class="login-container">
     <div class="login-form2">
       <div class="title-container">
-        <h3 class="title">顺越网络科技</h3>
+        <h3 class="title">江苏顺越物流</h3>
       </div>
       <el-card class="login-card animation-right">
         <el-form
@@ -64,6 +64,12 @@
           </el-button>
         </el-form>
       </el-card>
+    </div>
+    <div class="login-bottom">
+      Copyright © 2022 江苏顺越物流有限责任公司 版权所有
+      <a href="https://beian.miit.gov.cn" target="_blank">
+        苏ICP备2022035669号-1
+      </a>
     </div>
   </div>
 </template>
@@ -165,6 +171,11 @@ $cursor: #333333;
     background: none !important;
     color: $cursor;
   }
+}
+.login-bottom {
+  position: absolute;
+  bottom: 70px;
+  color: #6f7b96;
 }
 
 .login-container {
