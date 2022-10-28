@@ -17,6 +17,7 @@
               <el-form-item label="订单编号">
                 <el-input
                   v-model="orderForm.orderNo"
+                  :disabled="[10, 11].includes(roleType)"
                   placeholder="请输入订单编号"
                 />
               </el-form-item>

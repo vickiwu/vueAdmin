@@ -338,7 +338,7 @@ export const asyncRoutes = [
       'meta': {
         'icon': 'el-icon-menu',
         'affix': false,
-        roles: [1, 10, 11, 2, 3],
+        roles: [1, 2, 3],
         'permission': [
           'order:org:dept',
           'order:org:user',

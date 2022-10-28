@@ -2,22 +2,7 @@
   <div class="list-card">
     <div class="filter-container">
       <el-input v-model="orderNo" placeholder="请输入订单编号" clearable />
-      <el-select
-        v-if="![10, 11].includes(orderType)"
-        v-model="publishUserType"
-        placeholder="请选择订单来源"
-        filterable
-        class="custom-input"
-        clearable
-        @change="publishUserTypeChange"
-      >
-        <el-option
-          v-for="item in publishUserTypes"
-          :key="item.id"
-          :label="item.name"
-          :value="item.id"
-        />
-      </el-select>
+
       <el-select
         v-model="customerName"
         placeholder="请选择托运方"
@@ -524,9 +509,7 @@ export default {
         companyId: this.companyId,
         status: this.orderType ? +this.orderType : undefined,
         customerName: this.customerName ? this.customerName : undefined,
-        publishUserType: this.publishUserType
-          ? this.publishUserType
-          : undefined,
+        publishUserType: ![10, 11].includes(this.roleType) ? 1 : undefined,
         beginTime: this.beginTime ? this.beginTime : undefined,
         endTime: this.endTime ? this.endTime : undefined
       })
@@ -548,6 +531,7 @@ export default {
         status: +this.orderType,
         phone: this.phone,
         customerName: this.customerName ? this.customerName : undefined,
+        publishUserType: ![10, 11].includes(this.roleType) ? 1 : undefined,
         beginTime: this.beginTime ? this.beginTime : undefined,
         endTime: this.endTime ? this.endTime : undefined
       })
