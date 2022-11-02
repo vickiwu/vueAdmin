@@ -29,15 +29,17 @@ module.exports = {
     // before: require('./mock/mock-server.js')
     proxy: {
       [process.env.VUE_APP_BASE_API]: {
-        target: 'http://120.48.162.194',
+        // target: 'http://120.48.162.194', //
+        target: 'http://120.48.19.218:9090', // 开发
         changeOrigin: true, // 配置跨域
         pathRewrite: {
-          ['^' + process.env.VUE_APP_BASE_API]: process.env.VUE_APP_BASE_API
+          ['^' + process.env.VUE_APP_BASE_API]: ''
+          // ['^' + process.env.VUE_APP_BASE_API]: process.env.VUE_APP_BASE_API
         }
       },
       '/file': {
-        // target: "http://120.48.19.218:6070", //开发
-        target: 'http://120.48.162.194', // 测试
+        target: 'http://120.48.19.218:6070', // 开发
+        // target: 'http://120.48.162.194', //
         changeOrigin: true, // 是否跨域
         pathRewrite: {
           '^/file': '/file' // 重写接口
@@ -102,7 +104,7 @@ module.exports = {
             .plugin('ScriptExtHtmlWebpackPlugin')
             .after('html')
             .use('script-ext-html-webpack-plugin', [{
-            // `runtime`必须和runtimeChunk名称相同。默认是“运行时”
+              // `runtime`必须和runtimeChunk名称相同。默认是“运行时”
               inline: /runtime\..*\.js$/
             }])
             .end()

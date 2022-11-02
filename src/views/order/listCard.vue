@@ -214,7 +214,8 @@
           <div style="display: flex; justify-content: flex-end">
             <el-button
               v-if="
-                [1, 3, 4].includes(orderType) && ![10, 11].includes(roleType)
+                [1].includes(orderType) ||
+                ([3, 4].includes(orderType) && ![10, 11].includes(roleType))
               "
               size="mini"
               @click="handelClick('编辑', row)"
@@ -269,7 +270,8 @@
             </el-button>
             <el-button
               v-if="
-                [1, 3, 4].includes(orderType) && ![10, 11].includes(roleType)
+                [1].includes(orderType) ||
+                ([3, 4].includes(orderType) && ![10, 11].includes(roleType))
               "
               size="mini"
               type="danger"
@@ -409,23 +411,47 @@ export default {
     this.getCustomers()
     switch (this.orderType) {
       case 4:
-        this.width = 300 // 4个
+        if ([10, 11].includes(this.roleType)) {
+          this.width = 40 // 一个
+        } else {
+          this.width = 300 // 4个
+        }
+
         break
       case 1:
-        this.width = 220 // 3个
+        if ([10, 11].includes(this.roleType)) {
+          this.width = 100
+        } else {
+          this.width = 220 // 3个
+        }
         break
       case 3:
-        this.width = 240 // 3个
-        // this.width = 150 // 2个
+        if ([10, 11].includes(this.roleType)) {
+          this.width = 40 // 无
+        } else {
+          this.width = 240 // 3个
+        }
         break
       case 10:
-        this.width = 140 // 1个
+        if ([10, 11].includes(this.roleType)) {
+          this.width = 60
+        } else {
+          this.width = 140 // 1个
+        }
         break
       case 8:
-        this.width = 320 // 4个
+        if ([10, 11].includes(this.roleType)) {
+          this.width = 110
+        } else {
+          this.width = 320 // 4个
+        }
         break
       default:
-        this.width = 110
+        if ([10, 11].includes(this.roleType)) {
+          this.width = 100
+        } else {
+          this.width = 110
+        }
         break
     }
   },

@@ -362,6 +362,8 @@ export default {
   },
   created() {
     this.orderDetail = getPcarOrderDetail()
+    this.orderDetail.planUnLoadTotal = this.orderDetail.loadNum
+    this.orderDetail.planLoadTotal = this.orderDetail.loadNum
     this.getDriveListApi()
     this.getCarListApi()
     this.getDeviceApi()

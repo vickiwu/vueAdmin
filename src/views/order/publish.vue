@@ -100,6 +100,7 @@
                   v-model="orderForm.customerId"
                   filterable
                   placeholder="请选择托运方"
+                  :disabled="[10, 11].includes(roleType) ? true : false"
                   clearable
                   @change="customerIdChange"
                 >
@@ -607,7 +608,11 @@ export default {
     this.getAddressList1() // 装货地
     this.getAddressList2() // 卸货地
   },
-  mounted() {},
+  mounted() {
+    if ([10, 11].includes(this.roleType)) {
+      this.orderForm.customerId = this.userName
+    }
+  },
   methods: {
     inputunload(data) {
       // this.$router.push('/area/add')
@@ -626,6 +631,17 @@ export default {
       }).then((res) => {
         if (+res.a === 200) {
           this.customers = res.d
+          if ([10, 11].includes(this.roleType)) {
+            const currentData = this.customers.filter((item) => {
+              return item.deptId === this.deptId
+            })
+            if (currentData && currentData.length > 0) {
+              this.customerObj = currentData[0]
+              this.orderForm.customerPhone = currentData[0].contactPhone
+              this.orderForm.customerName = currentData[0].name
+              this.orderForm.customerContactName = currentData[0].contactName
+            }
+          }
         } else {
           Message({
             message: res.m || '获取托运方列表报错',
@@ -777,16 +793,13 @@ export default {
     },
     publishOrderApi() {
       this.formLoading = true
-      const paramsData = Object.assign(
-        {
-          userId: this.userId,
-          companyId: this.companyId,
-          deptId: this.deptId,
-          userName: this.userName,
-          publishUserType: [10, 11].includes(this.roleType) ? 2 : 1
-        },
-        this.orderForm
-      )
+      const paramsData = Object.assign(this.orderForm, {
+        userId: this.userId,
+        companyId: this.companyId,
+        deptId: this.deptId,
+        userName: this.userName,
+        publishUserType: [10, 11].includes(this.roleType) ? 2 : 1
+      })
       paramsData.price = paramsData.price * 1000
 
       for (const k of Object.keys(paramsData)) {
