@@ -600,7 +600,14 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['companyId', 'deptId', 'userId', 'userName', 'roleType'])
+    ...mapGetters([
+      'companyId',
+      'deptId',
+      'userId',
+      'userName',
+      'roleType',
+      'customerId'
+    ])
   },
   created() {
     this.getCustomers()
@@ -608,11 +615,7 @@ export default {
     this.getAddressList1() // 装货地
     this.getAddressList2() // 卸货地
   },
-  mounted() {
-    if ([10, 11].includes(this.roleType)) {
-      this.orderForm.customerId = this.userName
-    }
-  },
+  mounted() {},
   methods: {
     inputunload(data) {
       // this.$router.push('/area/add')
@@ -633,10 +636,11 @@ export default {
           this.customers = res.d
           if ([10, 11].includes(this.roleType)) {
             const currentData = this.customers.filter((item) => {
-              return item.deptId === this.deptId
+              return item.id === this.customerId
             })
             if (currentData && currentData.length > 0) {
               this.customerObj = currentData[0]
+              this.orderForm.customerId = currentData[0].id
               this.orderForm.customerPhone = currentData[0].contactPhone
               this.orderForm.customerName = currentData[0].name
               this.orderForm.customerContactName = currentData[0].contactName

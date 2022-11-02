@@ -48,15 +48,15 @@ service.interceptors.response.use(
 
     if (res.a !== 200) {
       Message({
-        message: res.msg || '错误',
+        message: res.m || '错误',
         type: 'error',
         duration: 5 * 1000
       })
 
-      return Promise.reject(res.msg || '错误')
+      return Promise.reject(res.m || '错误')
     } else {
       // Message({
-      //   message: res.msg || '成功',
+      //   message: res.m || '成功',
       //   type: 'success',
       //   duration: 2 * 1000
       // })

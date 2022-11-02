@@ -8,6 +8,7 @@ const getDefaultState = () => {
     token: getToken(),
     companyId: getBaseData() ? getBaseData().companyId : '',
     deptId: getBaseData() ? getBaseData().deptId : '',
+    customerId: getBaseData() ? getBaseData().customerId : '',
     roleType: getBaseData() ? getBaseData().roleType : '',
     userId: getBaseData() ? getBaseData().userId : '',
     userName: getBaseData() ? getBaseData().userName : '',
@@ -31,6 +32,7 @@ const mutations = {
   SET_BASEDATA: (state, baseData) => {
     state.companyId = baseData.companyId
     state.deptId = baseData.deptId
+    state.customerId = baseData.customerId
     state.roleType = baseData.roleType
     state.phone = baseData.phone
     state.userId = baseData.userId

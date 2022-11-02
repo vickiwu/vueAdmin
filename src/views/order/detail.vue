@@ -102,6 +102,7 @@
                   filterable
                   placeholder="请选择托运方"
                   clearable
+                  :disabled="[10, 11].includes(roleType) ? true : false"
                   @change="customerIdChange"
                 >
                   <el-option
@@ -587,7 +588,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['companyId', 'deptId', 'userId', 'userName'])
+    ...mapGetters(['companyId', 'deptId', 'userId', 'userName', 'roleType'])
   },
   async created() {
     await this.getCustomers()

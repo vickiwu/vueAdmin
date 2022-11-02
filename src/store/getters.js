@@ -4,6 +4,7 @@ const getters = {
   token: state => state.user.token,
   companyId: state => state.user.companyId,
   deptId: state => state.user.deptId,
+  customerId: state => state.user.customerId,
   roleType: state => state.user.roleType,
   userId: state => state.user.userId,
   userName: state => state.user.userName,
