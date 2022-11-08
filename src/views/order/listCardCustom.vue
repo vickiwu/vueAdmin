@@ -120,7 +120,7 @@
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span>{{ row.customerContactName }}</span>
+          <span>{{ row.unLoadAddressContactName }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -131,7 +131,7 @@
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span>{{ row.customerPhone }}</span>
+          <span>{{ row.unLoadAddressContactPhone }}</span>
         </template>
       </el-table-column>
 

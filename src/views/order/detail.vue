@@ -592,7 +592,7 @@ export default {
   },
   async created() {
     await this.getCustomers()
-    await this.getTransports()
+    // await this.getTransports()
     await this.getAddressList1()
     await this.getAddressList2()
     const orderDetail = getEditOrderDetail()
@@ -641,11 +641,10 @@ export default {
       }).then((res) => {
         if (+res.a === 200) {
           this.transports = res.d
-
           this.transportIdChange(this.orderForm.transportId)
         } else {
           Message({
-            message: res.m || '获取装货区域列表报错',
+            message: res.m || '获取收货方区域列表报错',
             type: 'error',
             duration: 2 * 1000
           })
@@ -663,10 +662,10 @@ export default {
         if (+res.a === 200) {
           this.addressList1 = res.d
 
-          this.loadAddressIdChange(this.orderForm.loadAddressId)
+          // this.loadAddressIdChange(this.orderForm.loadAddressId)
         } else {
           Message({
-            message: res.m || '获取卸货区域列表报错',
+            message: res.m || '获取装货区域列表报错',
             type: 'error',
             duration: 2 * 1000
           })
@@ -683,10 +682,10 @@ export default {
       }).then((res) => {
         if (+res.a === 200) {
           this.addressList2 = res.d
-          this.unLoadAddressChange(this.orderForm.unLoadAddressId)
+          // this.unLoadAddressChange(this.orderForm.unLoadAddressId)
         } else {
           Message({
-            message: res.m || '获取区域列表报错',
+            message: res.m || '获取卸货地区域列表报错',
             type: 'error',
             duration: 2 * 1000
           })
@@ -769,6 +768,12 @@ export default {
       )
 
       paramsData.price = paramsData.price * 1000
+
+      for (const k of Object.keys(paramsData)) {
+        if (!paramsData[k]) {
+          paramsData[k] = undefined
+        }
+      }
       editOrder(paramsData)
         .then((response) => {
           Message({
