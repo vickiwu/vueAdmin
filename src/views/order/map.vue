@@ -453,15 +453,15 @@ export default {
     },
     drawCarMark(drivceId, carLngLat, angle) {
       const markHtml2 = `<div class="bg-car2" >${this.orderDetail.carNo}</div>`
-      const img = require('@/assets/mapImg/car.png')
+      const img = require('@/assets/mapImg/car2.png')
       // 创建一个 Icon
       var startIcon = new this.AMap.Icon({
         // 图标尺寸
-        size: new AMap.Size(26, 52),
+        size: new AMap.Size(28, 44),
         // 图标的取图地址
         image: img,
         // 图标所用图片大小
-        imageSize: new AMap.Size(26, 52)
+        imageSize: new AMap.Size(28, 44)
         // 图标取图偏移量
       })
       const marker = new AMap.Marker({

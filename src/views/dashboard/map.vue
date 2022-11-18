@@ -127,6 +127,7 @@ export default {
             return item.deviceNo
           })
           if (this.deviceList.length > 0) {
+            this.deviceList = this.deviceList.filter((dItem) => dItem && dItem)
             this.sendSocketCar(this.deviceList)
             // 行车日志
             //   this.sendSocketCarLine(this.orderDetail.deviceNo)
@@ -307,15 +308,15 @@ export default {
       this.orderDetail = this.getCarId(drivceId)
       const carNo = this.orderDetail ? this.orderDetail.carNo : '未知车'
       const markHtml2 = `<div class="bg-car2" >${carNo}</div>`
-      const img = require('@/assets/mapImg/car.png')
+      const img = require('@/assets/mapImg/car2.png')
       // 创建一个 Icon
       var startIcon = new this.AMap.Icon({
         // 图标尺寸
-        size: new AMap.Size(26, 52),
+        size: new AMap.Size(28, 44),
         // 图标的取图地址
         image: img,
         // 图标所用图片大小
-        imageSize: new AMap.Size(26, 52)
+        imageSize: new AMap.Size(28, 44)
         // 图标取图偏移量
       })
       const marker = new AMap.Marker({
