@@ -40,7 +40,7 @@
       </el-row>
       <el-row>
         <el-col :span="22">
-          <el-form-item label="详细地址">
+          <el-form-item label="详细地址" prop="unLoadAddress">
             <el-input
               v-model="ruleForm.unLoadAddress"
               placeholder="请输入详细地址"
@@ -50,12 +50,12 @@
       </el-row>
       <el-row>
         <el-col :span="11">
-          <el-form-item label="经度" prop="jd">
+          <el-form-item label="经度">
             <el-input v-model="ruleForm.jd" placeholder="请输入经度" />
           </el-form-item>
         </el-col>
         <el-col :span="11">
-          <el-form-item label="纬度" prop="wd">
+          <el-form-item label="纬度">
             <el-input v-model="ruleForm.wd" placeholder="请输入纬度" />
           </el-form-item>
         </el-col>
