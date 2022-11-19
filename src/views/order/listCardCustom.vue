@@ -525,7 +525,7 @@ export default {
         case '编辑':
           this.$router.push({
             path: '/order/detail',
-            query: { type: this.orderType }
+            query: { type: this.orderType, isCustom: true }
           })
           setEditOrderDetail(row)
           break

@@ -305,7 +305,7 @@
           <span>卸货地信息</span>
         </div>
         <el-tabs type="border-card">
-          <el-tab-pane label="选择">
+          <el-tab-pane v-if="![10, 11].includes(roleType)" label="选择">
             <div>
               <el-row :gutter="20" type="flex" justify="left">
                 <el-col :span="18">
@@ -406,7 +406,7 @@
             </div>
           </el-tab-pane>
           <el-tab-pane label="全部录入">
-            <addArea @inputunload="inputunload" />
+            <addArea ref="addArea" @inputunload="inputunload" />
           </el-tab-pane>
         </el-tabs>
       </el-card>
@@ -786,6 +786,17 @@ export default {
       }
     },
     onSubmit() {
+      if ([10, 11].includes(this.roleType)) {
+        const data = this.$refs.addArea.ruleForm
+        console.log('%c Line:791 🍋 data', 'color:#3f7cff', data)
+        this.orderForm.addrOne = data.addrOne
+        this.orderForm.addrThree = data.addrThree
+        this.orderForm.addrTwo = data.addrTwo
+        this.orderForm.unLoadAddress = data.unLoadAddress
+        this.orderForm.unLoadAddressContactName = data.unLoadAddressContactName
+        this.orderForm.unLoadAddressContactPhone =
+          data.unLoadAddressContactPhone
+      }
       this.$refs['orderForm'].validate((valid) => {
         if (valid) {
           this.publishOrderApi()

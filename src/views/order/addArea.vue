@@ -68,7 +68,13 @@
       <el-row>
         <el-col :span="22">
           <div class="form-btn">
-            <el-button type="primary" @click="handleSave()"> 保存 </el-button>
+            <el-button
+              v-if="![10, 11].includes(roleType)"
+              type="primary"
+              @click="handleSave()"
+            >
+              保存
+            </el-button>
           </div>
         </el-col>
       </el-row>
@@ -135,7 +141,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['companyId', 'deptId', 'userId'])
+    ...mapGetters(['companyId', 'deptId', 'userId', 'roleType'])
   },
   created() {
     this.openNew()

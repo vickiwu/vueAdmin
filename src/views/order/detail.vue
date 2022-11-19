@@ -309,7 +309,11 @@
         <div>
           <el-row :gutter="20" type="flex" justify="left">
             <el-col :span="18">
-              <el-form-item label="卸货地" prop="unLoadAddressId">
+              <el-form-item
+                v-if="!isCustom"
+                label="卸货地"
+                :prop="!isCustom ? 'unLoadAddressId' : ''"
+              >
                 <el-select
                   v-model="orderForm.unLoadAddressId"
                   filterable
@@ -584,7 +588,8 @@ export default {
         ]
       },
       formLoading: false,
-      paramsType: undefined
+      paramsType: undefined,
+      isCustom: undefined
     }
   },
   computed: {
@@ -603,6 +608,13 @@ export default {
     this.paramsType = this.$route.query.type
       ? this.$route.query.type
       : undefined
+    if (this.$route.query.isCustom) {
+      this.isCustom = true
+    } else if ([10, 11].includes(this.roleType)) {
+      this.isCustom = true
+    } else {
+      this.isCustom = false
+    }
   },
   methods: {
     goBack() {
