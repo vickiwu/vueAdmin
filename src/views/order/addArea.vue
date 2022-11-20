@@ -62,7 +62,7 @@
       </el-row>
       <el-row>
         <el-col v-loading="mapLoading" :span="22">
-          <div id="unLoadAddress-map-add" />
+          <div :id="mapId" class="unLoadAddress-map-add" />
         </el-col>
       </el-row>
       <el-row>
@@ -89,6 +89,12 @@ import { mapGetters } from 'vuex'
 import { isPhone } from '@/utils/validate.js'
 export default {
   components: {},
+  props: {
+    mid: {
+      type: String,
+      default: 'map'
+    }
+  },
   data() {
     const validatePhone = (rule, value, callback) => {
       if (value && !isPhone(value)) {
@@ -98,6 +104,7 @@ export default {
       }
     }
     return {
+      mapId: 'map',
       mapLoading: true,
       mapInstance: null,
       geocoder: null,
@@ -147,6 +154,7 @@ export default {
     this.openNew()
   },
   mounted() {
+    this.mapId = this.mid
     this.initMap()
   },
   methods: {
@@ -172,7 +180,7 @@ export default {
         }
       })
         .then((AMap) => {
-          this.mapInstance = new AMap.Map('unLoadAddress-map-add')
+          this.mapInstance = new AMap.Map(`${this.mapId}`)
           this.geocoder = new AMap.Geocoder()
           this.marker = new AMap.Marker()
           this.AMap = AMap
@@ -224,7 +232,7 @@ export default {
 }
 </script>
  <style lang="scss" scoped>
-#unLoadAddress-map-add {
+.unLoadAddress-map-add {
   height: 350px;
   margin-left: 100px;
 }

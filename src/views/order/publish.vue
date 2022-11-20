@@ -205,7 +205,7 @@
         <div slot="header">
           <span>装货地信息</span>
         </div>
-        <div>
+        <div v-if="![10, 11].includes(roleType)">
           <el-row :gutter="20" type="flex" justify="left">
             <el-col :span="18">
               <el-form-item label="装货地" prop="loadAddressId">
@@ -298,6 +298,9 @@
               </el-form-item>
             </el-col>
           </el-row>
+        </div>
+        <div v-else>
+          <addArea ref="addAreaLoad" mid="loadMap" />
         </div>
       </el-card>
       <el-card class="unload-card">
@@ -406,7 +409,7 @@
             </div>
           </el-tab-pane>
           <el-tab-pane label="全部录入">
-            <addArea ref="addArea" @inputunload="inputunload" />
+            <addArea ref="addArea" mid="unLoadMap" @inputunload="inputunload" />
           </el-tab-pane>
         </el-tabs>
       </el-card>
@@ -788,14 +791,26 @@ export default {
     onSubmit() {
       if ([10, 11].includes(this.roleType)) {
         const data = this.$refs.addArea.ruleForm
-        console.log('%c Line:791 🍋 data', 'color:#3f7cff', data)
         this.orderForm.addrOne = data.addrOne
         this.orderForm.addrThree = data.addrThree
         this.orderForm.addrTwo = data.addrTwo
+        this.orderForm.unLoadJd = data.jd
+        this.orderForm.unLoadWd = data.wd
         this.orderForm.unLoadAddress = data.unLoadAddress
         this.orderForm.unLoadAddressContactName = data.unLoadAddressContactName
         this.orderForm.unLoadAddressContactPhone =
           data.unLoadAddressContactPhone
+        const loadData = this.$refs.addAreaLoad.ruleForm
+        this.orderForm.loadOne = loadData.addrOne
+        this.orderForm.loadTwo = loadData.addrTwo
+        this.orderForm.loadThree = loadData.addrThree
+        this.orderForm.loadJd = loadData.jd
+        this.orderForm.loadWd = loadData.wd
+        this.orderForm.loadAddress = loadData.unLoadAddress
+        this.orderForm.loadAddressContactName =
+          loadData.unLoadAddressContactName
+        this.orderForm.loadAddressContactPhone =
+          loadData.unLoadAddressContactPhone
       }
       this.$refs['orderForm'].validate((valid) => {
         if (valid) {

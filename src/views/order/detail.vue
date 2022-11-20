@@ -210,7 +210,11 @@
         <div>
           <el-row :gutter="20" type="flex" justify="left">
             <el-col :span="20">
-              <el-form-item label="装货地" prop="loadAddressId">
+              <el-form-item
+                v-if="!isCustom"
+                label="装货地"
+                :prop="!isCustom ? 'loadAddressId' : ''"
+              >
                 <el-select
                   v-model="orderForm.loadAddressId"
                   filterable
