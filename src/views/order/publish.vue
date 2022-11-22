@@ -791,9 +791,9 @@ export default {
     onSubmit() {
       if ([10, 11].includes(this.roleType)) {
         const data = this.$refs.addArea.ruleForm
-        this.orderForm.addrOne = data.addrOne
-        this.orderForm.addrThree = data.addrThree
-        this.orderForm.addrTwo = data.addrTwo
+        this.orderForm.unLoadOne = data.addrOne
+        this.orderForm.unLoadTwo = data.addrTwo
+        this.orderForm.unLoadThree = data.addrThree
         this.orderForm.unLoadJd = data.jd
         this.orderForm.unLoadWd = data.wd
         this.orderForm.unLoadAddress = data.unLoadAddress

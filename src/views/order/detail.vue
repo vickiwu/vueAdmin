@@ -348,19 +348,19 @@
               <el-form-item label="省/市/区" class="input-row">
                 <div class="input-row">
                   <el-input
-                    v-model="loadAddressObj.addrOne"
+                    v-model="unLoadAddressObj.addrOne"
                     class="input-col"
                     :disabled="true"
                     placeholder="省"
                   />
                   <el-input
-                    v-model="loadAddressObj.addrTwo"
+                    v-model="unLoadAddressObj.addrTwo"
                     class="input-col"
                     :disabled="true"
                     placeholder="市"
                   />
                   <el-input
-                    v-model="loadAddressObj.addrThree"
+                    v-model="unLoadAddressObj.addrThree"
                     class="input-col"
                     :disabled="true"
                     placeholder="区"
@@ -607,6 +607,19 @@ export default {
     const orderDetail = getEditOrderDetail()
     this.orderForm = { ...orderDetail }
     this.orderForm.price = Math.floor((this.orderForm.price / 1000) * 100) / 100
+    // 装
+    this.loadAddressObj.addrOne = this.orderForm.loadOne
+    this.loadAddressObj.addrTwo = this.orderForm.loadTwo
+    this.loadAddressObj.addrThree = this.orderForm.loadThree
+    this.loadAddressObj.jd = orderDetail.loadJd
+    this.loadAddressObj.wd = orderDetail.loadWd
+
+    // 卸
+    this.unLoadAddressObj.addrOne = this.orderForm.unLoadOne
+    this.unLoadAddressObj.addrTwo = this.orderForm.unLoadTwo
+    this.unLoadAddressObj.addrThree = this.orderForm.unLoadThree
+    this.unLoadAddressObj.jd = orderDetail.unLoadJd
+    this.unLoadAddressObj.wd = orderDetail.unLoadWd
   },
   mounted() {
     this.paramsType = this.$route.query.type

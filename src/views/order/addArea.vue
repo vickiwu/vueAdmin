@@ -254,6 +254,9 @@ export default {
 }
 
 ::v-deep {
+  .area-selectable-list-wrap {
+    top: 30px !important;
+  }
   .el-form-item__content {
     .area-select-wrap {
       line-height: 16px;
