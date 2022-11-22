@@ -408,7 +408,7 @@ export default {
   },
   created() {
     // this.loadTable()
-    this.getCustomers()
+    // this.getCustomers()
     switch (this.orderType) {
       case 4:
         if ([10, 11].includes(this.roleType)) {

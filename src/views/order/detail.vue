@@ -44,9 +44,9 @@
               </el-form-item>
             </el-col>
             <el-col :span="11">
-              <el-form-item label="产品价格">
+              <el-form-item label="产品价格" prop="price">
                 <el-input
-                  v-model.number="orderForm.price"
+                  v-model="orderForm.price"
                   placeholder="请输入产品价格（元）"
                 />
               </el-form-item>
@@ -57,7 +57,7 @@
             <el-col :span="11">
               <el-form-item label="装货吨数" prop="loadNum">
                 <el-input
-                  v-model.number="orderForm.loadNum"
+                  v-model="orderForm.loadNum"
                   placeholder="请输入装货吨数"
                 />
               </el-form-item>
@@ -210,11 +210,7 @@
         <div>
           <el-row :gutter="20" type="flex" justify="left">
             <el-col :span="20">
-              <el-form-item
-                v-if="!isCustom"
-                label="装货地"
-                :prop="!isCustom ? 'loadAddressId' : ''"
-              >
+              <el-form-item v-if="!isCustom" label="装货地">
                 <el-select
                   v-model="orderForm.loadAddressId"
                   filterable
@@ -313,11 +309,7 @@
         <div>
           <el-row :gutter="20" type="flex" justify="left">
             <el-col :span="18">
-              <el-form-item
-                v-if="!isCustom"
-                label="卸货地"
-                :prop="!isCustom ? 'unLoadAddressId' : ''"
-              >
+              <el-form-item v-if="!isCustom" label="卸货地">
                 <el-select
                   v-model="orderForm.unLoadAddressId"
                   filterable
@@ -423,13 +415,20 @@ import { getAreaList, getClientList } from '@/api/people'
 import { getEditOrderDetail, removeEditOrderDetail } from '@/utils/auth'
 import { Message } from 'element-ui'
 import { mapGetters } from 'vuex'
-import { isPhone } from '@/utils/validate.js'
+import { isPhone, isNum } from '@/utils/validate.js'
 export default {
   components: {},
   data() {
     const validatePhone = (rule, value, callback) => {
       if (value && !isPhone(value)) {
         callback(new Error('手机号码格式不正确'))
+      } else {
+        callback()
+      }
+    }
+    const validateNum = (rule, value, callback) => {
+      if (value && !isNum(value)) {
+        callback(new Error('请输入合理的数字，支持2位小数'))
       } else {
         callback()
       }
@@ -563,9 +562,7 @@ export default {
         transportId: [
           { required: true, message: '请选择收货方', trigger: 'change' }
         ],
-        price: [
-          { required: true, message: '请输入产品价格(元)', trigger: 'blur' }
-        ],
+        price: [{ required: false, trigger: 'blur', validator: validateNum }],
         msdsName: [
           { required: true, message: '请输入产品名称', trigger: 'blur' }
         ],
@@ -582,7 +579,11 @@ export default {
           { required: true, message: '请输入卸货地详细地址', trigger: 'blur' }
         ],
         loadNum: [
-          { required: true, message: '请输入装货吨数', trigger: 'blur' }
+          {
+            required: true,
+            trigger: 'blur',
+            validator: validateNum
+          }
         ],
         carNeed: [
           { required: true, message: '请输入车型要求', trigger: 'blur' }
@@ -606,7 +607,7 @@ export default {
     await this.getAddressList2()
     const orderDetail = getEditOrderDetail()
     this.orderForm = { ...orderDetail }
-    this.orderForm.price = Math.floor((this.orderForm.price / 1000) * 100) / 100
+    this.orderForm.price = Math.floor((this.orderForm.price / 100) * 100) / 100
     // 装
     this.loadAddressObj.addrOne = this.orderForm.loadOne
     this.loadAddressObj.addrTwo = this.orderForm.loadTwo
@@ -796,7 +797,7 @@ export default {
         this.orderForm
       )
 
-      paramsData.price = paramsData.price * 1000
+      paramsData.price = paramsData.price * 100
 
       for (const k of Object.keys(paramsData)) {
         if (!paramsData[k]) {

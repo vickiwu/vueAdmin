@@ -133,6 +133,16 @@ export function isNum(str) {
   const reg = /^\d+(\.\d{1,2})?$/
   return reg.test(str)
 }
+export function validatePrice(msg) {
+  return function(rule, value, callback) {
+    const reg = /^(0|[1-9]\d*)(\s|$|\.\d{1,2}\b)/
+    if ((rule.required && !value) || (value && !reg.test(value)) || parseFloat(value) > 100000000) {
+      callback(new Error(msg || '请输入合理的值'))
+    } else {
+      callback()
+    }
+  }
+}
 // 判断是否最多为三位数字
 export function isNum3(str) {
   const reg = /^\d+(\.\d{1,3})?$/

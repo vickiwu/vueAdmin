@@ -192,9 +192,9 @@
             </el-form-item>
           </el-col>
           <el-col :span="11">
-            <el-form-item label="荷载吨数">
+            <el-form-item label="荷载吨数" prop="maxLoad">
               <el-input
-                v-model.number="CarFrom.maxLoad"
+                v-model="CarFrom.maxLoad"
                 placeholder="请输入荷载吨数"
               />
             </el-form-item>
@@ -202,17 +202,17 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="11">
-            <el-form-item label="总重量（kg）">
+            <el-form-item label="总重量（kg）" prop="carWeight">
               <el-input
-                v-model.number="CarFrom.carWeight"
+                v-model="CarFrom.carWeight"
                 placeholder="请输入总重量（kg）"
               />
             </el-form-item>
           </el-col>
           <el-col :span="11">
-            <el-form-item label="长（m）">
+            <el-form-item label="长（m）" prop="carLength">
               <el-input
-                v-model.number="CarFrom.carLength"
+                v-model="CarFrom.carLength"
                 placeholder="请输入长（m）"
               />
             </el-form-item>
@@ -220,17 +220,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="11">
-            <el-form-item label="宽（m）">
-              <el-input
-                v-model.number="CarFrom.carWide"
-                placeholder="请输入宽（m）"
-              />
+            <el-form-item label="宽（m）" prop="carWide">
+              <el-input v-model="CarFrom.carWide" placeholder="请输入宽（m）" />
             </el-form-item>
           </el-col>
           <el-col :span="11">
-            <el-form-item label="高（m）">
+            <el-form-item label="高（m）" prop="carHeight">
               <el-input
-                v-model.number="CarFrom.carHeight"
+                v-model="CarFrom.carHeight"
                 placeholder="请输入高（m）"
               />
             </el-form-item>
@@ -263,8 +260,16 @@
 import { getCarList, addCar, editCar, delCar } from '@/api/people'
 import { Message } from 'element-ui'
 import { mapGetters } from 'vuex'
+import { isNum } from '@/utils/validate.js'
 export default {
   data() {
+    const validateNum = (rule, value, callback) => {
+      if (value && !isNum(value)) {
+        callback(new Error('请输入合理的数字，支持2位小数'))
+      } else {
+        callback()
+      }
+    }
     return {
       carNo: '',
       dialogTitle: '新增车辆',
@@ -291,19 +296,39 @@ export default {
         carNo: [{ required: true, message: '请输入车牌号', trigger: 'blur' }],
         type: [{ required: true, message: '请输入车型', trigger: 'change' }],
         maxLoad: [
-          { required: true, message: '请输入荷载吨数', trigger: 'blur' }
+          {
+            required: false,
+            trigger: 'blur',
+            validator: validateNum
+          }
         ],
         carWeight: [
-          { required: true, message: '请输入车总重量（kg', trigger: 'blur' }
+          {
+            required: false,
+            trigger: 'blur',
+            validator: validateNum
+          }
         ],
         carLength: [
-          { required: true, message: '请输入车长（m）', trigger: 'blur' }
+          {
+            required: false,
+            trigger: 'blur',
+            validator: validateNum
+          }
         ],
         carWide: [
-          { required: true, message: '请输入车宽（m）', trigger: 'blur' }
+          {
+            required: false,
+            trigger: 'blur',
+            validator: validateNum
+          }
         ],
         carHeight: [
-          { required: true, message: '请输入车高（m）', trigger: 'blur' }
+          {
+            required: false,
+            trigger: 'blur',
+            validator: validateNum
+          }
         ]
       },
       carTypeOption: [

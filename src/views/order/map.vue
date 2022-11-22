@@ -264,7 +264,7 @@ export default {
           break
       }
       this.orderDetail.price =
-        Math.floor((this.orderDetail.price / 1000) * 100) / 100
+        Math.floor((this.orderDetail.price / 100) * 100) / 100
     }
   },
   mounted() {

@@ -43,9 +43,9 @@
               </el-form-item>
             </el-col>
             <el-col :span="11">
-              <el-form-item label="产品价格">
+              <el-form-item label="产品价格" prop="price">
                 <el-input
-                  v-model.number="orderForm.price"
+                  v-model="orderForm.price"
                   placeholder="请输入产品价格（元）"
                 />
               </el-form-item>
@@ -56,7 +56,7 @@
             <el-col :span="11">
               <el-form-item label="装货吨数" prop="loadNum">
                 <el-input
-                  v-model.number="orderForm.loadNum"
+                  v-model="orderForm.loadNum"
                   placeholder="请输入装货吨数"
                 />
               </el-form-item>
@@ -426,13 +426,20 @@ import { publishOrder } from '@/api/order'
 import { getAreaList, getClientList } from '@/api/people'
 import { mapGetters } from 'vuex'
 import addArea from './addArea.vue'
-import { isPhone } from '@/utils/validate.js'
+import { isPhone, isNum } from '@/utils/validate.js'
 export default {
   components: { addArea },
   data() {
     const validatePhone = (rule, value, callback) => {
       if (value && !isPhone(value)) {
         callback(new Error('手机号码格式不正确'))
+      } else {
+        callback()
+      }
+    }
+    const validateNum = (rule, value, callback) => {
+      if (value && !isNum(value)) {
+        callback(new Error('请输入合理的数字，支持2位小数'))
       } else {
         callback()
       }
@@ -572,7 +579,11 @@ export default {
           { required: true, message: '请选择收货方', trigger: 'change' }
         ],
         price: [
-          { required: true, message: '请输入产品价格(元)', trigger: 'blur' }
+          {
+            required: true,
+            trigger: 'blur',
+            validator: validateNum
+          }
         ],
         msdsName: [
           { required: true, message: '请输入产品名称', trigger: 'blur' }
@@ -590,7 +601,11 @@ export default {
           { required: true, message: '请输入卸货地详细地址', trigger: 'blur' }
         ],
         loadNum: [
-          { required: true, message: '请输入装货吨数', trigger: 'blur' }
+          {
+            required: true,
+            trigger: 'blur',
+            validator: validateNum
+          }
         ],
         carNeed: [
           { required: true, message: '请输入车型要求', trigger: 'blur' }
@@ -830,8 +845,8 @@ export default {
         userName: this.userName,
         publishUserType: [10, 11].includes(this.roleType) ? 2 : 1
       })
-      paramsData.price = paramsData.price * 1000
-
+      paramsData.price = paramsData.price * 100
+      paramsData.loadNum = Number(paramsData.loadNum)
       for (const k of Object.keys(paramsData)) {
         if (!paramsData[k]) {
           paramsData[k] = undefined

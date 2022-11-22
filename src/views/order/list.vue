@@ -73,7 +73,11 @@ export default {
     this.$forceUpdate()
   },
   mounted() {
-    this.orderType !== 'card-1' && this.$refs[`${this.orderType}`].loadTable()
+    // this.orderType !== 'card-1' && this.$refs[`${this.orderType}`].loadTable()
+    if (this.orderType !== 'card-1') {
+      this.$refs[`${this.orderType}`].loadTable()
+      this.$refs[`${this.orderType}`].getCustomers()
+    }
   },
   methods: {
     handlerRouteChange() {
@@ -81,6 +85,7 @@ export default {
     },
     tabClick() {
       this.$refs[`${this.orderType}`].loadTable()
+      this.$refs[`${this.orderType}`].getCustomers()
     },
     loadingData(type) {
       alert(type)

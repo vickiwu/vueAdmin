@@ -205,9 +205,9 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="费用总额">
+              <el-form-item label="费用总额" prop="costTotal">
                 <el-input
-                  v-model.number="orderDetail.costTotal"
+                  v-model="orderDetail.costTotal"
                   placeholder="请输入费用总额"
                 />
               </el-form-item>
@@ -215,17 +215,17 @@
           </el-row>
           <el-row :gutter="20" type="flex" justify="center">
             <el-col :span="12">
-              <el-form-item label="计划卸货吨数">
+              <el-form-item label="计划卸货吨数" prop="planUnLoadTotal">
                 <el-input
-                  v-model.number="orderDetail.planUnLoadTotal"
+                  v-model="orderDetail.planUnLoadTotal"
                   placeholder="请输入计划卸货吨数"
                 />
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="计划装货吨数">
+              <el-form-item label="计划装货吨数" prop="planLoadTotal">
                 <el-input
-                  v-model.number="orderDetail.planLoadTotal"
+                  v-model="orderDetail.planLoadTotal"
                   placeholder="请输入计划装货吨数"
                 />
               </el-form-item>
@@ -246,13 +246,20 @@ import { addCarOrder, getDevice } from '@/api/carOrder'
 import { getPcarOrderDetail, removePcarOrderDetail } from '@/utils/auth'
 import { getCarList, getDriveList } from '@/api/people'
 import { mapGetters } from 'vuex'
-import { isPhone } from '@/utils/validate.js'
+import { isPhone, isNum } from '@/utils/validate.js'
 export default {
   components: {},
   data() {
     const validatePhone = (rule, value, callback) => {
       if (value && !isPhone(value)) {
         callback(new Error('手机号码格式不正确'))
+      } else {
+        callback()
+      }
+    }
+    const validateNum = (rule, value, callback) => {
+      if (value && !isNum(value)) {
+        callback(new Error('请输入合理的数字，支持2位小数'))
       } else {
         callback()
       }
@@ -343,13 +350,25 @@ export default {
           }
         ],
         planLoadTotal: [
-          { required: true, message: '请输入计划装货吨数', trigger: 'blur' }
+          {
+            required: false,
+            trigger: 'blur',
+            validator: validateNum
+          }
         ],
         planUnLoadTotal: [
-          { required: true, message: '请输入计划卸货吨数', trigger: 'blur' }
+          {
+            required: false,
+            trigger: 'blur',
+            validator: validateNum
+          }
         ],
         costTotal: [
-          { required: true, message: '请输入费用总额', trigger: 'blur' }
+          {
+            required: true,
+            trigger: 'blur',
+            validator: validateNum
+          }
         ],
         deviceId: [{ required: true, message: '请选择设备', trigger: 'blur' }]
       },
