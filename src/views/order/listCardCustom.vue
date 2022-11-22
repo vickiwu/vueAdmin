@@ -105,7 +105,11 @@
         header-align="center"
       >
         <template slot-scope="{ row }">
-          <span>{{ row.loadNum }}</span>
+          <span>{{
+            row.loadNum
+              ? Math.floor((row.loadNum / 1000) * 1000) / 1000
+              : row.loadNum
+          }}</span>
         </template>
       </el-table-column>
       <el-table-column label="托运方" align="left" header-align="center">

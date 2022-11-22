@@ -607,7 +607,12 @@ export default {
     await this.getAddressList2()
     const orderDetail = getEditOrderDetail()
     this.orderForm = { ...orderDetail }
-    this.orderForm.price = Math.floor((this.orderForm.price / 100) * 100) / 100
+    this.orderForm.price = this.orderForm.price
+      ? Math.floor((this.orderForm.price / 100) * 100) / 100
+      : this.orderForm.price
+    this.orderForm.loadNum = this.orderForm.loadNum
+      ? Math.floor((this.orderForm.loadNum / 1000) * 1000) / 1000
+      : this.orderForm.loadNum
     // 装
     this.loadAddressObj.addrOne = this.orderForm.loadOne
     this.loadAddressObj.addrTwo = this.orderForm.loadTwo
@@ -797,8 +802,8 @@ export default {
         this.orderForm
       )
 
-      paramsData.price = paramsData.price * 100
-
+      paramsData.price = Math.round(paramsData.price * 100 * 100) / 100
+      paramsData.loadNum = Math.round(paramsData.loadNum * 1000 * 100) / 100
       for (const k of Object.keys(paramsData)) {
         if (!paramsData[k]) {
           paramsData[k] = undefined

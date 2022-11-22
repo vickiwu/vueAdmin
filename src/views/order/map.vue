@@ -263,8 +263,9 @@ export default {
           this.orderDetail.statusStr = '--'
           break
       }
-      this.orderDetail.price =
-        Math.floor((this.orderDetail.price / 100) * 100) / 100
+      this.orderDetail.price = this.orderDetail.price
+        ? Math.floor((this.orderDetail.price / 100) * 100) / 100
+        : this.orderDetail.price
     }
   },
   mounted() {

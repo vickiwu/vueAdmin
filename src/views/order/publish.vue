@@ -845,8 +845,8 @@ export default {
         userName: this.userName,
         publishUserType: [10, 11].includes(this.roleType) ? 2 : 1
       })
-      paramsData.price = paramsData.price * 100
-      paramsData.loadNum = Number(paramsData.loadNum)
+      paramsData.price = Math.round(paramsData.price * 100 * 100) / 100
+      paramsData.loadNum = Math.round(paramsData.loadNum * 1000 * 100) / 100
       for (const k of Object.keys(paramsData)) {
         if (!paramsData[k]) {
           paramsData[k] = undefined

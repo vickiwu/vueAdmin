@@ -273,6 +273,12 @@ export default {
   created() {
     this.orderDetail = getBindDeviceOrderDetail()
 
+    this.orderDetail.planLoadTotal = this.orderDetail.planLoadTotal
+      ? Math.floor((this.orderDetail.planLoadTotal / 1000) * 1000) / 1000
+      : this.orderDetail.planLoadTotal
+    this.orderDetail.planUnLoadTotal = this.orderDetail.planUnLoadTotal
+      ? Math.floor((this.orderDetail.planUnLoadTotal / 1000) * 1000) / 1000
+      : this.orderDetail.planUnLoadTotal
     this.getDriveListApi()
     this.getCarListApi()
     this.getDeviceApi()
@@ -407,10 +413,13 @@ export default {
     publishOrderApi() {
       this.formLoading = true
       const paramsData = Object.assign({}, this.orderDetail)
-      paramsData.costTotal = paramsData.costTotal * 1000
+      paramsData.costTotal = paramsData.costTotal * 100
       paramsData.orderId = paramsData.id
       delete paramsData.id
       paramsData.id = paramsData.carOrderId
+      paramsData.planLoadTotal = Math.round(paramsData * 1000 * 100) / 100
+      paramsData.planUnLoadTotal =
+        Math.round(paramsData.planUnLoadTotal * 1000 * 100) / 100
       editCarOrder(paramsData)
         .then((response) => {
           Message({

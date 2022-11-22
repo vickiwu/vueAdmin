@@ -76,7 +76,11 @@
       </el-table-column> -->
       <el-table-column label="荷载吨数" align="left" header-align="center">
         <template slot-scope="{ row }">
-          <span>{{ row.maxLoad }}</span>
+          <span>{{
+            row.maxLoad
+              ? Math.floor((row.maxLoad / 1000) * 1000) / 1000
+              : row.maxLoad
+          }}</span>
         </template>
       </el-table-column>
       <el-table-column label="总重量（kg）" align="left" header-align="center">
@@ -352,6 +356,7 @@ export default {
   methods: {
     addCar() {
       const tem = Object.assign({}, this.CarFrom)
+      tem.maxLoad = Math.round(tem.maxLoad * 1000 * 100) / 100
       if (tem.type === 2) {
         // 挂车
         tem.guaNo = tem.carNo
@@ -383,6 +388,7 @@ export default {
     editCar() {
       this.listLoading = true
       const tem = Object.assign({}, this.CarFrom)
+      tem.maxLoad = Math.round(tem.maxLoad * 1000 * 100) / 100
       if (tem.type === 2) {
         // 挂车
         tem.carNo = tem.guaNo
@@ -473,6 +479,9 @@ export default {
     },
     handelClick(item, row) {
       if (item === '修改') {
+        row.maxLoad = row.maxLoad
+          ? Math.floor((row.maxLoad / 1000) * 1000) / 1000
+          : row.maxLoad
         this.CarFromVisible = true
         this.dialogTitle = '修改车辆'
         this.CarFrom = { ...row }
