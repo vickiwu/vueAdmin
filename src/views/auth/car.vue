@@ -206,17 +206,17 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="11">
-            <el-form-item label="总重量（kg）" prop="carWeight">
+            <el-form-item label="总重量（kg）">
               <el-input
-                v-model="CarFrom.carWeight"
+                v-model.number="CarFrom.carWeight"
                 placeholder="请输入总重量（kg）"
               />
             </el-form-item>
           </el-col>
           <el-col :span="11">
-            <el-form-item label="长（m）" prop="carLength">
+            <el-form-item label="长（m）">
               <el-input
-                v-model="CarFrom.carLength"
+                v-model.number="CarFrom.carLength"
                 placeholder="请输入长（m）"
               />
             </el-form-item>
@@ -224,14 +224,17 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="11">
-            <el-form-item label="宽（m）" prop="carWide">
-              <el-input v-model="CarFrom.carWide" placeholder="请输入宽（m）" />
+            <el-form-item label="宽（m）">
+              <el-input
+                v-model.number="CarFrom.carWide"
+                placeholder="请输入宽（m）"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="11">
-            <el-form-item label="高（m）" prop="carHeight">
+            <el-form-item label="高（m）">
               <el-input
-                v-model="CarFrom.carHeight"
+                v-model.number="CarFrom.carHeight"
                 placeholder="请输入高（m）"
               />
             </el-form-item>
@@ -265,6 +268,7 @@ import { getCarList, addCar, editCar, delCar } from '@/api/people'
 import { Message } from 'element-ui'
 import { mapGetters } from 'vuex'
 import { isNum } from '@/utils/validate.js'
+import lodash from 'lodash'
 export default {
   data() {
     const validateNum = (rule, value, callback) => {
@@ -355,14 +359,15 @@ export default {
   },
   methods: {
     addCar() {
-      const tem = Object.assign({}, this.CarFrom)
-      tem.maxLoad = Math.round(tem.maxLoad * 1000 * 100) / 100
+      const tem = Object.assign({}, lodash.pickBy(this.CarFrom))
+      tem.maxLoad && (tem.maxLoad = Math.round(tem.maxLoad * 1000 * 100) / 100)
       if (tem.type === 2) {
         // 挂车
         tem.guaNo = tem.carNo
         delete tem.carNo
       }
       this.listLoading = true
+
       addCar({
         ...tem,
         companyId: this.companyId,
@@ -387,8 +392,8 @@ export default {
     },
     editCar() {
       this.listLoading = true
-      const tem = Object.assign({}, this.CarFrom)
-      tem.maxLoad = Math.round(tem.maxLoad * 1000 * 100) / 100
+      const tem = Object.assign({}, lodash.pickBy(this.CarFrom))
+      tem.maxLoad && (tem.maxLoad = Math.round(tem.maxLoad * 1000 * 100) / 100)
       if (tem.type === 2) {
         // 挂车
         tem.carNo = tem.guaNo
