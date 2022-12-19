@@ -329,24 +329,21 @@ export default {
           {
             required: false,
             message: '请输入正确手机号',
-            trigger: 'change',
-            validator: validatePhone
+            trigger: 'change'
           }
         ],
         transportPhone: [
           {
             required: false,
             message: '请输入正确手机号',
-            trigger: 'change',
-            validator: validatePhone
+            trigger: 'change'
           }
         ],
         driverPhone: [
           {
             required: false,
             message: '请输入正确手机号',
-            trigger: 'change',
-            validator: validatePhone
+            trigger: 'change'
           }
         ],
         planLoadTotal: [

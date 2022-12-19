@@ -213,8 +213,7 @@ export default {
           {
             required: true,
             message: '请输入正确的手机号',
-            trigger: 'change',
-            validator: validatePhone
+            trigger: 'change'
           }
         ],
         address: [

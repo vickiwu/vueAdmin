@@ -239,8 +239,7 @@ export default {
           {
             required: true,
             message: '请输入手机号',
-            trigger: 'change',
-            validator: validatePhone
+            trigger: 'change'
           }
         ],
         idcard: [{ required: true, message: '请输入身份证', trigger: 'blur' }]

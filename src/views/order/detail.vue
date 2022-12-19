@@ -536,24 +536,21 @@ export default {
           {
             required: false,
             message: '请输入正确的手机号',
-            trigger: 'change',
-            validator: validatePhone
+            trigger: 'change'
           }
         ],
         unLoadAddressContactPhone: [
           {
             required: false,
             message: '请输入正确的手机号',
-            trigger: 'change',
-            validator: validatePhone
+            trigger: 'change'
           }
         ],
         customerPhone: [
           {
             required: false,
             message: '请输入正确的手机号',
-            trigger: 'change',
-            validator: validatePhone
+            trigger: 'change'
           }
         ],
         customerId: [

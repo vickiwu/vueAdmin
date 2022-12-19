@@ -340,8 +340,7 @@ export default {
           {
             required: true,
             message: '请输入正确手机号',
-            trigger: 'change',
-            validator: validatePhone
+            trigger: 'change'
           }
         ],
         deptId: [{ required: true, message: '请选择部门', trigger: 'change' }],

@@ -33,7 +33,7 @@
         trigger="click"
       >
         <div class="avatar-wrapper">
-          <img src="../../../assets/avatar2.jpg" class="user-avatar">
+          <img src="../../../assets/avatar2.jpg" class="user-avatar" />
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">

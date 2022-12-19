@@ -114,7 +114,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="托运方手机号" prop="customerPhone">
+              <el-form-item label="托运方手机号">
                 <el-input
                   v-model="orderForm.customerPhone"
                   :disabled="true"
@@ -270,7 +270,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="联系人电话" prop="loadAddressContactPhone">
+              <el-form-item label="联系人电话">
                 <el-input
                   v-model="orderForm.loadAddressContactPhone"
                   placeholder="请输入联系人电话"
@@ -375,10 +375,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item
-                    label="联系人电话"
-                    prop="unLoadAddressContactPhone"
-                  >
+                  <el-form-item label="联系人电话">
                     <el-input
                       v-model="orderForm.unLoadAddressContactPhone"
                       placeholder="请输入联系人电话"
@@ -552,24 +549,21 @@ export default {
           {
             required: false,
             message: '请输入正确的手机号',
-            trigger: 'change',
-            validator: validatePhone
+            trigger: 'change'
           }
         ],
         loadAddressContactPhone: [
           {
             required: false,
             message: '请输入正确的手机号',
-            trigger: 'change',
-            validator: validatePhone
+            trigger: 'change'
           }
         ],
         customerPhone: [
           {
             required: false,
             message: '请输入正确的手机号',
-            trigger: 'change',
-            validator: validatePhone
+            trigger: 'change'
           }
         ],
         customerId: [
